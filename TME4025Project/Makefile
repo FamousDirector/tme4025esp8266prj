@@ -69,27 +69,29 @@ libuser.a: $(OBJ)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 %.o: $(SRCDIR)%.cpp $(wildcard $(SRCDIR)*.h)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-flash: $(TARGET_OUT)-0x00000.bin $(TARGET_OUT)-0x20000.bin
-	@-$(ESPTOOL) –port $(PORT) write_flash 0x00000 $(TARGET_OUT)-0x00000.bin 0x20000 $(TARGET_OUT)-0x20000.bin
 #flashweb:
 # @python binarydir.py $(WEBDIR) webcontent.bin $(MAXWEBCONTENT)
 # @-$(ESPTOOL) –port $(PORT) write_flash $(WEBCONTENTADDRS) webcontent.bin
 
+flash: $(TARGET_OUT)-0x00000.bin $(TARGET_OUT)-0x20000.bin
+	@-$(ESPTOOL) --port $(PORT) write_flash 0x00000 $(TARGET_OUT)-0x00000.bin 0x20000 $(TARGET_OUT)-0x20000.bin
+
 flashdump:
-	@-$(ESPTOOL) –port $(PORT) read_flash 0x0000 0x80000 flash.dump
+	@-$(ESPTOOL) -port $(PORT) read_flash 0x0000 0x80000 flash.dump
 	@xxd flash.dump > flash.hex
 
 flasherase:
-	@-$(ESPTOOL) –port $(PORT) erase_flash
+	@-$(ESPTOOL) --port $(PORT) erase_flash
 
-clean:
-	@rm -f *.a
-	@rm -f *.o
-	@rm -f *.out
-	@rm -f *.bin
-	@rm -f *.ii
-	@rm -f *.s
-	@rm -f *.expand
-	@rm -f *.map
-	@rm -f *.dump
-	@rm -f *.hex
+.PHONY : clean
+clean :
+	-rm edit *.a
+	-rm edit *.o
+	-rm edit *.out
+	-rm edit *.bin
+	-rm edit *.ii
+	-rm edit *.s
+	-rm edit *.expand
+	-rm edit *.map
+	-rm edit *.dump
+	-rm edit *.hex

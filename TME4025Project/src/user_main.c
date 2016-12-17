@@ -1,6 +1,6 @@
-   #include <esp_common.h>
-   #include <freertos/FreeRTOS.h>
-   #include <freertos/task.h>
+#include <esp_common.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 
 //added as per: http://bbs.espressif.com/viewtopic.php?t=2492
 uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void)
@@ -35,28 +35,30 @@ uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void)
     return rf_cal_sec;
 }
 
-
-extern void uart_div_modify(int,int);
-void helloTask(void *pvParameters)
+void LEDBlinkTask (void *pvParameters)
 {
-   while(1)
-   {
-      printf("Hello world\n");
+    while(1)
+    {
+    // Delay and turn on
+    vTaskDelay (300/portTICK_RATE_MS);
+    GPIO_REG_WRITE(GPIO_PIN4_ADDRESS, 0);
+    printf("off");
  
-      vTaskDelay(1000 / portTICK_RATE_MS);
-   }
+    // Delay and LED off
+    vTaskDelay (300/portTICK_RATE_MS);
+    GPIO_REG_WRITE(GPIO_PIN4_ADDRESS, 1);
+    printf("on");
+    }
 }
 
-void ICACHE_FLASH_ATTR user_init(void)
+void user_init(void)
    {
+    printf("SDK version:%s\n", system_get_sdk_version());
+    printf("HI JAMES THis is V2");
  
-      portBASE_TYPE ret;
+    // Config pin as GPIO12
+    PIN_FUNC_SELECT (PERIPHS_IO_MUX_MTDI_U, FUNC_GPIO12);
  
-      // Set UART speed to 115200
-      uart_div_modify(0, UART_CLK_FREQ / 115200);
-      wifi_set_opmode(NULL_MODE);
- 
-      xTaskHandle t;
-      ret = xTaskCreate(helloTask, (const signed char *)"rx", 256, NULL, 2, &t);
- 
+    // This task blinks the LED continuously
+    xTaskCreate(LEDBlinkTask, (signed char *)"Blink", 256, NULL, 2, NULL);
    }

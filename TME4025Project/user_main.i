@@ -3434,28 +3434,30 @@ uint32 __attribute__((section(".irom0.text"))) user_rf_cal_sector_set(void)
     return rf_cal_sec;
 }
 
-
-extern void uart_div_modify(int,int);
-void helloTask(void *pvParameters)
+void LEDBlinkTask (void *pvParameters)
 {
-   while(1)
-   {
-      printf("Hello world\n");
+    while(1)
+    {
 
-      vTaskDelay(1000 / ( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-   }
+    vTaskDelay (300/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
+    (*((volatile uint32 *)(0x60000300 + 0x38))) = (uint32)(0);
+    printf("off");
+
+
+    vTaskDelay (300/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
+    (*((volatile uint32 *)(0x60000300 + 0x38))) = (uint32)(1);
+    printf("on");
+    }
 }
 
-void __attribute__((section(".irom0.text"))) user_init(void)
+void user_init(void)
    {
+    printf("SDK version:%s\n", system_get_sdk_version());
+    printf("HI JAMES THis is V2");
 
-      long ret;
+
+    do { (*((volatile uint32 *)(((0x60000800 + 0x04))))) = (uint32)(((*((volatile uint32 *)((0x60000800 + 0x04)))) & (~((0x13 << 4))))); (*((volatile uint32 *)(((0x60000800 + 0x04))))) = (uint32)(((*((volatile uint32 *)((0x60000800 + 0x04)))) | ((((3 & 0x00000004) << 2) | (3 & 0x3)) << 4))); } while (0);
 
 
-      uart_div_modify(0, 80 * 1000000 / 115200);
-      wifi_set_opmode(NULL_MODE);
-
-      xTaskHandle t;
-      ret = xTaskGenericCreate( ( helloTask ), ( (const signed char *)"rx" ), ( 256 ), ( ((void *)0) ), ( 2 ), ( &t ), ( ((void *)0) ), ( ((void *)0) ) );
-
+    xTaskGenericCreate( ( LEDBlinkTask ), ( (signed char *)"Blink" ), ( 256 ), ( ((void *)0) ), ( 2 ), ( ((void *)0) ), ( ((void *)0) ), ( ((void *)0) ) );
    }
