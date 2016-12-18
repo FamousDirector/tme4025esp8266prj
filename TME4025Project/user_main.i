@@ -3486,16 +3486,19 @@ uint32 __attribute__((section(".irom0.text"))) user_rf_cal_sector_set(void)
 
 void LEDBlinkTask (void *pvParameters)
 {
+
+    do { (*((volatile uint32 *)(((0x60000800 + 0x04))))) = (uint32)(((*((volatile uint32 *)((0x60000800 + 0x04)))) & (~((0x13 << 4))))); (*((volatile uint32 *)(((0x60000800 + 0x04))))) = (uint32)(((*((volatile uint32 *)((0x60000800 + 0x04)))) | ((((3 & 0x00000004) << 2) | (3 & 0x3)) << 4))); } while (0);
+
     while(1)
     {
 
         vTaskDelay (300/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-        gpio_output_conf(0<<2, ((~0)&0x01)<<2, 1<<2, 0);
+        gpio_output_conf(0<<12, ((~0)&0x01)<<12, 1<<12, 0);
         printf("off");
 
 
         vTaskDelay (300/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-        gpio_output_conf(1<<2, ((~1)&0x01)<<2, 1<<2, 0);
+        gpio_output_conf(1<<12, ((~1)&0x01)<<12, 1<<12, 0);
         printf("on");
     }
 }
@@ -3504,16 +3507,45 @@ void ADCREADTask (void *pvParameters)
 {
     uint16 value = 0;
 
-
-    gpio16_input_conf();
-
     while(1)
     {
 
         vTaskDelay (800/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
         value = system_adc_read();
-        printf("Value is %u",value);
+        printf("Value is %d",value);
     }
+}
+
+static void intr_handler()
+{
+    u32 gpio_status = (*((volatile uint32 *)(0x60000300 + 0x1c)));
+    gpio_pin_intr_state_set((0 +(14)) , GPIO_PIN_INTR_DISABLE);
+    (*((volatile uint32 *)(0x60000300 + 0x24))) = (uint32)(gpio_status & (1UL << (14)));
+
+    vPortEnterCritical();
+
+
+    int i = 0;
+    while(i< 5/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) )){i++;}
+
+    vPortExitCritical();
+
+    printf("!!!");
+
+    gpio_pin_intr_state_set((0 +(14)) ,GPIO_PIN_INTR_NEGEDGE);
+}
+
+void button_init(void)
+{
+    GPIO_ConfigTypeDef gpio_in_cfg14;
+    gpio_in_cfg14.GPIO_Pin = ((1UL << (14)));
+    gpio_in_cfg14.GPIO_IntrType = GPIO_PIN_INTR_NEGEDGE;
+    gpio_in_cfg14.GPIO_Mode = GPIO_Mode_Input;
+    gpio_in_cfg14.GPIO_Pullup = GPIO_PullUp_EN;
+    gpio_config(&gpio_in_cfg14);
+
+    gpio_intr_handler_register(intr_handler, ((void *)0));
+    _xt_isr_unmask(1 << 4);
 }
 
 void user_init(void)
@@ -3522,7 +3554,7 @@ void user_init(void)
         printf("HI JAMES THis is V2");
 
 
-        do { (*((volatile uint32 *)(((0x60000800 + 0x04))))) = (uint32)(((*((volatile uint32 *)((0x60000800 + 0x04)))) & (~((0x13 << 4))))); (*((volatile uint32 *)(((0x60000800 + 0x04))))) = (uint32)(((*((volatile uint32 *)((0x60000800 + 0x04)))) | ((((3 & 0x00000004) << 2) | (3 & 0x3)) << 4))); } while (0);
+        button_init();
 
 
         xTaskGenericCreate( ( LEDBlinkTask ), ( (signed char *)"Blink" ), ( 256 ), ( ((void *)0) ), ( 2 ), ( ((void *)0) ), ( ((void *)0) ), ( ((void *)0) ) );
