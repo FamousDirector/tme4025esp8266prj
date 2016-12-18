@@ -1,7 +1,11 @@
-# 1 "src/user_main.c"
+# 1 "src/button_interrupt.c"
 # 1 "C:\\Workspaces\\ESP8266\\TME4025Project//"
 # 1 "<command-line>"
-# 1 "src/user_main.c"
+# 1 "src/button_interrupt.c"
+# 1 "src/button_interrupt.h" 1
+
+
+
 # 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/esp_common.h" 1
 # 94 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/esp_common.h"
 # 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/c_types.h" 1
@@ -3397,7 +3401,7 @@ uint32 pwm_get_period(void);
 # 128 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/pwm.h"
 void pwm_start(void);
 # 110 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/esp_common.h" 2
-# 2 "src/user_main.c" 2
+# 5 "src/button_interrupt.h" 2
 
 
 # 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h" 1
@@ -3449,95 +3453,42 @@ void gpio_pin_wakeup_disable();
 void gpio_pin_intr_state_set(uint32 i, GPIO_INT_TYPE intr_state);
 # 293 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
 uint32 gpio_input_get(void);
-# 5 "src/user_main.c" 2
-# 1 "src/button_interrupt.h" 1
-# 9 "src/button_interrupt.h"
+# 8 "src/button_interrupt.h" 2
+
 static void intr_handler();
 extern void button_init(void);
-# 6 "src/user_main.c" 2
-# 1 "src/relay_control.h" 1
-# 9 "src/relay_control.h"
-static int relaysstate = 0;
+# 2 "src/button_interrupt.c" 2
 
-extern void initrelaycontrol();
-extern void setrelaystate(int newstate);
-extern int getrelaystate();
-extern void invertrelaystate(void);
-# 7 "src/user_main.c" 2
-
-
-uint32 __attribute__((section(".irom0.text"))) user_rf_cal_sector_set(void)
+extern void intr_handler()
 {
-    flash_size_map size_map = system_get_flash_size_map();
-    uint32 rf_cal_sec = 0;
+    u32 gpio_status = (*((volatile uint32 *)(0x60000300 + 0x1c)));
+    gpio_pin_intr_state_set((0 +(14)) , GPIO_PIN_INTR_DISABLE);
+    (*((volatile uint32 *)(0x60000300 + 0x24))) = (uint32)(gpio_status & (1UL << (14)));
 
-    switch (size_map) {
-        case FLASH_SIZE_4M_MAP_256_256:
-            rf_cal_sec = 128 - 8;
-            break;
+    vPortEnterCritical();
 
-        case FLASH_SIZE_8M_MAP_512_512:
-            rf_cal_sec = 256 - 5;
-            break;
 
-        case FLASH_SIZE_16M_MAP_512_512:
-        case FLASH_SIZE_16M_MAP_1024_1024:
-            rf_cal_sec = 512 - 5;
-            break;
+    int i = 0;
+    while(i< 5/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) )){i++;}
 
-        case FLASH_SIZE_32M_MAP_512_512:
-        case FLASH_SIZE_32M_MAP_1024_1024:
-            rf_cal_sec = 1024 - 5;
-            break;
 
-        default:
-            rf_cal_sec = 0;
-            break;
-    }
+    printf("Button press!\r\n");
+    invertrelaystate();
 
-    return rf_cal_sec;
+    vPortExitCritical();
+
+    gpio_pin_intr_state_set((0 +(14)) ,GPIO_PIN_INTR_NEGEDGE);
 }
 
-void RelayTestTask (void *pvParameters)
+extern void button_init(void)
 {
+    GPIO_ConfigTypeDef gpio_in_cfg14;
+    gpio_in_cfg14.GPIO_Pin = ((1UL << (14)));
+    gpio_in_cfg14.GPIO_IntrType = GPIO_PIN_INTR_NEGEDGE;
+    gpio_in_cfg14.GPIO_Mode = GPIO_Mode_Input;
+    gpio_in_cfg14.GPIO_Pullup = GPIO_PullUp_EN;
+    gpio_config(&gpio_in_cfg14);
 
-    initrelaycontrol();
-
-    while(1)
-    {
-
-        vTaskDelay (1000/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-        setrelaystate(0);
-
-
-        vTaskDelay (1000/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-        setrelaystate(1);
-    }
+    gpio_intr_handler_register(intr_handler, ((void *)0));
+    _xt_isr_unmask(1 << 4);
 }
-
-void ADCREADTask (void *pvParameters)
-{
-    uint16 value = 0;
-
-    while(1)
-    {
-
-        vTaskDelay (800/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-        value = system_adc_read();
-        printf("Value is %d",value);
-    }
-}
-
-void user_init(void)
-   {
-        printf("SDK version:%s\n", system_get_sdk_version());
-        printf("HI JAMES THis is V4");
-
-
-        button_init();
-
-
-        xTaskGenericCreate( ( RelayTestTask ), ( (signed char *)"Blink" ), ( 256 ), ( ((void *)0) ), ( 2 ), ( ((void *)0) ), ( ((void *)0) ), ( ((void *)0) ) );
-        xTaskGenericCreate( ( ADCREADTask ), ( (signed char *)"Read" ), ( 256 ), ( ((void *)0) ), ( 2 ), ( ((void *)0) ), ( ((void *)0) ), ( ((void *)0) ) );
-
-   }

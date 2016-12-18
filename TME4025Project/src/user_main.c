@@ -2,6 +2,8 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include "gpio.h"
+#include "button_interrupt.h"
+#include "relay_control.h"
 
 //added as per: http://bbs.espressif.com/viewtopic.php?t=2492
 uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void)
@@ -36,22 +38,20 @@ uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void)
     return rf_cal_sec;
 }
 
-void LEDBlinkTask (void *pvParameters)
+void RelayTestTask (void *pvParameters)
 {
     //init
-    PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDI_U, FUNC_GPIO12);
+    initrelaycontrol();
 
     while(1)
     {
         // Delay and turn on
-        vTaskDelay (300/portTICK_RATE_MS);
-        GPIO_OUTPUT_SET(12, 0);
-        printf("off");
+        vTaskDelay (1000/portTICK_RATE_MS);
+        setrelaystate(0);
      
         // Delay and LED off
-        vTaskDelay (300/portTICK_RATE_MS);
-        GPIO_OUTPUT_SET(12, 1);
-        printf("on");
+        vTaskDelay (1000/portTICK_RATE_MS);
+        setrelaystate(1);
     }
 }
 
@@ -68,48 +68,16 @@ void ADCREADTask (void *pvParameters)
     }
 }
 
-static void intr_handler() 
-{    
-    u32 gpio_status = GPIO_REG_READ(GPIO_STATUS_ADDRESS);
-    gpio_pin_intr_state_set(GPIO_ID_PIN(14) , GPIO_PIN_INTR_DISABLE);
-    GPIO_REG_WRITE(GPIO_STATUS_W1TC_ADDRESS, gpio_status & BIT(14) );
-
-    portENTER_CRITICAL();
-    
-    //debounce (needs work)
-    int i = 0;
-    while(i< 5/portTICK_RATE_MS){i++;}  
-  
-    portEXIT_CRITICAL();
-
-    printf("!!!");    
-
-    gpio_pin_intr_state_set(GPIO_ID_PIN(14) ,GPIO_PIN_INTR_NEGEDGE);
-}
-
-void button_init(void)
-{
-    GPIO_ConfigTypeDef gpio_in_cfg14;
-    gpio_in_cfg14.GPIO_Pin  = GPIO_Pin_14;
-    gpio_in_cfg14.GPIO_IntrType = GPIO_PIN_INTR_NEGEDGE;
-    gpio_in_cfg14.GPIO_Mode = GPIO_Mode_Input;
-    gpio_in_cfg14.GPIO_Pullup = GPIO_PullUp_EN;
-    gpio_config(&gpio_in_cfg14);
-
-    gpio_intr_handler_register(intr_handler, NULL);
-    _xt_isr_unmask(1 << ETS_GPIO_INUM);
-}
-
 void user_init(void)
    {
         printf("SDK version:%s\n", system_get_sdk_version());
-        printf("HI JAMES THis is V2");
+        printf("HI JAMES THis is V4");
      
         //Configure Interrupts
         button_init();
 
         //Start Tasks
-        xTaskCreate(LEDBlinkTask, (signed char *)"Blink", 256, NULL, 2, NULL);
+        xTaskCreate(RelayTestTask, (signed char *)"Blink", 256, NULL, 2, NULL);
         xTaskCreate(ADCREADTask, (signed char *)"Read", 256, NULL, 2, NULL);
    
    }

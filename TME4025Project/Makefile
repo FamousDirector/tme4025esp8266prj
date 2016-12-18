@@ -27,6 +27,7 @@ INCLUDES += -I $(SDKBASE)/include/lwip/ipv6
 INCLUDES += -I $(SDKBASE)/driver_lib/include/
 INCLUDES += -I $(SDKBASE)/driver_lib/driver
 INCLUDES += -I $(TOOLCHAINHOME)/xtensa-lx106-elf/include
+INCLUDES += -I ./src/
 
 # don’t change -Os (or add other -O options) otherwise FLASHMEM and FSTR data will be duplicated in RAM
 CFLAGS = -g -save-temps -Os -Wpointer-arith -Wundef -Werror -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals
@@ -51,7 +52,7 @@ SDK_LDDIR = $(SDKBASE)/ld
 LIBS = -lmain -lgcc -lfreertos -lnet80211 -lphy -lwpa -lcrypto -llwip -lpp -lminic -lhal libdriver.a
 #-lminic -lm -lgcc -lhal -lphy -lpp -lnet80211 -lwpa -lmain -lfreertos -llwip -lcrypto
 
-OBJ = user_main.o
+OBJ = user_main.o relay_control.o button_interrupt.o
 
 SRCDIR = ./src/
 
@@ -71,6 +72,7 @@ libuser.a: $(OBJ)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 %.o: $(SRCDIR)%.cpp $(wildcard $(SRCDIR)*.h)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
 #flashweb:
 # @python binarydir.py $(WEBDIR) webcontent.bin $(MAXWEBCONTENT)
 # @-$(ESPTOOL) –port $(PORT) write_flash $(WEBCONTENTADDRS) webcontent.bin

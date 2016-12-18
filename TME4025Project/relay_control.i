@@ -1,7 +1,11 @@
-# 1 "src/user_main.c"
+# 1 "src/relay_control.c"
 # 1 "C:\\Workspaces\\ESP8266\\TME4025Project//"
 # 1 "<command-line>"
-# 1 "src/user_main.c"
+# 1 "src/relay_control.c"
+# 1 "src/relay_control.h" 1
+
+
+
 # 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/esp_common.h" 1
 # 94 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/esp_common.h"
 # 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/c_types.h" 1
@@ -3397,7 +3401,7 @@ uint32 pwm_get_period(void);
 # 128 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/pwm.h"
 void pwm_start(void);
 # 110 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/esp_common.h" 2
-# 2 "src/user_main.c" 2
+# 5 "src/relay_control.h" 2
 
 
 # 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h" 1
@@ -3449,95 +3453,48 @@ void gpio_pin_wakeup_disable();
 void gpio_pin_intr_state_set(uint32 i, GPIO_INT_TYPE intr_state);
 # 293 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
 uint32 gpio_input_get(void);
-# 5 "src/user_main.c" 2
-# 1 "src/button_interrupt.h" 1
-# 9 "src/button_interrupt.h"
-static void intr_handler();
-extern void button_init(void);
-# 6 "src/user_main.c" 2
-# 1 "src/relay_control.h" 1
-# 9 "src/relay_control.h"
+# 8 "src/relay_control.h" 2
+
 static int relaysstate = 0;
 
 extern void initrelaycontrol();
 extern void setrelaystate(int newstate);
 extern int getrelaystate();
 extern void invertrelaystate(void);
-# 7 "src/user_main.c" 2
+# 2 "src/relay_control.c" 2
+# 1 "src/button_interrupt.h" 1
+# 9 "src/button_interrupt.h"
+static void intr_handler();
+extern void button_init(void);
+# 3 "src/relay_control.c" 2
 
-
-uint32 __attribute__((section(".irom0.text"))) user_rf_cal_sector_set(void)
+extern void initrelaycontrol()
 {
-    flash_size_map size_map = system_get_flash_size_map();
-    uint32 rf_cal_sec = 0;
+ printf("Init Relay\r\n");
 
-    switch (size_map) {
-        case FLASH_SIZE_4M_MAP_256_256:
-            rf_cal_sec = 128 - 8;
-            break;
 
-        case FLASH_SIZE_8M_MAP_512_512:
-            rf_cal_sec = 256 - 5;
-            break;
-
-        case FLASH_SIZE_16M_MAP_512_512:
-        case FLASH_SIZE_16M_MAP_1024_1024:
-            rf_cal_sec = 512 - 5;
-            break;
-
-        case FLASH_SIZE_32M_MAP_512_512:
-        case FLASH_SIZE_32M_MAP_1024_1024:
-            rf_cal_sec = 1024 - 5;
-            break;
-
-        default:
-            rf_cal_sec = 0;
-            break;
-    }
-
-    return rf_cal_sec;
+ do { (*((volatile uint32 *)(((0x60000800 + 0x04))))) = (uint32)(((*((volatile uint32 *)((0x60000800 + 0x04)))) & (~((0x13 << 4))))); (*((volatile uint32 *)(((0x60000800 + 0x04))))) = (uint32)(((*((volatile uint32 *)((0x60000800 + 0x04)))) | ((((3 & 0x00000004) << 2) | (3 & 0x3)) << 4))); } while (0);
+ relaysstate = 0;
+ return;
 }
 
-void RelayTestTask (void *pvParameters)
+extern void setrelaystate(int newstate)
 {
+ printf("Turn Relay %d \r\n", newstate);
 
-    initrelaycontrol();
-
-    while(1)
-    {
-
-        vTaskDelay (1000/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-        setrelaystate(0);
-
-
-        vTaskDelay (1000/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-        setrelaystate(1);
-    }
+ relaysstate = newstate;
+ gpio_output_conf(relaysstate<<12, ((~relaysstate)&0x01)<<12, 1<<12, 0);
+ return;
 }
 
-void ADCREADTask (void *pvParameters)
+extern int getrelaystate()
 {
-    uint16 value = 0;
-
-    while(1)
-    {
-
-        vTaskDelay (800/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-        value = system_adc_read();
-        printf("Value is %d",value);
-    }
+ return relaysstate;
 }
 
-void user_init(void)
-   {
-        printf("SDK version:%s\n", system_get_sdk_version());
-        printf("HI JAMES THis is V4");
-
-
-        button_init();
-
-
-        xTaskGenericCreate( ( RelayTestTask ), ( (signed char *)"Blink" ), ( 256 ), ( ((void *)0) ), ( 2 ), ( ((void *)0) ), ( ((void *)0) ), ( ((void *)0) ) );
-        xTaskGenericCreate( ( ADCREADTask ), ( (signed char *)"Read" ), ( 256 ), ( ((void *)0) ), ( 2 ), ( ((void *)0) ), ( ((void *)0) ), ( ((void *)0) ) );
-
-   }
+extern void invertrelaystate(void)
+{
+    int state = getrelaystate();
+    setrelaystate(!state);
+    return;
+}
