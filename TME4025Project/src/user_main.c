@@ -55,16 +55,16 @@ void RelayTestTask (void *pvParameters)
     }
 }
 
-void ADCREADTask (void *pvParameters)
+void TemperatureTestTask (void *pvParameters)
 {
     uint16 value = 0;
 
     while(1)
     {
         // Delay reading
-        vTaskDelay (800/portTICK_RATE_MS);
-        value = system_adc_read();
-        printf("Value is %d",value); 
+        vTaskDelay (2000/portTICK_RATE_MS);
+        value = gettemperature();
+        printf("Temperature is %d \n\r",value); 
     }
 }
 
@@ -78,6 +78,6 @@ void user_init(void)
 
         //Start Tasks
         xTaskCreate(RelayTestTask, (signed char *)"Blink", 256, NULL, 2, NULL);
-        xTaskCreate(ADCREADTask, (signed char *)"Read", 256, NULL, 2, NULL);
+        xTaskCreate(TemperatureTestTask, (signed char *)"Read", 256, NULL, 2, NULL);
    
    }

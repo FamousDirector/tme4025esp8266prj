@@ -39,14 +39,14 @@ RelayTestTask:
 	.section	.rodata.str1.4,"aMS",@progbits,1
 	.align	4
 .LC0:
-	.string	"Value is %d"
+	.string	"Temperature is %d \n\r"
 	.text
 	.literal_position
 	.literal .LC1, .LC0
 	.align	4
-	.global	ADCREADTask
-	.type	ADCREADTask, @function
-ADCREADTask:
+	.global	TemperatureTestTask
+	.type	TemperatureTestTask, @function
+TemperatureTestTask:
 .LFB2:
 	.loc 1 59 0
 .LVL6:
@@ -55,23 +55,24 @@ ADCREADTask:
 	s32i.n	a0, sp, 12
 .LVL7:
 .L4:
+.LBB2:
 	.loc 1 65 0 discriminator 1
-	movi.n	a2, 0x50
+	movi	a2, 0xc8
 	call0	vTaskDelay
 .LVL8:
 	.loc 1 66 0 discriminator 1
-	call0	system_adc_read
+	call0	gettemperature
 .LVL9:
-	mov.n	a3, a2
-.LVL10:
 	.loc 1 67 0 discriminator 1
+	extui	a3, a2, 0, 16
 	l32r	a2, .LC1
-.LVL11:
+.LVL10:
 	call0	printf
-.LVL12:
+.LVL11:
 	j	.L4
+.LBE2:
 .LFE2:
-	.size	ADCREADTask, .-ADCREADTask
+	.size	TemperatureTestTask, .-TemperatureTestTask
 	.section	.irom0.text,"ax",@progbits
 	.literal_position
 	.literal .LC2, CSWTCH$3
@@ -86,15 +87,15 @@ user_rf_cal_sector_set:
 	s32i.n	a0, sp, 12
 	.loc 1 11 0
 	call0	system_get_flash_size_map
-.LVL13:
+.LVL12:
 	movi.n	a3, 0
 	bgeui	a2, 7, .L6
 	l32r	a3, .LC2
 	addx2	a2, a2, a3
-.LVL14:
+.LVL13:
 	l16ui	a3, a2, 0
 .L6:
-.LVL15:
+.LVL14:
 	.loc 1 39 0
 	l32i.n	a0, sp, 12
 	mov.n	a2, a3
@@ -122,7 +123,7 @@ user_rf_cal_sector_set:
 	.literal .LC6, .LC5
 	.literal .LC7, RelayTestTask
 	.literal .LC9, .LC8
-	.literal .LC10, ADCREADTask
+	.literal .LC10, TemperatureTestTask
 	.literal .LC12, .LC11
 	.align	4
 	.global	user_init
@@ -136,21 +137,21 @@ user_init:
 	s32i.n	a12, sp, 24
 	.loc 1 73 0
 	call0	system_get_sdk_version
-.LVL16:
+.LVL15:
 	mov.n	a3, a2
 	l32r	a2, .LC4
 	.loc 1 80 0
 	movi.n	a12, 0
 	.loc 1 73 0
 	call0	printf
-.LVL17:
+.LVL16:
 	.loc 1 74 0
 	l32r	a2, .LC6
 	call0	printf
-.LVL18:
+.LVL17:
 	.loc 1 77 0
 	call0	button_init
-.LVL19:
+.LVL18:
 	.loc 1 80 0
 	l32r	a3, .LC9
 	l32r	a2, .LC7
@@ -161,7 +162,7 @@ user_init:
 	movi	a4, 0x100
 	movi.n	a6, 2
 	call0	xTaskGenericCreate
-.LVL20:
+.LVL19:
 	.loc 1 81 0
 	l32r	a2, .LC10
 	l32r	a3, .LC12
@@ -172,7 +173,7 @@ user_init:
 	movi	a4, 0x100
 	movi.n	a6, 2
 	call0	xTaskGenericCreate
-.LVL21:
+.LVL20:
 	.loc 1 83 0
 	l32i.n	a0, sp, 28
 	l32i.n	a12, sp, 24
@@ -277,7 +278,7 @@ CSWTCH$3:
 	.file 10 "src/button_interrupt.h"
 	.section	.debug_info,"",@progbits
 .Ldebug_info0:
-	.4byte	0x44e
+	.4byte	0x46e
 	.2byte	0x4
 	.4byte	.Ldebug_abbrev0
 	.byte	0x4
@@ -488,10 +489,10 @@ CSWTCH$3:
 	.4byte	.LLST0
 	.uleb128 0x11
 	.4byte	.LVL1
-	.4byte	0x392
+	.4byte	0x3ad
 	.uleb128 0x12
 	.4byte	.LVL2
-	.4byte	0x39f
+	.4byte	0x3ba
 	.4byte	0x1cc
 	.uleb128 0x13
 	.uleb128 0x1
@@ -502,7 +503,7 @@ CSWTCH$3:
 	.byte	0
 	.uleb128 0x12
 	.4byte	.LVL3
-	.4byte	0x3b1
+	.4byte	0x3cc
 	.4byte	0x1df
 	.uleb128 0x13
 	.uleb128 0x1
@@ -512,7 +513,7 @@ CSWTCH$3:
 	.byte	0
 	.uleb128 0x12
 	.4byte	.LVL4
-	.4byte	0x39f
+	.4byte	0x3ba
 	.4byte	0x1f3
 	.uleb128 0x13
 	.uleb128 0x1
@@ -523,7 +524,7 @@ CSWTCH$3:
 	.byte	0
 	.uleb128 0x14
 	.4byte	.LVL5
-	.4byte	0x3b1
+	.4byte	0x3cc
 	.uleb128 0x13
 	.uleb128 0x1
 	.byte	0x52
@@ -539,7 +540,7 @@ CSWTCH$3:
 	.4byte	.LFE2-.LFB2
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x267
+	.4byte	0x282
 	.uleb128 0x10
 	.4byte	.LASF35
 	.byte	0x1
@@ -552,23 +553,34 @@ CSWTCH$3:
 	.byte	0x3c
 	.4byte	0x73
 	.4byte	.LLST2
+	.uleb128 0x16
+	.4byte	.LBB2
+	.4byte	.LBE2-.LBB2
+	.uleb128 0x17
+	.4byte	.LASF41
+	.byte	0x1
+	.byte	0x42
+	.4byte	0x4c
+	.4byte	0x250
+	.uleb128 0x18
+	.byte	0
 	.uleb128 0x12
 	.4byte	.LVL8
-	.4byte	0x39f
-	.4byte	0x24a
+	.4byte	0x3ba
+	.4byte	0x264
 	.uleb128 0x13
 	.uleb128 0x1
 	.byte	0x52
 	.uleb128 0x2
 	.byte	0x8
-	.byte	0x50
+	.byte	0xc8
 	.byte	0
 	.uleb128 0x11
 	.4byte	.LVL9
-	.4byte	0x3c2
+	.4byte	0x3dd
 	.uleb128 0x14
-	.4byte	.LVL12
-	.4byte	0x3ce
+	.4byte	.LVL11
+	.4byte	0x3ee
 	.uleb128 0x13
 	.uleb128 0x1
 	.byte	0x52
@@ -577,7 +589,8 @@ CSWTCH$3:
 	.4byte	.LC0
 	.byte	0
 	.byte	0
-	.uleb128 0x16
+	.byte	0
+	.uleb128 0x19
 	.4byte	.LASF52
 	.byte	0x1
 	.byte	0x9
@@ -586,7 +599,7 @@ CSWTCH$3:
 	.4byte	.LFE0-.LFB0
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x2a8
+	.4byte	0x2c3
 	.uleb128 0x15
 	.4byte	.LASF37
 	.byte	0x1
@@ -600,8 +613,8 @@ CSWTCH$3:
 	.4byte	0x7e
 	.4byte	.LLST4
 	.uleb128 0x11
-	.4byte	.LVL13
-	.4byte	0x3e4
+	.4byte	.LVL12
+	.4byte	0x404
 	.byte	0
 	.uleb128 0xf
 	.4byte	.LASF39
@@ -611,14 +624,14 @@ CSWTCH$3:
 	.4byte	.LFE3-.LFB3
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x386
+	.4byte	0x3a1
 	.uleb128 0x11
-	.4byte	.LVL16
-	.4byte	0x3f0
+	.4byte	.LVL15
+	.4byte	0x410
 	.uleb128 0x12
-	.4byte	.LVL17
-	.4byte	0x3ce
-	.4byte	0x2dd
+	.4byte	.LVL16
+	.4byte	0x3ee
+	.4byte	0x2f8
 	.uleb128 0x13
 	.uleb128 0x1
 	.byte	0x52
@@ -627,9 +640,9 @@ CSWTCH$3:
 	.4byte	.LC3
 	.byte	0
 	.uleb128 0x12
-	.4byte	.LVL18
-	.4byte	0x3ce
-	.4byte	0x2f4
+	.4byte	.LVL17
+	.4byte	0x3ee
+	.4byte	0x30f
 	.uleb128 0x13
 	.uleb128 0x1
 	.byte	0x52
@@ -638,12 +651,12 @@ CSWTCH$3:
 	.4byte	.LC5
 	.byte	0
 	.uleb128 0x11
-	.4byte	.LVL19
-	.4byte	0x3fb
+	.4byte	.LVL18
+	.4byte	0x41b
 	.uleb128 0x12
-	.4byte	.LVL20
-	.4byte	0x402
-	.4byte	0x343
+	.4byte	.LVL19
+	.4byte	0x422
+	.4byte	0x35e
 	.uleb128 0x13
 	.uleb128 0x1
 	.byte	0x57
@@ -695,8 +708,8 @@ CSWTCH$3:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x14
-	.4byte	.LVL21
-	.4byte	0x402
+	.4byte	.LVL20
+	.4byte	0x422
 	.uleb128 0x13
 	.uleb128 0x1
 	.byte	0x57
@@ -731,7 +744,7 @@ CSWTCH$3:
 	.byte	0x52
 	.uleb128 0x5
 	.byte	0x3
-	.4byte	ADCREADTask
+	.4byte	TemperatureTestTask
 	.uleb128 0x13
 	.uleb128 0x2
 	.byte	0x71
@@ -748,70 +761,73 @@ CSWTCH$3:
 	.sleb128 0
 	.byte	0
 	.byte	0
-	.uleb128 0x17
+	.uleb128 0x1a
 	.4byte	.LASF40
 	.byte	0x8
 	.byte	0x9
 	.4byte	0x4c
 	.byte	0
-	.uleb128 0x18
+	.uleb128 0x1b
 	.4byte	.LASF53
 	.byte	0x8
 	.byte	0xb
-	.4byte	0x39f
-	.uleb128 0x19
+	.4byte	0x3ba
+	.uleb128 0x18
 	.byte	0
-	.uleb128 0x1a
-	.4byte	.LASF41
+	.uleb128 0x1c
+	.4byte	.LASF42
 	.byte	0x7
 	.2byte	0x20d
-	.4byte	0x3b1
+	.4byte	0x3cc
 	.uleb128 0xc
 	.4byte	0x123
 	.byte	0
-	.uleb128 0x1b
-	.4byte	.LASF42
+	.uleb128 0x1d
+	.4byte	.LASF43
 	.byte	0x8
 	.byte	0xc
-	.4byte	0x3c2
+	.4byte	0x3dd
 	.uleb128 0xc
 	.4byte	0x4c
 	.byte	0
-	.uleb128 0x1c
-	.4byte	.LASF43
-	.byte	0x4
-	.2byte	0x12a
-	.4byte	0x73
-	.uleb128 0x1d
+	.uleb128 0x17
+	.4byte	.LASF41
+	.byte	0x1
+	.byte	0x42
+	.4byte	0x4c
+	.4byte	0x3ee
+	.uleb128 0x18
+	.byte	0
+	.uleb128 0x1e
 	.4byte	.LASF46
 	.byte	0x9
 	.byte	0xb3
 	.4byte	0x4c
-	.4byte	0x3e4
+	.4byte	0x404
 	.uleb128 0xc
 	.4byte	0xb5
-	.uleb128 0x19
+	.uleb128 0x18
 	.byte	0
-	.uleb128 0x1c
+	.uleb128 0x1f
 	.4byte	.LASF44
 	.byte	0x4
 	.2byte	0x222
 	.4byte	0xfb
-	.uleb128 0x1e
+	.uleb128 0x20
 	.4byte	.LASF45
 	.byte	0x4
 	.byte	0x4f
 	.4byte	0xb5
-	.uleb128 0x1f
+	.uleb128 0x21
 	.4byte	.LASF54
 	.byte	0xa
 	.byte	0xa
-	.uleb128 0x20
+	.uleb128 0x22
 	.4byte	.LASF47
 	.byte	0x7
 	.2byte	0x5c4
 	.4byte	0xa0
-	.4byte	0x43b
+	.4byte	0x45b
 	.uleb128 0xc
 	.4byte	0x118
 	.uleb128 0xc
@@ -823,20 +839,20 @@ CSWTCH$3:
 	.uleb128 0xc
 	.4byte	0x97
 	.uleb128 0xc
-	.4byte	0x43b
+	.4byte	0x45b
 	.uleb128 0xc
 	.4byte	0x185
 	.uleb128 0xc
-	.4byte	0x441
+	.4byte	0x461
 	.byte	0
 	.uleb128 0x6
 	.byte	0x4
 	.4byte	0x12e
 	.uleb128 0x7
-	.4byte	0x446
+	.4byte	0x466
 	.uleb128 0x6
 	.byte	0x4
-	.4byte	0x44c
+	.4byte	0x46c
 	.uleb128 0x7
 	.4byte	0x16a
 	.byte	0
@@ -1094,6 +1110,39 @@ CSWTCH$3:
 	.byte	0
 	.byte	0
 	.uleb128 0x16
+	.uleb128 0xb
+	.byte	0x1
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x12
+	.uleb128 0x6
+	.byte	0
+	.byte	0
+	.uleb128 0x17
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x3c
+	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x18
+	.uleb128 0x18
+	.byte	0
+	.byte	0
+	.byte	0
+	.uleb128 0x19
 	.uleb128 0x2e
 	.byte	0x1
 	.uleb128 0x3f
@@ -1120,7 +1169,7 @@ CSWTCH$3:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x17
+	.uleb128 0x1a
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
@@ -1135,47 +1184,6 @@ CSWTCH$3:
 	.uleb128 0xb
 	.byte	0
 	.byte	0
-	.uleb128 0x18
-	.uleb128 0x2e
-	.byte	0x1
-	.uleb128 0x3f
-	.uleb128 0x19
-	.uleb128 0x3
-	.uleb128 0xe
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x3c
-	.uleb128 0x19
-	.uleb128 0x1
-	.uleb128 0x13
-	.byte	0
-	.byte	0
-	.uleb128 0x19
-	.uleb128 0x18
-	.byte	0
-	.byte	0
-	.byte	0
-	.uleb128 0x1a
-	.uleb128 0x2e
-	.byte	0x1
-	.uleb128 0x3f
-	.uleb128 0x19
-	.uleb128 0x3
-	.uleb128 0xe
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0x5
-	.uleb128 0x27
-	.uleb128 0x19
-	.uleb128 0x3c
-	.uleb128 0x19
-	.uleb128 0x1
-	.uleb128 0x13
-	.byte	0
-	.byte	0
 	.uleb128 0x1b
 	.uleb128 0x2e
 	.byte	0x1
@@ -1187,8 +1195,6 @@ CSWTCH$3:
 	.uleb128 0xb
 	.uleb128 0x3b
 	.uleb128 0xb
-	.uleb128 0x27
-	.uleb128 0x19
 	.uleb128 0x3c
 	.uleb128 0x19
 	.uleb128 0x1
@@ -1197,7 +1203,7 @@ CSWTCH$3:
 	.byte	0
 	.uleb128 0x1c
 	.uleb128 0x2e
-	.byte	0
+	.byte	0x1
 	.uleb128 0x3f
 	.uleb128 0x19
 	.uleb128 0x3
@@ -1208,10 +1214,10 @@ CSWTCH$3:
 	.uleb128 0x5
 	.uleb128 0x27
 	.uleb128 0x19
-	.uleb128 0x49
-	.uleb128 0x13
 	.uleb128 0x3c
 	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
 	.byte	0
 	.byte	0
 	.uleb128 0x1d
@@ -1227,8 +1233,6 @@ CSWTCH$3:
 	.uleb128 0xb
 	.uleb128 0x27
 	.uleb128 0x19
-	.uleb128 0x49
-	.uleb128 0x13
 	.uleb128 0x3c
 	.uleb128 0x19
 	.uleb128 0x1
@@ -1237,7 +1241,7 @@ CSWTCH$3:
 	.byte	0
 	.uleb128 0x1e
 	.uleb128 0x2e
-	.byte	0
+	.byte	0x1
 	.uleb128 0x3f
 	.uleb128 0x19
 	.uleb128 0x3
@@ -1252,6 +1256,8 @@ CSWTCH$3:
 	.uleb128 0x13
 	.uleb128 0x3c
 	.uleb128 0x19
+	.uleb128 0x1
+	.uleb128 0x13
 	.byte	0
 	.byte	0
 	.uleb128 0x1f
@@ -1264,6 +1270,44 @@ CSWTCH$3:
 	.uleb128 0x3a
 	.uleb128 0xb
 	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x27
+	.uleb128 0x19
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x3c
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x20
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x27
+	.uleb128 0x19
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x3c
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x21
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
 	.uleb128 0xb
 	.uleb128 0x27
 	.uleb128 0x19
@@ -1271,7 +1315,7 @@ CSWTCH$3:
 	.uleb128 0x19
 	.byte	0
 	.byte	0
-	.uleb128 0x20
+	.uleb128 0x22
 	.uleb128 0x2e
 	.byte	0x1
 	.uleb128 0x3f
@@ -1324,30 +1368,30 @@ CSWTCH$3:
 	.4byte	0
 	.4byte	0
 .LLST2:
+	.4byte	.LVL9
 	.4byte	.LVL10
-	.4byte	.LVL11
 	.2byte	0x1
 	.byte	0x52
-	.4byte	.LVL11
-	.4byte	.LVL12-1
+	.4byte	.LVL10
+	.4byte	.LVL11-1
 	.2byte	0x1
 	.byte	0x53
 	.4byte	0
 	.4byte	0
 .LLST3:
+	.4byte	.LVL12
 	.4byte	.LVL13
-	.4byte	.LVL14
 	.2byte	0x1
 	.byte	0x52
 	.4byte	0
 	.4byte	0
 .LLST4:
-	.4byte	.LVL13
-	.4byte	.LVL15
+	.4byte	.LVL12
+	.4byte	.LVL14
 	.2byte	0x2
 	.byte	0x30
 	.byte	0x9f
-	.4byte	.LVL15
+	.4byte	.LVL14
 	.4byte	.LFE0
 	.2byte	0x1
 	.byte	0x53
@@ -1412,6 +1456,10 @@ CSWTCH$3:
 	.string	"size_map"
 .LASF11:
 	.string	"float"
+.LASF41:
+	.string	"gettemperature"
+.LASF34:
+	.string	"TemperatureTestTask"
 .LASF52:
 	.string	"user_rf_cal_sector_set"
 .LASF13:
@@ -1444,7 +1492,7 @@ CSWTCH$3:
 	.string	"system_get_flash_size_map"
 .LASF8:
 	.string	"long long unsigned int"
-.LASF42:
+.LASF43:
 	.string	"setrelaystate"
 .LASF33:
 	.string	"RelayTestTask"
@@ -1462,12 +1510,10 @@ CSWTCH$3:
 	.string	"GNU C 4.8.2 -fpreprocessed -mlongcalls -mtext-section-literals -g -Os -fno-inline-functions -fno-exceptions"
 .LASF46:
 	.string	"printf"
-.LASF4:
-	.string	"uint16_t"
 .LASF2:
 	.string	"short int"
-.LASF34:
-	.string	"ADCREADTask"
+.LASF4:
+	.string	"uint16_t"
 .LASF47:
 	.string	"xTaskGenericCreate"
 .LASF21:
@@ -1476,7 +1522,7 @@ CSWTCH$3:
 	.string	"uint32_t"
 .LASF14:
 	.string	"long int"
-.LASF41:
+.LASF42:
 	.string	"vTaskDelay"
 .LASF40:
 	.string	"relaysstate"
@@ -1486,6 +1532,4 @@ CSWTCH$3:
 	.string	"_Bool"
 .LASF24:
 	.string	"FLASH_SIZE_32M_MAP_1024_1024"
-.LASF43:
-	.string	"system_adc_read"
 	.ident	"GCC: (GNU) 4.8.2"

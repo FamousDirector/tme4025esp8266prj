@@ -229,6 +229,8 @@ libuser.a(user_main.o)        C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\lib
 libuser.a(relay_control.o)    libuser.a(user_main.o) (initrelaycontrol)
 libuser.a(button_interrupt.o)
                               libuser.a(user_main.o) (button_init)
+libuser.a(temperature_sensor.o)
+                              libuser.a(user_main.o) (gettemperature)
 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
                               C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_ht.o) (__modsi3)
 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_ashrdi3.o)
@@ -2766,6 +2768,11 @@ Discarded input sections
  .bss           0x00000000        0x0 libuser.a(button_interrupt.o)
  .xt.lit        0x00000000       0x10 libuser.a(button_interrupt.o)
  .xt.prop       0x00000000       0x48 libuser.a(button_interrupt.o)
+ .literal       0x00000000        0x0 libuser.a(temperature_sensor.o)
+ .data          0x00000000        0x0 libuser.a(temperature_sensor.o)
+ .bss           0x00000000        0x0 libuser.a(temperature_sensor.o)
+ .xt.lit        0x00000000        0x8 libuser.a(temperature_sensor.o)
+ .xt.prop       0x00000000       0x24 libuser.a(temperature_sensor.o)
  .data          0x00000000        0x0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
  .bss           0x00000000        0x0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
  .xt.prop       0x00000000       0x84 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
@@ -2949,7 +2956,7 @@ END GROUP
  *(.jcr)
                 0x3ffe83a2                _data_end = ABSOLUTE (.)
 
-.rodata         0x3ffe83b0      0x29c
+.rodata         0x3ffe83b0      0x2a8
                 0x3ffe83b0                _rodata_start = ABSOLUTE (.)
  *(.rodata)
  .rodata        0x3ffe83b0        0x8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_hostap.o)
@@ -3045,56 +3052,56 @@ END GROUP
                                  0x17 (size before relaxing)
  *fill*         0x3ffe85d3        0x1 
  .rodata.str1.4
-                0x3ffe85d4       0x3d libuser.a(user_main.o)
- *fill*         0x3ffe8611        0x3 
+                0x3ffe85d4       0x49 libuser.a(user_main.o)
+ *fill*         0x3ffe861d        0x3 
  .rodata.str1.4
-                0x3ffe8614       0x1d libuser.a(relay_control.o)
- *fill*         0x3ffe8631        0x3 
+                0x3ffe8620       0x1d libuser.a(relay_control.o)
+ *fill*         0x3ffe863d        0x3 
  .rodata.str1.4
-                0x3ffe8634       0x10 libuser.a(button_interrupt.o)
+                0x3ffe8640       0x10 libuser.a(button_interrupt.o)
                                   0xf (size before relaxing)
  *(.gnu.linkonce.r.*)
  *(.rodata1)
-                0x3ffe8644                __XT_EXCEPTION_TABLE__ = ABSOLUTE (.)
+                0x3ffe8650                __XT_EXCEPTION_TABLE__ = ABSOLUTE (.)
  *(.xt_except_table)
  *(.gcc_except_table)
  *(.gnu.linkonce.e.*)
  *(.gnu.version_r)
  *(.eh_frame)
-                0x3ffe8644                . = ((. + 0x3) & 0xfffffffc)
-                0x3ffe8644                __init_array_start = ABSOLUTE (.)
+                0x3ffe8650                . = ((. + 0x3) & 0xfffffffc)
+                0x3ffe8650                __init_array_start = ABSOLUTE (.)
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT(.ctors.*))
  *(.ctors)
-                0x3ffe8644                __init_array_end = ABSOLUTE (.)
+                0x3ffe8650                __init_array_end = ABSOLUTE (.)
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT(.dtors.*))
  *(.dtors)
-                0x3ffe8644                __XT_EXCEPTION_DESCS__ = ABSOLUTE (.)
+                0x3ffe8650                __XT_EXCEPTION_DESCS__ = ABSOLUTE (.)
  *(.xt_except_desc)
  *(.gnu.linkonce.h.*)
-                0x3ffe8644                __XT_EXCEPTION_DESCS_END__ = ABSOLUTE (.)
+                0x3ffe8650                __XT_EXCEPTION_DESCS_END__ = ABSOLUTE (.)
  *(.xt_except_desc_end)
  *(.dynamic)
  *(.gnu.version_d)
-                0x3ffe8644                . = ALIGN (0x4)
-                0x3ffe8644                _bss_table_start = ABSOLUTE (.)
-                0x3ffe8644        0x4 LONG 0x3ffe8650 _bss_start
-                0x3ffe8648        0x4 LONG 0x3ffeefd0 _bss_end
-                0x3ffe864c                _bss_table_end = ABSOLUTE (.)
-                0x3ffe864c                _rodata_end = ABSOLUTE (.)
+                0x3ffe8650                . = ALIGN (0x4)
+                0x3ffe8650                _bss_table_start = ABSOLUTE (.)
+                0x3ffe8650        0x4 LONG 0x3ffe8658 _bss_start
+                0x3ffe8654        0x4 LONG 0x3ffeefe0 _bss_end
+                0x3ffe8658                _bss_table_end = ABSOLUTE (.)
+                0x3ffe8658                _rodata_end = ABSOLUTE (.)
 
 .UserExceptionVector.literal
-                0x3ffe864c        0x0
-                0x3ffe864c                _UserExceptionVector_literal_start = ABSOLUTE (.)
+                0x3ffe8658        0x0
+                0x3ffe8658                _UserExceptionVector_literal_start = ABSOLUTE (.)
  *(.UserExceptionVector.literal)
-                0x3ffe864c                _UserExceptionVector_literal_end = ABSOLUTE (.)
+                0x3ffe8658                _UserExceptionVector_literal_end = ABSOLUTE (.)
 
-.bss            0x3ffe8650     0x6980
-                0x3ffe8650                . = ALIGN (0x8)
-                0x3ffe8650                _bss_start = ABSOLUTE (.)
+.bss            0x3ffe8658     0x6988
+                0x3ffe8658                . = ALIGN (0x8)
+                0x3ffe8658                _bss_start = ABSOLUTE (.)
  *(.dynsbss)
  *(.sbss)
  *(.sbss.*)
@@ -3105,376 +3112,377 @@ END GROUP
  *(.gnu.linkonce.sb2.*)
  *(.dynbss)
  *(.bss)
- .bss           0x3ffe8650      0x3f8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(xtensa_vectors.o)
- .bss           0x3ffe8a48       0x34 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(app_main.o)
-                0x3ffe8a48                info
-                0x3ffe8a6c                user_init_flag
-                0x3ffe8a6d                freq_trace_enable
-                0x3ffe8a70                rf_cal_sec
-                0x3ffe8a74                errno
-                0x3ffe8a78                xWatchDogTaskHandle
- *fill*         0x3ffe8a7c        0x4 
- .bss           0x3ffe8a80       0xc0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(ets_timer.o)
-                0x3ffe8a84                timer_list
-                0x3ffe8a88                debug_timer
-                0x3ffe8a8c                debug_timerfn
- .bss           0x3ffe8b40        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(misc.o)
-                0x3ffe8b40                _putc1
- *fill*         0x3ffe8b44        0xc 
- .bss           0x3ffe8b50       0x40 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(printf-stdarg.o)
- .bss           0x3ffe8b90        0x8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(spi_flash.o)
-                0x3ffe8b90                FlashIsOnGoing
-                0x3ffe8b94                flash_read
- *fill*         0x3ffe8b98        0x8 
- .bss           0x3ffe8ba0      0x172 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(user_interface.o)
-                0x3ffe8c86                protect_flag
-                0x3ffe8c88                deep_sleep_flag
-                0x3ffe8c89                cpu_overclock
-                0x3ffe8c8c                event_cb
-                0x3ffe8c90                xQueue_event
-                0x3ffe8c94                rst_if
-                0x3ffe8cb4                OpmodChgIsOnGoing
-                0x3ffe8cb8                promiscuous_cb
-                0x3ffe8cbc                status_led_output_level
-                0x3ffe8cc0                evt
- *fill*         0x3ffe8d12        0x2 
- .bss           0x3ffe8d14      0x6b4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211.o)
-                0x3ffe8d14                g_ic
-                0x3ffe93c4                xieee80211Queue
- .bss           0x3ffe93c8       0x65 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_hostap.o)
-                0x3ffe93c8                BcnEb_update
-                0x3ffe93f8                PendFreeBcnEb
-                0x3ffe93fa                ap_freq_force_to_scan
-                0x3ffe93fc                ApFreqCalTimer
-                0x3ffe9418                APRecvBcnStartTick
- *fill*         0x3ffe942d        0x3 
- .bss           0x3ffe9430       0xe4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_scan.o)
-                0x3ffe9430                gScanStruct
-                0x3ffe94ec                freq_change_check_softap_link_enable
-                0x3ffe94ed                FreqCalCntForScan
-                0x3ffe94ee                TestStaFreqCalValInput
-                0x3ffe94f0                TestStaFreqCalValDev
-                0x3ffe94f2                connect_scan_flag
-                0x3ffe94f3                auth_type
-                0x3ffe94f4                scannum
- *fill*         0x3ffe9514        0x4 
- .bss           0x3ffe9518       0x10 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_sta.o)
- .bss           0x3ffe9528       0x44 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(wl_chm.o)
- *fill*         0x3ffe956c        0x4 
- .bss           0x3ffe9570      0x39d C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(wl_cnx.o)
-                0x3ffe98e8                sta_con_timer
-                0x3ffe9904                backup_ni_connect_status
-                0x3ffe9908                g_cnx_probe_rc_list_cb
-                0x3ffe990c                reconnect_flag
- *fill*         0x3ffe990d        0x3 
- .bss           0x3ffe9910       0x10 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_action_vendor.o)
- .bss           0x3ffe9920        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libphy.a(phy.o)
- .bss           0x3ffe9924        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libphy.a(phy_chip_v6_ana.o)
-                0x3ffe9924                tout_dis_txpwr_track
-                0x3ffe9925                sleep_mode_flag
- *fill*         0x3ffe9926        0x2 
- .bss           0x3ffe9928      0x153 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libphy.a(phy_chip_v6.o)
-                0x3ffe9928                rxiq_compute_num
-                0x3ffe992c                rx_table_renew_en
-                0x3ffe9930                check_result
-                0x3ffe9934                chip6_sleep_params
-                0x3ffe99c8                chip6_phy_init_ctrl
-                0x3ffe9a3c                phy_freq_offset
-                0x3ffe9a3e                do_pwctrl_flag
-                0x3ffe9a3f                txbk_dpdby_flag
-                0x3ffe9a41                sw_scan_mode
-                0x3ffe9a42                rxmax_ext_level
-                0x3ffe9a44                phy_rx_gain_dc_table
-                0x3ffe9a58                periodic_cal_flag
-                0x3ffe9a59                bbpll_cal_flag
-                0x3ffe9a5a                phy_in_most_power
-                0x3ffe9a5b                init_rf_no_cal
-                0x3ffe9a5c                test_print_time
-                0x3ffe9a60                phy_in_vdd33_offset
-                0x3ffe9a61                phy_set_most_tpw_disbg
-                0x3ffe9a62                phy_set_most_tpw_index
-                0x3ffe9a64                adc_rand_noise
-                0x3ffe9a68                phy_rx_gain_dc_flag
-                0x3ffe9a69                dpd_bypass_original
-                0x3ffe9a6a                phy_txpwr_diff_flash
-                0x3ffe9a70                noise_array
- *fill*         0x3ffe9a7b        0x1 
- .bss           0x3ffe9a7c        0x9 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libphy.a(phy_chip_v6_cal.o)
-                0x3ffe9a7c                phy_tx_power_out
-                0x3ffe9a7e                phy_tx_pwr_error
-                0x3ffe9a80                tx_pwctrl_track_num
-                0x3ffe9a81                rxiq_cover_fail_num
-                0x3ffe9a82                phy_meas_freq_offset
-                0x3ffe9a84                tx_pwctrl_pk_num
- *fill*         0x3ffe9a85        0x3 
- .bss           0x3ffe9a88        0x7 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libphy.a(phy_sleep.o)
-                0x3ffe9a88                periodic_cal_sat
-                0x3ffe9a8a                lslp_mem_opt_8266
-                0x3ffe9a8c                software_slp_reject
-                0x3ffe9a8d                SDIO_slp_reject
-                0x3ffe9a8e                hardware_reject
- *fill*         0x3ffe9a8f        0x1 
- .bss           0x3ffe9a90        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libphy.a(phy_chip_v5_ana_romfunc.o)
-                0x3ffe9a90                phy_interrup_flag
- *fill*         0x3ffe9a91        0xf 
- .bss           0x3ffe9aa0      0x26a C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libwpa.a(wpa.o)
- *fill*         0x3ffe9d0a        0x6 
- .bss           0x3ffe9d10      0x984 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(esf_buf.o)
- *fill*         0x3ffea694        0xc 
- .bss           0x3ffea6a0       0x30 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(if_hwctrl.o)
-                0x3ffea6a0                interface_mask
-                0x3ffea6b0                if_ctrl
- .bss           0x3ffea6d0      0x150 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(lmac.o)
-                0x3ffea6d4                lmacConfMib
-                0x3ffea6f8                our_tx_eb
- .bss           0x3ffea820      0x14a C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(pm.o)
-                0x3ffea924                CCOMPARE_AddVal
- *fill*         0x3ffea96a        0x2 
- .bss           0x3ffea96c       0x4c C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(pm_for_bcn_only_mode.o)
- *fill*         0x3ffea9b8        0x8 
- .bss           0x3ffea9c0      0x3ed C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(pp.o)
-                0x3ffea9c0                wdt_ini_flag
-                0x3ffea9c1                pp_soft_wdt_count
-                0x3ffea9e8                pend_flag_noise_check
-                0x3ffea9f0                pend_flag_periodic_cal
-                0x3ffeaa10                idle_timer_reopen_flag
-                0x3ffeaa19                dbg_stop_sw_wdt
-                0x3ffeaa1a                dbg_stop_hw_wdt
-                0x3ffeaa1c                freq_change_sta_scan
-                0x3ffeaa30                test_freq_val_force_flag
-                0x3ffeaa32                TestStaFreqCalValFilter
-                0x3ffeaa34                PktsNumInOneChk
-                0x3ffeaa36                AllFreqOffsetInOneChk
-                0x3ffeaa38                AvgFreqOffsetInOneChk
-                0x3ffeaa3a                HighestFreqOffsetInOneChk
-                0x3ffeaa3c                LowestFreqOffsetInOneChk
-                0x3ffeaa3e                pktnum_sta_freqcal
-                0x3ffeaa40                all_freqoffset_sta_freqcal
-                0x3ffeaa42                avg_freqoffset_sta_freqcal
-                0x3ffeaa44                DefFreqCalTimer
-                0x3ffeaa60                PktNumInOneChk
- *fill*         0x3ffeadad        0x3 
- .bss           0x3ffeadb0      0x100 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(rate_control.o)
- .bss           0x3ffeaeb0      0x46c C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(trc.o)
- *fill*         0x3ffeb31c        0x4 
- .bss           0x3ffeb320     0x2f68 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(wdev.o)
-                0x3ffeb320                wDevCtrl
-                0x3ffeb4c8                NMIIrqIsOn
-                0x3ffeb4cc                WdevTimOffSet
- .bss           0x3ffee288        0x4 libuser.a(relay_control.o)
- *fill*         0x3ffee28c        0x4 
- .bss           0x3ffee290        0x8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_crypto_tkip.o)
+ *fill*         0x3ffe8658        0x8 
+ .bss           0x3ffe8660      0x3f8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(xtensa_vectors.o)
+ .bss           0x3ffe8a58       0x34 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(app_main.o)
+                0x3ffe8a58                info
+                0x3ffe8a7c                user_init_flag
+                0x3ffe8a7d                freq_trace_enable
+                0x3ffe8a80                rf_cal_sec
+                0x3ffe8a84                errno
+                0x3ffe8a88                xWatchDogTaskHandle
+ *fill*         0x3ffe8a8c        0x4 
+ .bss           0x3ffe8a90       0xc0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(ets_timer.o)
+                0x3ffe8a94                timer_list
+                0x3ffe8a98                debug_timer
+                0x3ffe8a9c                debug_timerfn
+ .bss           0x3ffe8b50        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(misc.o)
+                0x3ffe8b50                _putc1
+ *fill*         0x3ffe8b54        0xc 
+ .bss           0x3ffe8b60       0x40 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(printf-stdarg.o)
+ .bss           0x3ffe8ba0        0x8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(spi_flash.o)
+                0x3ffe8ba0                FlashIsOnGoing
+                0x3ffe8ba4                flash_read
+ *fill*         0x3ffe8ba8        0x8 
+ .bss           0x3ffe8bb0      0x172 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(user_interface.o)
+                0x3ffe8c96                protect_flag
+                0x3ffe8c98                deep_sleep_flag
+                0x3ffe8c99                cpu_overclock
+                0x3ffe8c9c                event_cb
+                0x3ffe8ca0                xQueue_event
+                0x3ffe8ca4                rst_if
+                0x3ffe8cc4                OpmodChgIsOnGoing
+                0x3ffe8cc8                promiscuous_cb
+                0x3ffe8ccc                status_led_output_level
+                0x3ffe8cd0                evt
+ *fill*         0x3ffe8d22        0x2 
+ .bss           0x3ffe8d24      0x6b4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211.o)
+                0x3ffe8d24                g_ic
+                0x3ffe93d4                xieee80211Queue
+ .bss           0x3ffe93d8       0x65 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_hostap.o)
+                0x3ffe93d8                BcnEb_update
+                0x3ffe9408                PendFreeBcnEb
+                0x3ffe940a                ap_freq_force_to_scan
+                0x3ffe940c                ApFreqCalTimer
+                0x3ffe9428                APRecvBcnStartTick
+ *fill*         0x3ffe943d        0x3 
+ .bss           0x3ffe9440       0xe4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_scan.o)
+                0x3ffe9440                gScanStruct
+                0x3ffe94fc                freq_change_check_softap_link_enable
+                0x3ffe94fd                FreqCalCntForScan
+                0x3ffe94fe                TestStaFreqCalValInput
+                0x3ffe9500                TestStaFreqCalValDev
+                0x3ffe9502                connect_scan_flag
+                0x3ffe9503                auth_type
+                0x3ffe9504                scannum
+ *fill*         0x3ffe9524        0x4 
+ .bss           0x3ffe9528       0x10 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_sta.o)
+ .bss           0x3ffe9538       0x44 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(wl_chm.o)
+ *fill*         0x3ffe957c        0x4 
+ .bss           0x3ffe9580      0x39d C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(wl_cnx.o)
+                0x3ffe98f8                sta_con_timer
+                0x3ffe9914                backup_ni_connect_status
+                0x3ffe9918                g_cnx_probe_rc_list_cb
+                0x3ffe991c                reconnect_flag
+ *fill*         0x3ffe991d        0x3 
+ .bss           0x3ffe9920       0x10 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_action_vendor.o)
+ .bss           0x3ffe9930        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libphy.a(phy.o)
+ .bss           0x3ffe9934        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libphy.a(phy_chip_v6_ana.o)
+                0x3ffe9934                tout_dis_txpwr_track
+                0x3ffe9935                sleep_mode_flag
+ *fill*         0x3ffe9936        0x2 
+ .bss           0x3ffe9938      0x153 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libphy.a(phy_chip_v6.o)
+                0x3ffe9938                rxiq_compute_num
+                0x3ffe993c                rx_table_renew_en
+                0x3ffe9940                check_result
+                0x3ffe9944                chip6_sleep_params
+                0x3ffe99d8                chip6_phy_init_ctrl
+                0x3ffe9a4c                phy_freq_offset
+                0x3ffe9a4e                do_pwctrl_flag
+                0x3ffe9a4f                txbk_dpdby_flag
+                0x3ffe9a51                sw_scan_mode
+                0x3ffe9a52                rxmax_ext_level
+                0x3ffe9a54                phy_rx_gain_dc_table
+                0x3ffe9a68                periodic_cal_flag
+                0x3ffe9a69                bbpll_cal_flag
+                0x3ffe9a6a                phy_in_most_power
+                0x3ffe9a6b                init_rf_no_cal
+                0x3ffe9a6c                test_print_time
+                0x3ffe9a70                phy_in_vdd33_offset
+                0x3ffe9a71                phy_set_most_tpw_disbg
+                0x3ffe9a72                phy_set_most_tpw_index
+                0x3ffe9a74                adc_rand_noise
+                0x3ffe9a78                phy_rx_gain_dc_flag
+                0x3ffe9a79                dpd_bypass_original
+                0x3ffe9a7a                phy_txpwr_diff_flash
+                0x3ffe9a80                noise_array
+ *fill*         0x3ffe9a8b        0x1 
+ .bss           0x3ffe9a8c        0x9 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libphy.a(phy_chip_v6_cal.o)
+                0x3ffe9a8c                phy_tx_power_out
+                0x3ffe9a8e                phy_tx_pwr_error
+                0x3ffe9a90                tx_pwctrl_track_num
+                0x3ffe9a91                rxiq_cover_fail_num
+                0x3ffe9a92                phy_meas_freq_offset
+                0x3ffe9a94                tx_pwctrl_pk_num
+ *fill*         0x3ffe9a95        0x3 
+ .bss           0x3ffe9a98        0x7 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libphy.a(phy_sleep.o)
+                0x3ffe9a98                periodic_cal_sat
+                0x3ffe9a9a                lslp_mem_opt_8266
+                0x3ffe9a9c                software_slp_reject
+                0x3ffe9a9d                SDIO_slp_reject
+                0x3ffe9a9e                hardware_reject
+ *fill*         0x3ffe9a9f        0x1 
+ .bss           0x3ffe9aa0        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libphy.a(phy_chip_v5_ana_romfunc.o)
+                0x3ffe9aa0                phy_interrup_flag
+ *fill*         0x3ffe9aa1        0xf 
+ .bss           0x3ffe9ab0      0x26a C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libwpa.a(wpa.o)
+ *fill*         0x3ffe9d1a        0x6 
+ .bss           0x3ffe9d20      0x984 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(esf_buf.o)
+ *fill*         0x3ffea6a4        0xc 
+ .bss           0x3ffea6b0       0x30 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(if_hwctrl.o)
+                0x3ffea6b0                interface_mask
+                0x3ffea6c0                if_ctrl
+ .bss           0x3ffea6e0      0x150 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(lmac.o)
+                0x3ffea6e4                lmacConfMib
+                0x3ffea708                our_tx_eb
+ .bss           0x3ffea830      0x14a C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(pm.o)
+                0x3ffea934                CCOMPARE_AddVal
+ *fill*         0x3ffea97a        0x2 
+ .bss           0x3ffea97c       0x4c C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(pm_for_bcn_only_mode.o)
+ *fill*         0x3ffea9c8        0x8 
+ .bss           0x3ffea9d0      0x3ed C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(pp.o)
+                0x3ffea9d0                wdt_ini_flag
+                0x3ffea9d1                pp_soft_wdt_count
+                0x3ffea9f8                pend_flag_noise_check
+                0x3ffeaa00                pend_flag_periodic_cal
+                0x3ffeaa20                idle_timer_reopen_flag
+                0x3ffeaa29                dbg_stop_sw_wdt
+                0x3ffeaa2a                dbg_stop_hw_wdt
+                0x3ffeaa2c                freq_change_sta_scan
+                0x3ffeaa40                test_freq_val_force_flag
+                0x3ffeaa42                TestStaFreqCalValFilter
+                0x3ffeaa44                PktsNumInOneChk
+                0x3ffeaa46                AllFreqOffsetInOneChk
+                0x3ffeaa48                AvgFreqOffsetInOneChk
+                0x3ffeaa4a                HighestFreqOffsetInOneChk
+                0x3ffeaa4c                LowestFreqOffsetInOneChk
+                0x3ffeaa4e                pktnum_sta_freqcal
+                0x3ffeaa50                all_freqoffset_sta_freqcal
+                0x3ffeaa52                avg_freqoffset_sta_freqcal
+                0x3ffeaa54                DefFreqCalTimer
+                0x3ffeaa70                PktNumInOneChk
+ *fill*         0x3ffeadbd        0x3 
+ .bss           0x3ffeadc0      0x100 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(rate_control.o)
+ .bss           0x3ffeaec0      0x46c C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(trc.o)
+ *fill*         0x3ffeb32c        0x4 
+ .bss           0x3ffeb330     0x2f68 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libpp.a(wdev.o)
+                0x3ffeb330                wDevCtrl
+                0x3ffeb4d8                NMIIrqIsOn
+                0x3ffeb4dc                WdevTimOffSet
+ .bss           0x3ffee298        0x4 libuser.a(relay_control.o)
+ *fill*         0x3ffee29c        0x4 
+ .bss           0x3ffee2a0        0x8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_crypto_tkip.o)
  *(.bss.*)
  .bss.xFreeBytesRemaining
-                0x3ffee298        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
+                0x3ffee2a8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
  .bss.xTotalHeapSize
-                0x3ffee29c        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
+                0x3ffee2ac        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
  .bss.yFreeBytesRemaining
-                0x3ffee2a0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
- .bss.yStart    0x3ffee2a4       0x10 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
- .bss.pxEnd     0x3ffee2b4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
- .bss.xStart    0x3ffee2b8       0x10 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
+                0x3ffee2b0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
+ .bss.yStart    0x3ffee2b4       0x10 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
+ .bss.pxEnd     0x3ffee2c4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
+ .bss.xStart    0x3ffee2c8       0x10 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
  .bss.portBYTE_ALIGNMENT_v
-                0x3ffee2c8        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
+                0x3ffee2d8        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
  .bss.portBYTE_ALIGNMENT_MASK_v
-                0x3ffee2ca        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
+                0x3ffee2da        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
  .bss.heapSTRUCT_SIZE
-                0x3ffee2cc        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
- *fill*         0x3ffee2ce        0x2 
- .bss.ucHeap    0x3ffee2d0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
+                0x3ffee2dc        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
+ *fill*         0x3ffee2de        0x2 
+ .bss.ucHeap    0x3ffee2e0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(heap_4.o)
  .bss._xt_isr_status
-                0x3ffee2d4        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
-                0x3ffee2d4                _xt_isr_status
+                0x3ffee2e4        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
+                0x3ffee2e4                _xt_isr_status
  .bss.ClosedLv1Isr
-                0x3ffee2d5        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
- *fill*         0x3ffee2d6        0x2 
+                0x3ffee2e5        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
+ *fill*         0x3ffee2e6        0x2 
  .bss.uxCriticalNesting
-                0x3ffee2d8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
+                0x3ffee2e8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
  .bss.PendSvIsPosted
-                0x3ffee2dc        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
- .bss.SWReq     0x3ffee2dd        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
+                0x3ffee2ec        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
+ .bss.SWReq     0x3ffee2ed        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
  .bss.HdlMacSig
-                0x3ffee2de        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
- *fill*         0x3ffee2df        0x1 
+                0x3ffee2ee        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
+ *fill*         0x3ffee2ef        0x1 
  .bss.uxTaskNumber
-                0x3ffee2e0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
- .bss.xNumOfOverflows
-                0x3ffee2e4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
- .bss.xYieldPending
-                0x3ffee2e8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
- .bss.uxPendedTicks
-                0x3ffee2ec        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
- .bss.uxSchedulerSuspended
                 0x3ffee2f0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
- .bss.xSchedulerRunning
+ .bss.xNumOfOverflows
                 0x3ffee2f4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
- .bss.uxTopReadyPriority
+ .bss.xYieldPending
                 0x3ffee2f8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
- .bss.xTickCount
+ .bss.uxPendedTicks
                 0x3ffee2fc        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
- .bss.uxCurrentNumberOfTasks
+ .bss.uxSchedulerSuspended
                 0x3ffee300        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
- .bss.xIdleTaskHandle
+ .bss.xSchedulerRunning
                 0x3ffee304        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+ .bss.uxTopReadyPriority
+                0x3ffee308        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+ .bss.xTickCount
+                0x3ffee30c        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+ .bss.uxCurrentNumberOfTasks
+                0x3ffee310        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+ .bss.xIdleTaskHandle
+                0x3ffee314        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
  .bss.xSuspendedTaskList
-                0x3ffee308       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+                0x3ffee318       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
  .bss.uxTasksDeleted
-                0x3ffee31c        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+                0x3ffee32c        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
  .bss.xTasksWaitingTermination
-                0x3ffee320       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+                0x3ffee330       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
  .bss.xPendingReadyList
-                0x3ffee334       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+                0x3ffee344       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
  .bss.pxOverflowDelayedTaskList
-                0x3ffee348        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+                0x3ffee358        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
  .bss.pxDelayedTaskList
-                0x3ffee34c        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+                0x3ffee35c        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
  .bss.xDelayedTaskList2
-                0x3ffee350       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+                0x3ffee360       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
  .bss.xDelayedTaskList1
-                0x3ffee364       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+                0x3ffee374       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
  .bss.pxReadyTasksLists
-                0x3ffee378      0x12c C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+                0x3ffee388      0x12c C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
  .bss.pxCurrentTCB
-                0x3ffee4a4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
-                0x3ffee4a4                pxCurrentTCB
+                0x3ffee4b4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(tasks.o)
+                0x3ffee4b4                pxCurrentTCB
  .bss.xLastTime$2948
-                0x3ffee4a8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
- .bss.xTimerTaskHandle
-                0x3ffee4ac        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
- .bss.xTimerQueue
-                0x3ffee4b0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
- .bss.pxOverflowTimerList
-                0x3ffee4b4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
- .bss.pxCurrentTimerList
                 0x3ffee4b8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
+ .bss.xTimerTaskHandle
+                0x3ffee4bc        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
+ .bss.xTimerQueue
+                0x3ffee4c0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
+ .bss.pxOverflowTimerList
+                0x3ffee4c4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
+ .bss.pxCurrentTimerList
+                0x3ffee4c8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
  .bss.xActiveTimerList2
-                0x3ffee4bc       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
+                0x3ffee4cc       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
  .bss.xActiveTimerList1
-                0x3ffee4d0       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
- .bss.xid$4228  0x3ffee4e4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcp.o)
- .bss.renew     0x3ffee4e8        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
- *fill*         0x3ffee4e9        0x3 
- .bss.plist     0x3ffee4ec        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
+                0x3ffee4e0       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(timers.o)
+ .bss.xid$4228  0x3ffee4f4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcp.o)
+ .bss.renew     0x3ffee4f8        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
+ *fill*         0x3ffee4f9        0x3 
+ .bss.plist     0x3ffee4fc        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
  .bss.dhcps_lease
-                0x3ffee4f0        0xc C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
+                0x3ffee500        0xc C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
  .bss.client_address_plus
-                0x3ffee4fc        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
- .bss.client_address
-                0x3ffee500        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
- .bss.server_address
-                0x3ffee504        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
- .bss.broadcast_dhcps
-                0x3ffee508        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
- .bss.pcb_dhcps
                 0x3ffee50c        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
+ .bss.client_address
+                0x3ffee510        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
+ .bss.server_address
+                0x3ffee514        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
+ .bss.broadcast_dhcps
+                0x3ffee518        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
+ .bss.pcb_dhcps
+                0x3ffee51c        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcpserver.o)
  .bss.dns_payload
-                0x3ffee510        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dns.o)
+                0x3ffee520        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dns.o)
  .bss.dns_servers
-                0x3ffee514        0x8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dns.o)
+                0x3ffee524        0x8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dns.o)
  .bss.dns_table
-                0x3ffee51c      0x460 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dns.o)
- .bss.dns_pcb   0x3ffee97c        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dns.o)
+                0x3ffee52c      0x460 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dns.o)
+ .bss.dns_pcb   0x3ffee98c        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dns.o)
  .bss.etharp_cached_entry
-                0x3ffee980        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(etharp.o)
- *fill*         0x3ffee981        0x3 
+                0x3ffee990        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(etharp.o)
+ *fill*         0x3ffee991        0x3 
  .bss.arp_table
-                0x3ffee984       0xc8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(etharp.o)
- .bss.ip_id     0x3ffeea4c        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(ip4.o)
+                0x3ffee994       0xc8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(etharp.o)
+ .bss.ip_id     0x3ffeea5c        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(ip4.o)
  .bss.ip6_reass_pbufcount
-                0x3ffeea4e        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(ip6_frag.o)
+                0x3ffeea5e        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(ip6_frag.o)
  .bss.reassdatagrams
-                0x3ffeea50        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(ip6_frag.o)
+                0x3ffeea60        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(ip6_frag.o)
  .bss.mld_group_list
-                0x3ffeea54        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(mld6.o)
+                0x3ffeea64        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(mld6.o)
  .bss.last_router$3310
-                0x3ffeea58        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(nd6.o)
+                0x3ffeea68        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(nd6.o)
  .bss.nd6_ra_buffer
-                0x3ffeea59       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(nd6.o)
- *fill*         0x3ffeea79        0x3 
+                0x3ffeea69       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(nd6.o)
+ *fill*         0x3ffeea89        0x3 
  .bss.multicast_address
-                0x3ffeea7c       0x10 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(nd6.o)
+                0x3ffeea8c       0x10 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(nd6.o)
  .bss.nd6_cached_destination_index
-                0x3ffeea8c        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(nd6.o)
+                0x3ffeea9c        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(nd6.o)
  .bss.nd6_cached_neighbor_index
-                0x3ffeea8d        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(nd6.o)
+                0x3ffeea9d        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(nd6.o)
  .bss.netif_num
-                0x3ffeea8e        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(netif.o)
- *fill*         0x3ffeea8f        0x1 
- .bss.raw_pcbs  0x3ffeea90        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(raw.o)
+                0x3ffeea9e        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(netif.o)
+ *fill*         0x3ffeea9f        0x1 
+ .bss.raw_pcbs  0x3ffeeaa0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(raw.o)
  .bss.tcp_timer_ctr
-                0x3ffeea94        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp.o)
+                0x3ffeeaa4        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp.o)
  .bss.tcp_timer
-                0x3ffeea95        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp.o)
- *fill*         0x3ffeea96        0x2 
+                0x3ffeeaa5        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp.o)
+ *fill*         0x3ffeeaa6        0x2 
  .bss.recv_data
-                0x3ffeea98        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
+                0x3ffeeaa8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
  .bss.recv_flags
-                0x3ffeea9c        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
- *fill*         0x3ffeea9d        0x1 
- .bss.tcplen    0x3ffeea9e        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
- .bss.flags     0x3ffeeaa0        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
- *fill*         0x3ffeeaa1        0x3 
- .bss.ackno     0x3ffeeaa4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
- .bss.seqno     0x3ffeeaa8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
- .bss.tcphdr    0x3ffeeaac        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
- .bss.inseg     0x3ffeeab0       0x10 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
- .bss.mbox      0x3ffeeac0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcpip.o)
+                0x3ffeeaac        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
+ *fill*         0x3ffeeaad        0x1 
+ .bss.tcplen    0x3ffeeaae        0x2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
+ .bss.flags     0x3ffeeab0        0x1 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
+ *fill*         0x3ffeeab1        0x3 
+ .bss.ackno     0x3ffeeab4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
+ .bss.seqno     0x3ffeeab8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
+ .bss.tcphdr    0x3ffeeabc        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
+ .bss.inseg     0x3ffeeac0       0x10 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
+ .bss.mbox      0x3ffeead0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcpip.o)
  .bss.tcpip_init_done_arg
-                0x3ffeeac4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcpip.o)
+                0x3ffeead4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcpip.o)
  .bss.tcpip_init_done
-                0x3ffeeac8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcpip.o)
+                0x3ffeead8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcpip.o)
  .bss.LwipTimOutLim
-                0x3ffeeacc        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(timers.o)
-                0x3ffeeacc                LwipTimOutLim
+                0x3ffeeadc        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(timers.o)
+                0x3ffeeadc                LwipTimOutLim
  .bss.tcpip_tcp_timer_active
-                0x3ffeead0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(timers.o)
+                0x3ffeeae0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(timers.o)
  .bss.next_timeout
-                0x3ffeead4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(timers.o)
+                0x3ffeeae4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(timers.o)
  .bss.allrouters
-                0x3ffeead8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(igmp.o)
+                0x3ffeeae8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(igmp.o)
  .bss.allsystems
-                0x3ffeeadc        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(igmp.o)
+                0x3ffeeaec        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(igmp.o)
  .bss.igmp_group_list
-                0x3ffeeae0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(igmp.o)
+                0x3ffeeaf0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(igmp.o)
  *(.gnu.linkonce.b.*)
  *(COMMON)
- COMMON         0x3ffeeae4       0x84 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
-                0x3ffeeae4                isr
-                0x3ffeeb64                cpu_sr
- COMMON         0x3ffeeb68       0x34 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcp.o)
-                0x3ffeeb68                dhcp_rx_options_given
-                0x3ffeeb74                dhcp_rx_options_val
- COMMON         0x3ffeeb9c        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(ethernetif.o)
-                0x3ffeeb9c                hostname
- COMMON         0x3ffeeba0       0x30 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(ip4.o)
-                0x3ffeeba0                ip_data
- COMMON         0x3ffeebd0      0x3d0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(nd6.o)
-                0x3ffeebd0                neighbor_cache
-                0x3ffeed60                prefix_list
-                0x3ffeedec                destination_cache
-                0x3ffeef7c                default_router_list
- COMMON         0x3ffeefa0        0x8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(netif.o)
-                0x3ffeefa0                netif_list
-                0x3ffeefa4                netif_default
- COMMON         0x3ffeefa8       0x1c C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp.o)
-                0x3ffeefa8                tcp_active_pcbs_changed
-                0x3ffeefac                tcp_active_pcbs
-                0x3ffeefb0                tcp_ticks
-                0x3ffeefb4                tcp_listen_pcbs
-                0x3ffeefb8                tcp_tmp_pcb
-                0x3ffeefbc                tcp_bound_pcbs
-                0x3ffeefc0                tcp_tw_pcbs
- COMMON         0x3ffeefc4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
-                0x3ffeefc4                tcp_input_pcb
- COMMON         0x3ffeefc8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcpip.o)
-                0x3ffeefc8                xLwipTaskHandle
- COMMON         0x3ffeefcc        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(udp.o)
-                0x3ffeefcc                udp_pcbs
-                0x3ffeefd0                . = ALIGN (0x8)
-                0x3ffeefd0                _bss_end = ABSOLUTE (.)
-                0x3ffeefd0                _heap_start = ABSOLUTE (.)
+ COMMON         0x3ffeeaf4       0x84 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libfreertos.a(port.o)
+                0x3ffeeaf4                isr
+                0x3ffeeb74                cpu_sr
+ COMMON         0x3ffeeb78       0x34 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(dhcp.o)
+                0x3ffeeb78                dhcp_rx_options_given
+                0x3ffeeb84                dhcp_rx_options_val
+ COMMON         0x3ffeebac        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(ethernetif.o)
+                0x3ffeebac                hostname
+ COMMON         0x3ffeebb0       0x30 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(ip4.o)
+                0x3ffeebb0                ip_data
+ COMMON         0x3ffeebe0      0x3d0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(nd6.o)
+                0x3ffeebe0                neighbor_cache
+                0x3ffeed70                prefix_list
+                0x3ffeedfc                destination_cache
+                0x3ffeef8c                default_router_list
+ COMMON         0x3ffeefb0        0x8 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(netif.o)
+                0x3ffeefb0                netif_list
+                0x3ffeefb4                netif_default
+ COMMON         0x3ffeefb8       0x1c C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp.o)
+                0x3ffeefb8                tcp_active_pcbs_changed
+                0x3ffeefbc                tcp_active_pcbs
+                0x3ffeefc0                tcp_ticks
+                0x3ffeefc4                tcp_listen_pcbs
+                0x3ffeefc8                tcp_tmp_pcb
+                0x3ffeefcc                tcp_bound_pcbs
+                0x3ffeefd0                tcp_tw_pcbs
+ COMMON         0x3ffeefd4        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcp_in.o)
+                0x3ffeefd4                tcp_input_pcb
+ COMMON         0x3ffeefd8        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(tcpip.o)
+                0x3ffeefd8                xLwipTaskHandle
+ COMMON         0x3ffeefdc        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\liblwip.a(udp.o)
+                0x3ffeefdc                udp_pcbs
+                0x3ffeefe0                . = ALIGN (0x8)
+                0x3ffeefe0                _bss_end = ABSOLUTE (.)
+                0x3ffeefe0                _heap_start = ABSOLUTE (.)
 
-.text           0x40100000     0x74c0
+.text           0x40100000     0x74d0
                 0x40100000                _stext = .
                 0x40100000                _text_start = ABSOLUTE (.)
  *(.UserEnter.text)
@@ -3838,87 +3846,91 @@ END GROUP
                 0x401066b8                wDev_AppendRxBlocks
                 0x4010683c                wDev_AppendRxAmpduLensBlocks
                 0x40106940                wDev_GetBAInfo
- .text          0x40106eb4       0xda libuser.a(user_main.o)
+ .text          0x40106eb4       0xd2 libuser.a(user_main.o)
                                 0x112 (size before relaxing)
                 0x40106eb8                RelayTestTask
-                0x40106eec                ADCREADTask
-                0x40106f30                user_init
- *fill*         0x40106f8e        0x2 
- .text          0x40106f90       0xb3 libuser.a(relay_control.o)
+                0x40106ee8                TemperatureTestTask
+                0x40106f28                user_init
+ *fill*         0x40106f86        0x2 
+ .text          0x40106f88       0xb3 libuser.a(relay_control.o)
                                  0xcb (size before relaxing)
-                0x40106f9c                initrelaycontrol
-                0x40106fe4                setrelaystate
-                0x40107020                getrelaystate
-                0x40107028                invertrelaystate
- *fill*         0x40107043        0x1 
- .text          0x40107044       0xa9 libuser.a(button_interrupt.o)
+                0x40106f94                initrelaycontrol
+                0x40106fdc                setrelaystate
+                0x40107018                getrelaystate
+                0x40107020                invertrelaystate
+ *fill*         0x4010703b        0x1 
+ .text          0x4010703c       0xa9 libuser.a(button_interrupt.o)
                                  0xd1 (size before relaxing)
-                0x401070b0                button_init
- *fill*         0x401070ed        0x3 
- .literal       0x401070f0        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
+                0x401070a8                button_init
+ *fill*         0x401070e5        0x3 
+ .text          0x401070e8       0x17 libuser.a(temperature_sensor.o)
+                0x401070ec                gettemperature
+ *fill*         0x401070ff        0x1 
+ .literal       0x40107100        0x4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
                                  0x10 (size before relaxing)
- .literal       0x401070f4        0x0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_divsf3.o)
+ .literal       0x40107104        0x0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_divsf3.o)
                                  0x10 (size before relaxing)
- .literal       0x401070f4        0x0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_fixsfsi.o)
+ .literal       0x40107104        0x0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_fixsfsi.o)
                                   0x4 (size before relaxing)
- .text          0x401070f4      0x15d C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
-                0x4010716c                __mulsf3
- *fill*         0x40107251        0x3 
- .text          0x40107254      0x135 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_divsf3.o)
-                0x401072d0                __divsf3
- *fill*         0x40107389        0x3 
- .text          0x4010738c       0x40 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_fixsfsi.o)
-                0x4010738c                __fixsfsi
- *fill*         0x401073cc        0x0 
- *fill*         0x401073cc        0x0 
- *fill*         0x401073cc        0x0 
- *fill*         0x401073cc        0x0 
- *fill*         0x401073cc        0x0 
- *fill*         0x401073cc        0x0 
- .text          0x401073cc       0x3d C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(xtensa_context.o)
-                0x401073cc                _xt_context_save
-                0x401073e8                _xt_context_restore
- *fill*         0x40107409        0x3 
- .text          0x4010740c       0x25 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_hostap.o)
- *fill*         0x40107431        0x0 
- *fill*         0x40107431        0x0 
- *fill*         0x40107431        0x0 
- *fill*         0x40107431        0x0 
- *fill*         0x40107431        0x0 
- *fill*         0x40107431        0x0 
- *fill*         0x40107431        0x0 
- *fill*         0x40107431        0x0 
- *fill*         0x40107431        0x0 
- *fill*         0x40107431        0x3 
- .text          0x40107434       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libhal.a(clock.o)
-                0x40107434                xthal_get_ccount
-                0x4010743c                xthal_set_ccompare
-                0x40107448                xthal_get_ccompare
- .text          0x40107454        0x5 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libhal.a(int_asm--set_intset.o)
-                0x40107454                xthal_set_intset
- *fill*         0x40107459        0x0 
- *fill*         0x40107459        0x0 
- *fill*         0x40107459        0x0 
- *fill*         0x40107459        0x3 
- .text          0x4010745c       0x49 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
-                0x4010745c                __modsi3
- *fill*         0x401074a5        0x3 
- .text          0x401074a8       0x18 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_ashrdi3.o)
-                0x401074a8                __ashrdi3
- *fill*         0x401074c0        0x0 
- *fill*         0x401074c0        0x0 
+ .text          0x40107104      0x15d C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
+                0x4010717c                __mulsf3
+ *fill*         0x40107261        0x3 
+ .text          0x40107264      0x135 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_divsf3.o)
+                0x401072e0                __divsf3
+ *fill*         0x40107399        0x3 
+ .text          0x4010739c       0x40 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_fixsfsi.o)
+                0x4010739c                __fixsfsi
+ *fill*         0x401073dc        0x0 
+ *fill*         0x401073dc        0x0 
+ *fill*         0x401073dc        0x0 
+ *fill*         0x401073dc        0x0 
+ *fill*         0x401073dc        0x0 
+ *fill*         0x401073dc        0x0 
+ .text          0x401073dc       0x3d C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libmain.a(xtensa_context.o)
+                0x401073dc                _xt_context_save
+                0x401073f8                _xt_context_restore
+ *fill*         0x40107419        0x3 
+ .text          0x4010741c       0x25 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_hostap.o)
+ *fill*         0x40107441        0x0 
+ *fill*         0x40107441        0x0 
+ *fill*         0x40107441        0x0 
+ *fill*         0x40107441        0x0 
+ *fill*         0x40107441        0x0 
+ *fill*         0x40107441        0x0 
+ *fill*         0x40107441        0x0 
+ *fill*         0x40107441        0x0 
+ *fill*         0x40107441        0x0 
+ *fill*         0x40107441        0x3 
+ .text          0x40107444       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libhal.a(clock.o)
+                0x40107444                xthal_get_ccount
+                0x4010744c                xthal_set_ccompare
+                0x40107458                xthal_get_ccompare
+ .text          0x40107464        0x5 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libhal.a(int_asm--set_intset.o)
+                0x40107464                xthal_set_intset
+ *fill*         0x40107469        0x0 
+ *fill*         0x40107469        0x0 
+ *fill*         0x40107469        0x0 
+ *fill*         0x40107469        0x0 
+ *fill*         0x40107469        0x3 
+ .text          0x4010746c       0x49 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
+                0x4010746c                __modsi3
+ *fill*         0x401074b5        0x3 
+ .text          0x401074b8       0x18 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_ashrdi3.o)
+                0x401074b8                __ashrdi3
+ *fill*         0x401074d0        0x0 
+ *fill*         0x401074d0        0x0 
  *(.fini.literal)
  *(.fini)
  *(.gnu.version)
-                0x401074c0                _text_end = ABSOLUTE (.)
-                0x401074c0                _etext = .
+                0x401074d0                _text_end = ABSOLUTE (.)
+                0x401074d0                _etext = .
 
-.lit4           0x401074c0        0x0
-                0x401074c0                _lit4_start = ABSOLUTE (.)
+.lit4           0x401074d0        0x0
+                0x401074d0                _lit4_start = ABSOLUTE (.)
  *(*.lit4)
  *(.lit4.*)
  *(.gnu.linkonce.lit4.*)
-                0x401074c0                _lit4_end = ABSOLUTE (.)
+                0x401074d0                _lit4_end = ABSOLUTE (.)
 
 .irom0.text     0x40220000    0x37c8d
                 0x40220000                _irom0_text_start = ABSOLUTE (.)
@@ -7177,6 +7189,7 @@ OUTPUT(app.out elf32-xtensa-le)
  .xtensa.info   0x00000000        0x0 libuser.a(user_main.o)
  .xtensa.info   0x00000000        0x0 libuser.a(relay_control.o)
  .xtensa.info   0x00000000        0x0 libuser.a(button_interrupt.o)
+ .xtensa.info   0x00000000        0x0 libuser.a(temperature_sensor.o)
  .xtensa.info   0x00000000        0x0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
  .xtensa.info   0x00000000        0x0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_ashrdi3.o)
  .xtensa.info   0x00000000        0x0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
@@ -7358,48 +7371,52 @@ OUTPUT(app.out elf32-xtensa-le)
                                  0x12 (size before relaxing)
  .comment       0x00000000       0x12 libuser.a(relay_control.o)
  .comment       0x00000000       0x12 libuser.a(button_interrupt.o)
+ .comment       0x00000000       0x12 libuser.a(temperature_sensor.o)
  .comment       0x00001710       0x62 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_crypto_tkip.o)
                                  0x63 (size before relaxing)
  .comment       0x00001772       0x61 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libnet80211.a(ieee80211_crypto_wep.o)
                                  0x62 (size before relaxing)
 
-.debug_line     0x00000000     0x10d2
+.debug_line     0x00000000     0x11b8
  .debug_line    0x00000000       0xbc C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libhal.a(clock.o)
  .debug_line    0x000000bc       0x89 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libhal.a(int_asm--set_intset.o)
  .debug_line    0x00000145      0x20e libuser.a(user_main.o)
  .debug_line    0x00000353      0x1db libuser.a(relay_control.o)
  .debug_line    0x0000052e      0x223 libuser.a(button_interrupt.o)
- .debug_line    0x00000751      0x11a C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
- .debug_line    0x0000086b       0xba C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_ashrdi3.o)
- .debug_line    0x00000925      0x37f C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
- .debug_line    0x00000ca4      0x319 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_divsf3.o)
- .debug_line    0x00000fbd      0x115 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_fixsfsi.o)
+ .debug_line    0x00000751       0xe6 libuser.a(temperature_sensor.o)
+ .debug_line    0x00000837      0x11a C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
+ .debug_line    0x00000951       0xba C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_ashrdi3.o)
+ .debug_line    0x00000a0b      0x37f C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
+ .debug_line    0x00000d8a      0x319 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_divsf3.o)
+ .debug_line    0x000010a3      0x115 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_fixsfsi.o)
 
-.debug_info     0x00000000      0xfce
+.debug_info     0x00000000     0x10d5
  .debug_info    0x00000000       0xc0 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libhal.a(clock.o)
  .debug_info    0x000000c0       0xc2 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libhal.a(int_asm--set_intset.o)
- .debug_info    0x00000182      0x452 libuser.a(user_main.o)
- .debug_info    0x000005d4      0x1fc libuser.a(relay_control.o)
- .debug_info    0x000007d0      0x33c libuser.a(button_interrupt.o)
- .debug_info    0x00000b0c       0xf3 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
- .debug_info    0x00000bff       0xf3 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_ashrdi3.o)
- .debug_info    0x00000cf2       0xf4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
- .debug_info    0x00000de6       0xf4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_divsf3.o)
- .debug_info    0x00000eda       0xf4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_fixsfsi.o)
+ .debug_info    0x00000182      0x472 libuser.a(user_main.o)
+ .debug_info    0x000005f4      0x1fc libuser.a(relay_control.o)
+ .debug_info    0x000007f0      0x33c libuser.a(button_interrupt.o)
+ .debug_info    0x00000b2c       0xe7 libuser.a(temperature_sensor.o)
+ .debug_info    0x00000c13       0xf3 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
+ .debug_info    0x00000d06       0xf3 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_ashrdi3.o)
+ .debug_info    0x00000df9       0xf4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
+ .debug_info    0x00000eed       0xf4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_divsf3.o)
+ .debug_info    0x00000fe1       0xf4 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_fixsfsi.o)
 
-.debug_abbrev   0x00000000      0x53d
+.debug_abbrev   0x00000000      0x5d9
  .debug_abbrev  0x00000000       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libhal.a(clock.o)
  .debug_abbrev  0x00000014       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libhal.a(int_asm--set_intset.o)
- .debug_abbrev  0x00000028      0x1ce libuser.a(user_main.o)
- .debug_abbrev  0x000001f6      0x14c libuser.a(relay_control.o)
- .debug_abbrev  0x00000342      0x197 libuser.a(button_interrupt.o)
- .debug_abbrev  0x000004d9       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
- .debug_abbrev  0x000004ed       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_ashrdi3.o)
- .debug_abbrev  0x00000501       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
- .debug_abbrev  0x00000515       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_divsf3.o)
- .debug_abbrev  0x00000529       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_fixsfsi.o)
+ .debug_abbrev  0x00000028      0x1ea libuser.a(user_main.o)
+ .debug_abbrev  0x00000212      0x14c libuser.a(relay_control.o)
+ .debug_abbrev  0x0000035e      0x197 libuser.a(button_interrupt.o)
+ .debug_abbrev  0x000004f5       0x80 libuser.a(temperature_sensor.o)
+ .debug_abbrev  0x00000575       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
+ .debug_abbrev  0x00000589       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_ashrdi3.o)
+ .debug_abbrev  0x0000059d       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
+ .debug_abbrev  0x000005b1       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_divsf3.o)
+ .debug_abbrev  0x000005c5       0x14 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_fixsfsi.o)
 
-.debug_aranges  0x00000000      0x148
+.debug_aranges  0x00000000      0x168
  .debug_aranges
                 0x00000000       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libhal.a(clock.o)
  .debug_aranges
@@ -7411,20 +7428,23 @@ OUTPUT(app.out elf32-xtensa-le)
  .debug_aranges
                 0x00000088       0x20 libuser.a(button_interrupt.o)
  .debug_aranges
-                0x000000a8       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
+                0x000000a8       0x20 libuser.a(temperature_sensor.o)
  .debug_aranges
-                0x000000c8       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_ashrdi3.o)
+                0x000000c8       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_modsi3.o)
  .debug_aranges
-                0x000000e8       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
+                0x000000e8       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_ashrdi3.o)
  .debug_aranges
-                0x00000108       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_divsf3.o)
+                0x00000108       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_mulsf3.o)
  .debug_aranges
-                0x00000128       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_fixsfsi.o)
+                0x00000128       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_divsf3.o)
+ .debug_aranges
+                0x00000148       0x20 C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/lib\libgcc.a(_fixsfsi.o)
 
-.debug_frame    0x00000000      0x150
+.debug_frame    0x00000000      0x180
  .debug_frame   0x00000000       0x80 libuser.a(user_main.o)
  .debug_frame   0x00000080       0x80 libuser.a(relay_control.o)
  .debug_frame   0x00000100       0x50 libuser.a(button_interrupt.o)
+ .debug_frame   0x00000150       0x30 libuser.a(temperature_sensor.o)
 
 .debug_loc      0x00000000       0xd1
  .debug_loc     0x00000000       0x92 libuser.a(user_main.o)
@@ -7434,10 +7454,12 @@ OUTPUT(app.out elf32-xtensa-le)
 .debug_ranges   0x00000000       0x18
  .debug_ranges  0x00000000       0x18 libuser.a(user_main.o)
 
-.debug_str      0x00000000      0x5ab
- .debug_str     0x00000000      0x345 libuser.a(user_main.o)
-                                0x396 (size before relaxing)
- .debug_str     0x00000345       0x5c libuser.a(relay_control.o)
+.debug_str      0x00000000      0x5de
+ .debug_str     0x00000000      0x346 libuser.a(user_main.o)
+                                0x39d (size before relaxing)
+ .debug_str     0x00000346       0x5c libuser.a(relay_control.o)
                                 0x1e2 (size before relaxing)
- .debug_str     0x000003a1      0x20a libuser.a(button_interrupt.o)
+ .debug_str     0x000003a2      0x20a libuser.a(button_interrupt.o)
                                 0x3a1 (size before relaxing)
+ .debug_str     0x000005ac       0x32 libuser.a(temperature_sensor.o)
+                                0x18a (size before relaxing)

@@ -3,11 +3,11 @@ app.out:     file format elf32-xtensa-le
 
 SYMBOL TABLE:
 40100000 l    d  .text	00000000 .text
-40107058 l     F .text	00000049 intr_handler
-401070f4 l       .text	00000000 __mulsf3_aux
-40107254 l       .text	00000000 __divsf3_aux
+40107050 l     F .text	00000049 intr_handler
+40107104 l       .text	00000000 __mulsf3_aux
+40107264 l       .text	00000000 __divsf3_aux
 40101108 g     F .text	0000001f putchar
-401073cc g     F .text	00000000 _xt_context_save
+401073dc g     F .text	00000000 _xt_context_save
 40100374 g     F .text	00000033 pvPortCalloc
 401064fc g     F .text	00000036 wDev_EnableTransmit
 40106534 g     F .text	0000001e wDev_DisableTransmit
@@ -16,16 +16,16 @@ SYMBOL TABLE:
 40100490 g     F .text	00000059 vPortExitCritical
 40101534 g     F .text	000000de printf
 40106eb8 g     F .text	00000029 RelayTestTask
-401072d0 g     F .text	00000000 .hidden __divsf3
+401072e0 g     F .text	00000000 .hidden __divsf3
 401024f0 g     F .text	00000000 _xt_timer_int1
 4010197c g     F .text	0000006b spi_flash_get_id
-4010738c g     F .text	00000000 .hidden __fixsfsi
-401070b0 g     F .text	0000003d button_init
+4010739c g     F .text	00000000 .hidden __fixsfsi
+401070a8 g     F .text	0000003d button_init
 40104744 g     F .text	00000043 ppRollBackTxQ
 4010254c g     F .text	00000000 _xt_set_xt_ccompare_val
 40104788 g     F .text	0000000f ppRecordBarRRC
-40107028 g     F .text	0000001b invertrelaystate
-401074c0 g       .text	00000000 _etext
+40107020 g     F .text	0000001b invertrelaystate
+401074d0 g       .text	00000000 _etext
 40101a2c g     F .text	00000062 spi_flash_write_status
 40106554 g     F .text	00000042 Tx_Copy2Queue
 40103598 g     F .text	0000000b GetAccess
@@ -37,16 +37,16 @@ SYMBOL TABLE:
 4010409c g     F .text	00000036 lmacProcessCtsTimeout
 40101618 g     F .text	00000016 puts
 401002ec g     F .text	00000083 vPortFree
-4010743c g     F .text	00000000 xthal_set_ccompare
+4010744c g     F .text	00000000 xthal_set_ccompare
 40104d9c g     F .text	00000021 ppDiscardMPDU
 40101740 g     F .text	00000044 SPIEraseSector
 40101f1c g     F .text	00000062 spi_flash_read
 40102600 g     F .text	0000001d register_phy_ops
-40106eec g     F .text	00000021 ADCREADTask
 40106034 g     F .text	00000090 wDev_MacTimArm
 401009f0 g     F .text	00000018 vListInsertEnd
+401070ec g     F .text	00000013 gettemperature
 401053d4 g     F .text	00000093 rcUpdateTxDone
-40107020 g     F .text	00000007 getrelaystate
+40107018 g     F .text	00000007 getrelaystate
 40102da8 g     F .text	00000015 lmacIsIdle
 4010247c g     F .text	00000000 _xt_int_enter
 401055c4 g     F .text	00000099 rcGetRate
@@ -71,16 +71,16 @@ SYMBOL TABLE:
 40105138 g     F .text	0000000b RC_GetRtsRate
 40101788 g     F .text	0000003b Cache_Read_Disable_2
 40102350 g     F .text	0000003f wifi_set_user_rate_limit
-40106fe4 g     F .text	0000003a setrelaystate
+40106fdc g     F .text	0000003a setrelaystate
 40103c9c g     F .text	0000006f lmacProcessCollision
-40107448 g     F .text	00000000 xthal_get_ccompare
+40107458 g     F .text	00000000 xthal_get_ccompare
 4010013c g     F .text	00000020 xPortWantedSizeAlign
 401066b8 g     F .text	00000183 wDev_AppendRxBlocks
-40107434 g     F .text	00000000 xthal_get_ccount
+40107444 g     F .text	00000000 xthal_get_ccount
 40104134 g     F .text	00000008 lmacProcessRtsStart
 40103454 g     F .text	000000e4 lmacProcessTxSuccess
 4010250c g     F .text	00000000 _xt_tick_timer_init
-401074a8 g     F .text	00000018 .hidden __ashrdi3
+401074b8 g     F .text	00000018 .hidden __ashrdi3
 40101aa4 g     F .text	0000017d flash_gd25q32c_read_status
 40105ad4 g     F .text	00000015 rcReachRetryLimit
 40102394 g     F .text	00000056 system_rtc_mem_write
@@ -118,13 +118,14 @@ SYMBOL TABLE:
 40102564 g     F .text	00000000 _xt_isr_unmask
 40102530 g     F .text	00000000 _xt_update_xt_ccompare
 40100c64 g     F .text	00000037 esp_crc8
-4010716c g     F .text	00000000 .hidden __mulsf3
-401073e8 g     F .text	00000000 _xt_context_restore
+4010717c g     F .text	00000000 .hidden __mulsf3
+401073f8 g     F .text	00000000 _xt_context_restore
 401035a4 g     F .text	00000013 lmacDiscardAgedMSDU
 401005f4 g     F .text	0000008b _xt_isr_handler
 40102a08 g     F .text	0000002c unsign_to_sign
 4010509c g     F .text	0000006d ppCalFrameTimes
 40101c30 g     F .text	0000017c flash_gd25q32c_write_status
+40106ee8 g     F .text	0000001f TemperatureTestTask
 40103228 g     F .text	00000084 lmacSetAcParam
 401017c8 g     F .text	0000002a Cache_Read_Enable_2
 401019ec g     F .text	0000003b spi_flash_read_status
@@ -145,17 +146,17 @@ SYMBOL TABLE:
 401035b8 g     F .text	00000022 lmacRecycleMPDU
 40100070 g       .text	00000000 _DoubleExceptionVector
 401005a4 g     F .text	00000027 vPortETSIntrUnlock
-40106f9c g     F .text	0000003e initrelaycontrol
+40106f94 g     F .text	0000003e initrelaycontrol
 401003c8 g     F .text	00000017 zalloc
 401045d4 g     F .text	000000c0 ppProcessTxQ
-40106f30 g     F .text	0000005e user_init
+40106f28 g     F .text	0000005e user_init
 401021ac g     F .text	00000124 system_restart_in_nmi
 40102494 g     F .text	00000000 _xt_int_exit
 401025b8 g     F .text	00000000 _xt_clear_ints
-4010745c g     F .text	00000049 .hidden __modsi3
+4010746c g     F .text	00000049 .hidden __modsi3
 401054c4 g     F .text	00000002 rcUpdateDataRxDone
 40100050 g     F .text	00000000 _UserExceptionVector
-40107454 g     F .text	00000000 xthal_set_intset
+40107464 g     F .text	00000000 xthal_set_intset
 40100000 g       .text	00000000 _stext
 401065bc g     F .text	0000000e wDev_GetTxqCollisions
 40102ac4 g     F .text	000000b5 pm_rtc_clock_cali
