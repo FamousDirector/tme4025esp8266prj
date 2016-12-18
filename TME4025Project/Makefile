@@ -24,6 +24,8 @@ INCLUDES += -I $(SDKBASE)/include/lwip
 INCLUDES += -I $(SDKBASE)/include/lwip/lwip
 INCLUDES += -I $(SDKBASE)/include/lwip/ipv4
 INCLUDES += -I $(SDKBASE)/include/lwip/ipv6
+INCLUDES += -I $(SDKBASE)/driver_lib/include/
+INCLUDES += -I $(SDKBASE)/driver_lib/driver
 INCLUDES += -I $(TOOLCHAINHOME)/xtensa-lx106-elf/include
 
 # don’t change -Os (or add other -O options) otherwise FLASHMEM and FSTR data will be duplicated in RAM
@@ -46,7 +48,7 @@ SDK_LIBDIR = -L$(SDKBASE)/lib
 SDK_LDDIR = $(SDKBASE)/ld
 # linking libgccirom.a instead of libgcc.a causes reset when working with flash memory (ie spi_flash_erase_sector)
 # linking libcirom.a causes conflicts with come std c routines (like strstr, strchr…)
-LIBS = -lmain -lgcc -lfreertos -lnet80211 -lphy -lwpa -lcrypto -llwip -lpp -lminic -lhal
+LIBS = -lmain -lgcc -lfreertos -lnet80211 -lphy -lwpa -lcrypto -llwip -lpp -lminic -lhal libdriver.a
 #-lminic -lm -lgcc -lhal -lphy -lpp -lnet80211 -lwpa -lmain -lfreertos -llwip -lcrypto
 
 OBJ = user_main.o
@@ -77,7 +79,7 @@ flash: $(TARGET_OUT)-0x00000.bin $(TARGET_OUT)-0x20000.bin
 	@-$(ESPTOOL) --port $(PORT) write_flash 0x00000 $(TARGET_OUT)-0x00000.bin 0x20000 $(TARGET_OUT)-0x20000.bin
 
 flashdump:
-	@-$(ESPTOOL) -port $(PORT) read_flash 0x0000 0x80000 flash.dump
+	@-$(ESPTOOL) --port $(PORT) read_flash 0x0000 0x80000 flash.dump
 	@xxd flash.dump > flash.hex
 
 flasherase:

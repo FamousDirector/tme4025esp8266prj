@@ -1,6 +1,7 @@
 #include <esp_common.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
+#include "gpio.h"
 
 //added as per: http://bbs.espressif.com/viewtopic.php?t=2492
 uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void)
@@ -41,12 +42,12 @@ void LEDBlinkTask (void *pvParameters)
     {
     // Delay and turn on
     vTaskDelay (300/portTICK_RATE_MS);
-    GPIO_REG_WRITE(GPIO_PIN4_ADDRESS, 0);
+    GPIO_OUTPUT_SET(2, 0);
     printf("off");
  
     // Delay and LED off
     vTaskDelay (300/portTICK_RATE_MS);
-    GPIO_REG_WRITE(GPIO_PIN4_ADDRESS, 1);
+    GPIO_OUTPUT_SET(2, 1);
     printf("on");
     }
 }

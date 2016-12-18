@@ -3,10 +3,10 @@ app.out:     file format elf32-xtensa-le
 
 SYMBOL TABLE:
 40100000 l    d  .text	00000000 .text
-40106f7c l       .text	00000000 __mulsf3_aux
-401070dc l       .text	00000000 __divsf3_aux
+40106f80 l       .text	00000000 __mulsf3_aux
+401070e0 l       .text	00000000 __divsf3_aux
 40101108 g     F .text	0000001f putchar
-40107254 g     F .text	00000000 _xt_context_save
+40107258 g     F .text	00000000 _xt_context_save
 40100374 g     F .text	00000033 pvPortCalloc
 401064fc g     F .text	00000036 wDev_EnableTransmit
 40106534 g     F .text	0000001e wDev_DisableTransmit
@@ -14,15 +14,15 @@ SYMBOL TABLE:
 401012c0 g     F .text	0000025d print
 40100490 g     F .text	00000059 vPortExitCritical
 40101534 g     F .text	000000de printf
-40107158 g     F .text	00000000 .hidden __divsf3
+4010715c g     F .text	00000000 .hidden __divsf3
 401024f0 g     F .text	00000000 _xt_timer_int1
 4010197c g     F .text	0000006b spi_flash_get_id
-40107214 g     F .text	00000000 .hidden __fixsfsi
+40107218 g     F .text	00000000 .hidden __fixsfsi
 40104744 g     F .text	00000043 ppRollBackTxQ
 4010254c g     F .text	00000000 _xt_set_xt_ccompare_val
 40104788 g     F .text	0000000f ppRecordBarRRC
-40107348 g       .text	00000000 _etext
-40106ec4 g     F .text	0000003b LEDBlinkTask
+4010734c g       .text	00000000 _etext
+40106ec4 g     F .text	00000040 LEDBlinkTask
 40101a2c g     F .text	00000062 spi_flash_write_status
 40106554 g     F .text	00000042 Tx_Copy2Queue
 40103598 g     F .text	0000000b GetAccess
@@ -34,7 +34,7 @@ SYMBOL TABLE:
 4010409c g     F .text	00000036 lmacProcessCtsTimeout
 40101618 g     F .text	00000016 puts
 401002ec g     F .text	00000083 vPortFree
-401072c4 g     F .text	00000000 xthal_set_ccompare
+401072c8 g     F .text	00000000 xthal_set_ccompare
 40104d9c g     F .text	00000021 ppDiscardMPDU
 40101740 g     F .text	00000044 SPIEraseSector
 40101f1c g     F .text	00000062 spi_flash_read
@@ -67,14 +67,14 @@ SYMBOL TABLE:
 40101788 g     F .text	0000003b Cache_Read_Disable_2
 40102350 g     F .text	0000003f wifi_set_user_rate_limit
 40103c9c g     F .text	0000006f lmacProcessCollision
-401072d0 g     F .text	00000000 xthal_get_ccompare
+401072d4 g     F .text	00000000 xthal_get_ccompare
 4010013c g     F .text	00000020 xPortWantedSizeAlign
 401066b8 g     F .text	00000183 wDev_AppendRxBlocks
-401072bc g     F .text	00000000 xthal_get_ccount
+401072c0 g     F .text	00000000 xthal_get_ccount
 40104134 g     F .text	00000008 lmacProcessRtsStart
 40103454 g     F .text	000000e4 lmacProcessTxSuccess
 4010250c g     F .text	00000000 _xt_tick_timer_init
-40107330 g     F .text	00000018 .hidden __ashrdi3
+40107334 g     F .text	00000018 .hidden __ashrdi3
 40101aa4 g     F .text	0000017d flash_gd25q32c_read_status
 40105ad4 g     F .text	00000015 rcReachRetryLimit
 40102394 g     F .text	00000056 system_rtc_mem_write
@@ -112,8 +112,8 @@ SYMBOL TABLE:
 40102564 g     F .text	00000000 _xt_isr_unmask
 40102530 g     F .text	00000000 _xt_update_xt_ccompare
 40100c64 g     F .text	00000037 esp_crc8
-40106ff4 g     F .text	00000000 .hidden __mulsf3
-40107270 g     F .text	00000000 _xt_context_restore
+40106ff8 g     F .text	00000000 .hidden __mulsf3
+40107274 g     F .text	00000000 _xt_context_restore
 401035a4 g     F .text	00000013 lmacDiscardAgedMSDU
 401005f4 g     F .text	0000008b _xt_isr_handler
 40102a08 g     F .text	0000002c unsign_to_sign
@@ -141,14 +141,14 @@ SYMBOL TABLE:
 401005a4 g     F .text	00000027 vPortETSIntrUnlock
 401003c8 g     F .text	00000017 zalloc
 401045d4 g     F .text	000000c0 ppProcessTxQ
-40106f1c g     F .text	0000005b user_init
+40106f20 g     F .text	0000005b user_init
 401021ac g     F .text	00000124 system_restart_in_nmi
 40102494 g     F .text	00000000 _xt_int_exit
 401025b8 g     F .text	00000000 _xt_clear_ints
-401072e4 g     F .text	00000049 .hidden __modsi3
+401072e8 g     F .text	00000049 .hidden __modsi3
 401054c4 g     F .text	00000002 rcUpdateDataRxDone
 40100050 g     F .text	00000000 _UserExceptionVector
-401072dc g     F .text	00000000 xthal_set_intset
+401072e0 g     F .text	00000000 xthal_set_intset
 40100000 g       .text	00000000 _stext
 401065bc g     F .text	0000000e wDev_GetTxqCollisions
 40102ac4 g     F .text	000000b5 pm_rtc_clock_cali

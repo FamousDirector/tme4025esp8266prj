@@ -3400,6 +3400,56 @@ void pwm_start(void);
 # 2 "src/user_main.c" 2
 
 
+# 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h" 1
+# 92 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
+typedef enum {
+    GPIO_PIN_INTR_DISABLE = 0,
+    GPIO_PIN_INTR_POSEDGE = 1,
+    GPIO_PIN_INTR_NEGEDGE = 2,
+    GPIO_PIN_INTR_ANYEDGE = 3,
+    GPIO_PIN_INTR_LOLEVEL = 4,
+    GPIO_PIN_INTR_HILEVEL = 5
+} GPIO_INT_TYPE;
+
+typedef enum {
+    GPIO_Mode_Input = 0x0,
+    GPIO_Mode_Out_OD,
+    GPIO_Mode_Output ,
+    GPIO_Mode_Sigma_Delta ,
+} GPIOMode_TypeDef;
+
+typedef enum {
+    GPIO_PullUp_DIS = 0x0,
+    GPIO_PullUp_EN = 0x1,
+} GPIO_Pullup_IF;
+
+typedef struct {
+    uint16 GPIO_Pin;
+    GPIOMode_TypeDef GPIO_Mode;
+    GPIO_Pullup_IF GPIO_Pullup;
+    GPIO_INT_TYPE GPIO_IntrType;
+} GPIO_ConfigTypeDef;
+# 202 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
+void gpio16_output_conf(void);
+# 211 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
+void gpio16_output_set(uint8 value);
+# 220 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
+void gpio16_input_conf(void);
+# 229 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
+uint8 gpio16_input_get(void);
+# 245 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
+void gpio_output_conf(uint32 set_mask, uint32 clear_mask, uint32 enable_mask, uint32 disable_mask);
+# 255 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
+void gpio_intr_handler_register(void *fn, void *arg);
+# 265 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
+void gpio_pin_wakeup_enable(uint32 i, GPIO_INT_TYPE intr_state);
+# 274 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
+void gpio_pin_wakeup_disable();
+# 284 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
+void gpio_pin_intr_state_set(uint32 i, GPIO_INT_TYPE intr_state);
+# 293 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
+uint32 gpio_input_get(void);
+# 5 "src/user_main.c" 2
 
 
 uint32 __attribute__((section(".irom0.text"))) user_rf_cal_sector_set(void)
@@ -3440,12 +3490,12 @@ void LEDBlinkTask (void *pvParameters)
     {
 
     vTaskDelay (300/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-    (*((volatile uint32 *)(0x60000300 + 0x38))) = (uint32)(0);
+    gpio_output_conf(0<<2, ((~0)&0x01)<<2, 1<<2, 0);
     printf("off");
 
 
     vTaskDelay (300/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-    (*((volatile uint32 *)(0x60000300 + 0x38))) = (uint32)(1);
+    gpio_output_conf(1<<2, ((~1)&0x01)<<2, 1<<2, 0);
     printf("on");
     }
 }
