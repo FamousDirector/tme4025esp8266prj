@@ -40,26 +40,44 @@ void LEDBlinkTask (void *pvParameters)
 {
     while(1)
     {
-    // Delay and turn on
-    vTaskDelay (300/portTICK_RATE_MS);
-    GPIO_OUTPUT_SET(2, 0);
-    printf("off");
- 
-    // Delay and LED off
-    vTaskDelay (300/portTICK_RATE_MS);
-    GPIO_OUTPUT_SET(2, 1);
-    printf("on");
+        // Delay and turn on
+        vTaskDelay (300/portTICK_RATE_MS);
+        GPIO_OUTPUT_SET(2, 0);
+        printf("off");
+     
+        // Delay and LED off
+        vTaskDelay (300/portTICK_RATE_MS);
+        GPIO_OUTPUT_SET(2, 1);
+        printf("on");
+    }
+}
+
+void ADCREADTask (void *pvParameters)
+{
+    uint16 value = 0;
+
+    //enable ADC as input (GPIO16)
+    gpio16_input_conf();
+
+    while(1)
+    {
+        // Delay reading
+        vTaskDelay (800/portTICK_RATE_MS);
+        value = system_adc_read();
+        printf("Value is %d",value); 
     }
 }
 
 void user_init(void)
    {
-    printf("SDK version:%s\n", system_get_sdk_version());
-    printf("HI JAMES THis is V2");
- 
-    // Config pin as GPIO12
-    PIN_FUNC_SELECT (PERIPHS_IO_MUX_MTDI_U, FUNC_GPIO12);
- 
-    // This task blinks the LED continuously
-    xTaskCreate(LEDBlinkTask, (signed char *)"Blink", 256, NULL, 2, NULL);
+        printf("SDK version:%s\n", system_get_sdk_version());
+        printf("HI JAMES THis is V2");
+     
+        // Config pin as GPIO12
+        PIN_FUNC_SELECT (PERIPHS_IO_MUX_MTDI_U, FUNC_GPIO12);
+     
+        //Start Tasks
+        xTaskCreate(LEDBlinkTask, (signed char *)"Blink", 256, NULL, 2, NULL);
+        xTaskCreate(ADCREADTask, (signed char *)"Read", 256, NULL, 2, NULL);
+   
    }

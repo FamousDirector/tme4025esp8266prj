@@ -3489,25 +3489,43 @@ void LEDBlinkTask (void *pvParameters)
     while(1)
     {
 
-    vTaskDelay (300/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-    gpio_output_conf(0<<2, ((~0)&0x01)<<2, 1<<2, 0);
-    printf("off");
+        vTaskDelay (300/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
+        gpio_output_conf(0<<2, ((~0)&0x01)<<2, 1<<2, 0);
+        printf("off");
 
 
-    vTaskDelay (300/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-    gpio_output_conf(1<<2, ((~1)&0x01)<<2, 1<<2, 0);
-    printf("on");
+        vTaskDelay (300/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
+        gpio_output_conf(1<<2, ((~1)&0x01)<<2, 1<<2, 0);
+        printf("on");
+    }
+}
+
+void ADCREADTask (void *pvParameters)
+{
+    uint16 value = 0;
+
+
+    gpio16_input_conf();
+
+    while(1)
+    {
+
+        vTaskDelay (800/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
+        value = system_adc_read();
+        printf("Value is %u",value);
     }
 }
 
 void user_init(void)
    {
-    printf("SDK version:%s\n", system_get_sdk_version());
-    printf("HI JAMES THis is V2");
+        printf("SDK version:%s\n", system_get_sdk_version());
+        printf("HI JAMES THis is V2");
 
 
-    do { (*((volatile uint32 *)(((0x60000800 + 0x04))))) = (uint32)(((*((volatile uint32 *)((0x60000800 + 0x04)))) & (~((0x13 << 4))))); (*((volatile uint32 *)(((0x60000800 + 0x04))))) = (uint32)(((*((volatile uint32 *)((0x60000800 + 0x04)))) | ((((3 & 0x00000004) << 2) | (3 & 0x3)) << 4))); } while (0);
+        do { (*((volatile uint32 *)(((0x60000800 + 0x04))))) = (uint32)(((*((volatile uint32 *)((0x60000800 + 0x04)))) & (~((0x13 << 4))))); (*((volatile uint32 *)(((0x60000800 + 0x04))))) = (uint32)(((*((volatile uint32 *)((0x60000800 + 0x04)))) | ((((3 & 0x00000004) << 2) | (3 & 0x3)) << 4))); } while (0);
 
 
-    xTaskGenericCreate( ( LEDBlinkTask ), ( (signed char *)"Blink" ), ( 256 ), ( ((void *)0) ), ( 2 ), ( ((void *)0) ), ( ((void *)0) ), ( ((void *)0) ) );
+        xTaskGenericCreate( ( LEDBlinkTask ), ( (signed char *)"Blink" ), ( 256 ), ( ((void *)0) ), ( 2 ), ( ((void *)0) ), ( ((void *)0) ), ( ((void *)0) ) );
+        xTaskGenericCreate( ( ADCREADTask ), ( (signed char *)"Read" ), ( 256 ), ( ((void *)0) ), ( 2 ), ( ((void *)0) ), ( ((void *)0) ), ( ((void *)0) ) );
+
    }
