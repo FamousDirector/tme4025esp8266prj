@@ -1,8 +1,8 @@
-# 1 "src/user_main.c"
+# 1 "src/wifi_communications.c"
 # 1 "C:\\Workspaces\\ESP8266\\TME4025Project//"
 # 1 "<command-line>"
-# 1 "src/user_main.c"
-# 1 "./src/user_main.h" 1
+# 1 "src/wifi_communications.c"
+# 1 "src/wifi_communications.h" 1
 
 
 
@@ -3401,78 +3401,7 @@ uint32 pwm_get_period(void);
 # 128 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/pwm.h"
 void pwm_start(void);
 # 110 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/esp_common.h" 2
-# 5 "./src/user_main.h" 2
-
-
-# 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h" 1
-# 92 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
-typedef enum {
-    GPIO_PIN_INTR_DISABLE = 0,
-    GPIO_PIN_INTR_POSEDGE = 1,
-    GPIO_PIN_INTR_NEGEDGE = 2,
-    GPIO_PIN_INTR_ANYEDGE = 3,
-    GPIO_PIN_INTR_LOLEVEL = 4,
-    GPIO_PIN_INTR_HILEVEL = 5
-} GPIO_INT_TYPE;
-
-typedef enum {
-    GPIO_Mode_Input = 0x0,
-    GPIO_Mode_Out_OD,
-    GPIO_Mode_Output ,
-    GPIO_Mode_Sigma_Delta ,
-} GPIOMode_TypeDef;
-
-typedef enum {
-    GPIO_PullUp_DIS = 0x0,
-    GPIO_PullUp_EN = 0x1,
-} GPIO_Pullup_IF;
-
-typedef struct {
-    uint16 GPIO_Pin;
-    GPIOMode_TypeDef GPIO_Mode;
-    GPIO_Pullup_IF GPIO_Pullup;
-    GPIO_INT_TYPE GPIO_IntrType;
-} GPIO_ConfigTypeDef;
-# 202 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
-void gpio16_output_conf(void);
-# 211 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
-void gpio16_output_set(uint8 value);
-# 220 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
-void gpio16_input_conf(void);
-# 229 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
-uint8 gpio16_input_get(void);
-# 245 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
-void gpio_output_conf(uint32 set_mask, uint32 clear_mask, uint32 enable_mask, uint32 disable_mask);
-# 255 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
-void gpio_intr_handler_register(void *fn, void *arg);
-# 265 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
-void gpio_pin_wakeup_enable(uint32 i, GPIO_INT_TYPE intr_state);
-# 274 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
-void gpio_pin_wakeup_disable();
-# 284 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
-void gpio_pin_intr_state_set(uint32 i, GPIO_INT_TYPE intr_state);
-# 293 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/driver_lib/include/gpio.h"
-uint32 gpio_input_get(void);
-# 8 "./src/user_main.h" 2
-# 1 "./src/button_interrupt.h" 1
-# 9 "./src/button_interrupt.h"
-static void intr_handler();
-extern void button_init(void);
-# 9 "./src/user_main.h" 2
-# 1 "./src/relay_control.h" 1
-# 9 "./src/relay_control.h"
-static int relaysstate = 0;
-
-extern void initrelaycontrol();
-extern void setrelaystate(int newstate);
-extern int getrelaystate();
-extern void invertrelaystate(void);
-# 10 "./src/user_main.h" 2
-# 1 "./src/wifi_communications.h" 1
-
-
-
-
+# 5 "src/wifi_communications.h" 2
 
 
 # 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h" 1
@@ -3632,9 +3561,9 @@ sint8 espconn_recv_hold(struct espconn *pespconn);
 sint8 espconn_recv_unhold(struct espconn *pespconn);
 # 694 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
 void espconn_dns_setserver(char numdns, ip_addr_t *dnsserver);
-# 8 "./src/wifi_communications.h" 2
-# 1 "./src/websocket.h" 1
-# 43 "./src/websocket.h"
+# 8 "src/wifi_communications.h" 2
+# 1 "src/websocket.h" 1
+# 43 "src/websocket.h"
 # 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/nopoll/nopoll.h" 1
 # 42 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/nopoll/nopoll.h"
 # 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/nopoll/nopoll_decl.h" 1
@@ -4794,7 +4723,7 @@ int nopoll_get_32bit (const char * buffer);
 
 
 
-# 44 "./src/websocket.h" 2
+# 44 "src/websocket.h" 2
 # 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/ssl/ssl_compat-1.0.h" 1
 # 11 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/ssl/ssl_compat-1.0.h"
 # 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/ssl/ssl_platform.h" 1
@@ -5663,7 +5592,7 @@ typedef unsigned char EVP_MD;
 typedef struct _x509_ctx X509;
 typedef struct _x509_ctx X509_STORE_CTX;
 # 12 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/ssl/ssl_compat-1.0.h" 2
-# 45 "./src/websocket.h" 2
+# 45 "src/websocket.h" 2
 
 
 
@@ -5696,7 +5625,7 @@ static void __attribute__((section(".irom0.text"))) websocket_task(void *pvParam
 void __attribute__((section(".irom0.text"))) websocket_start(void *optarg);
 
 sint8 __attribute__((section(".irom0.text"))) websocket_stop(void);
-# 9 "./src/wifi_communications.h" 2
+# 9 "src/wifi_communications.h" 2
 
 
 
@@ -5725,97 +5654,90 @@ extern void createtcpsocket(void);
 extern void createtcpconnection(void);
 extern void wifi_event_hand_function(System_Event_t *event);
 extern int esp_demo(char option, _Bool addr_flag);
-# 11 "./src/user_main.h" 2
+# 2 "src/wifi_communications.c" 2
 
 
 
 
-uint32 __attribute__((section(".irom0.text"))) user_rf_cal_sector_set(void);
-
-void __attribute__((section(".irom0.text"))) RelayTestTask (void *pvParameters);
-void __attribute__((section(".irom0.text"))) TemperatureTestTask (void *pvParameters);
-void __attribute__((section(".irom0.text"))) user_init(void);
-# 2 "src/user_main.c" 2
 
 
 
-uint32 __attribute__((section(".irom0.text"))) user_rf_cal_sector_set(void)
+extern void initwifi(void)
 {
-    flash_size_map size_map = system_get_flash_size_map();
-    uint32 rf_cal_sec = 0;
+    wifi_set_opmode(STATION_MODE);
+ struct station_config sta_config;
+ bzero(&sta_config, sizeof(struct station_config));
 
-    switch (size_map) {
-        case FLASH_SIZE_4M_MAP_256_256:
-            rf_cal_sec = 128 - 8;
-            break;
+ sprintf(sta_config.ssid, "Cameron");
+ sprintf(sta_config.password, "Allan111");
+ wifi_station_set_config(&sta_config);
+ wifi_set_event_handler_cb(wifi_event_hand_function);
 
-        case FLASH_SIZE_8M_MAP_512_512:
-            rf_cal_sec = 256 - 5;
-            break;
-
-        case FLASH_SIZE_16M_MAP_512_512:
-        case FLASH_SIZE_16M_MAP_1024_1024:
-            rf_cal_sec = 512 - 5;
-            break;
-
-        case FLASH_SIZE_32M_MAP_512_512:
-        case FLASH_SIZE_32M_MAP_1024_1024:
-            rf_cal_sec = 1024 - 5;
-            break;
-
-        default:
-            rf_cal_sec = 0;
-            break;
-    }
-
-    return rf_cal_sec;
+ return;
 }
 
-void RelayTestTask (void *pvParameters)
+extern void wifi_event_hand_function(System_Event_t *event)
 {
-
-    initrelaycontrol();
-
-    while(1)
-    {
-
-        vTaskDelay (1000/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-        setrelaystate(0);
-
-
-        vTaskDelay (1000/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-        setrelaystate(1);
-    }
+ switch (event->event_id){
+  case EVENT_STAMODE_CONNECTED:
+   break;
+  case EVENT_STAMODE_DISCONNECTED:
+   break;
+  case EVENT_STAMODE_AUTHMODE_CHANGE:
+   break;
+  case EVENT_STAMODE_GOT_IP:
+   esp_demo(WEBSOCKET_TLS, 0);
+   break;
+  case EVENT_STAMODE_DHCP_TIMEOUT:
+   break;
+  default:
+   break;
+ }
 }
 
-void TemperatureTestTask (void *pvParameters)
+extern int esp_demo(char option, _Bool addr_flag)
 {
-    uint16 value = 0;
+ struct ESP_WebInfo *pwebinfo = ((void *)0);
+ pwebinfo = (struct ESP_WebInfo*)zalloc(sizeof(struct ESP_WebInfo));
+ if (pwebinfo == ((void *)0))
+  goto demo_error;
 
-    while(1)
-    {
+ if (addr_flag){
+  pwebinfo->WebHostName = zalloc(64);
+  if (pwebinfo->WebHostName == ((void *)0))
+   goto demo_error;
 
-        vTaskDelay (2000/( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
-        value = gettemperature();
-        printf("Temperature is %d \n\r",value);
-    }
+  sprintf(pwebinfo->WebHostName, "iot.espressif.cn");
+ } else {
+  pwebinfo->WebHostIp = zalloc(64);
+  if (pwebinfo->WebHostIp == ((void *)0))
+   goto demo_error;
+
+  sprintf(pwebinfo->WebHostIp, "iot.espressif.cn");
+ }
+
+ pwebinfo->WebUrl = zalloc(256);
+ if (pwebinfo->WebUrl == ((void *)0))
+  goto demo_error;
+
+ sprintf(pwebinfo->WebUrl, "/ws");
+ if (option == WEBSOCKET_NORMAL){
+  sprintf(pwebinfo->WebPort, "9000");
+  pwebinfo->WebOption = WEBSOCKET_NORMAL;
+ } else if(option == WEBSOCKET_TLS){
+  sprintf(pwebinfo->WebPort, "9443");
+  pwebinfo->WebOption = WEBSOCKET_TLS;
+ } else
+  goto demo_error;
+
+ websocket_start(pwebinfo);
+ return 0;
+demo_error:
+ if (pwebinfo != ((void *)0)){
+  free(pwebinfo->WebUrl);
+  free(pwebinfo->WebHostIp);
+  free(pwebinfo->WebHostName);
+  free(pwebinfo);
+ }
+ return -1;
 }
-
-void user_init(void)
-   {
-        printf("SDK version:%s\n", system_get_sdk_version());
-        printf("HI JAMES THis is V4");
-
-
-
-
-        button_init();
-
-        initwifi();
-
-
-
-        xTaskGenericCreate( ( RelayTestTask ), ( (signed char *)"Blink" ), ( 256 ), ( ((void *)0) ), ( 2 ), ( ((void *)0) ), ( ((void *)0) ), ( ((void *)0) ) );
-        xTaskGenericCreate( ( TemperatureTestTask ), ( (signed char *)"Read" ), ( 256 ), ( ((void *)0) ), ( 2 ), ( ((void *)0) ), ( ((void *)0) ), ( ((void *)0) ) );
-
-   }

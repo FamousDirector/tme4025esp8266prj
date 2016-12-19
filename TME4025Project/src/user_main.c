@@ -1,9 +1,5 @@
-#include <esp_common.h>
-#include <freertos/FreeRTOS.h>
-#include <freertos/task.h>
-#include "gpio.h"
-#include "button_interrupt.h"
-#include "relay_control.h"
+#include <user_main.h>
+
 
 //added as per: http://bbs.espressif.com/viewtopic.php?t=2492
 uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void)
@@ -72,9 +68,14 @@ void user_init(void)
    {
         printf("SDK version:%s\n", system_get_sdk_version());
         printf("HI JAMES THis is V4");
-     
+
+        
+        /*Init*/
         //Configure Interrupts
         button_init();
+        //Configure WIFI
+        initwifi();
+        //createtcpsocket();
 
         //Start Tasks
         xTaskCreate(RelayTestTask, (signed char *)"Blink", 256, NULL, 2, NULL);
