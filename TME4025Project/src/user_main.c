@@ -36,9 +36,6 @@ uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void)
 
 void RelayTestTask (void *pvParameters)
 {
-    //init
-    initrelaycontrol();
-
     while(1)
     {
         // Delay and turn on
@@ -74,11 +71,12 @@ void user_init(void)
         //Configure Interrupts
         button_init();
         //Configure WIFI
-        initwifi();
-        //createtcpsocket();
+        conn_AP_Init();
+        //Configure Relay
+        initrelaycontrol();
 
-        //Start Tasks
-        xTaskCreate(RelayTestTask, (signed char *)"Blink", 256, NULL, 2, NULL);
-        xTaskCreate(TemperatureTestTask, (signed char *)"Read", 256, NULL, 2, NULL);
+        //Start Test Tasks
+        //xTaskCreate(RelayTestTask, (signed char *)"Blink", 256, NULL, 2, NULL);
+        //xTaskCreate(TemperatureTestTask, (signed char *)"Read", 256, NULL, 2, NULL);
    
    }

@@ -5432,6 +5432,204 @@ typedef struct _x509_ctx X509_STORE_CTX;
 
 
 
+# 1 "src/wifi_communications.h" 1
+
+
+
+
+
+
+# 1 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h" 1
+# 32 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+typedef sint8 err_t;
+
+typedef void *espconn_handle;
+# 59 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+typedef void (* espconn_connect_callback)(void *arg);
+# 83 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+typedef void (* espconn_reconnect_callback)(void *arg, sint8 err);
+# 104 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+enum espconn_type {
+    ESPCONN_INVALID = 0,
+    ESPCONN_TCP = 0x10,
+    ESPCONN_UDP = 0x20,
+};
+
+
+enum espconn_state {
+    ESPCONN_NONE,
+    ESPCONN_WAIT,
+    ESPCONN_LISTEN,
+    ESPCONN_CONNECT,
+    ESPCONN_WRITE,
+    ESPCONN_READ,
+    ESPCONN_CLOSE
+};
+
+typedef struct _esp_tcp {
+    int remote_port;
+    int local_port;
+    uint8 local_ip[4];
+    uint8 remote_ip[4];
+    espconn_connect_callback connect_callback;
+    espconn_reconnect_callback reconnect_callback;
+    espconn_connect_callback disconnect_callback;
+    espconn_connect_callback write_finish_fn;
+} esp_tcp;
+
+typedef struct _esp_udp {
+    int remote_port;
+    int local_port;
+    uint8 local_ip[4];
+    uint8 remote_ip[4];
+} esp_udp;
+
+typedef struct _remot_info {
+    enum espconn_state state;
+    int remote_port;
+    uint8 remote_ip[4];
+} remot_info;
+
+
+typedef void (* espconn_recv_callback)(void *arg, char *pdata, unsigned short len);
+typedef void (* espconn_sent_callback)(void *arg);
+
+
+struct espconn {
+    enum espconn_type type;
+    enum espconn_state state;
+    union {
+        esp_tcp *tcp;
+        esp_udp *udp;
+    } proto;
+    espconn_recv_callback recv_callback;
+    espconn_sent_callback sent_callback;
+    uint8 link_cnt;
+    void *reserve;
+};
+
+enum espconn_option {
+    ESPCONN_START = 0x00,
+    ESPCONN_REUSEADDR = 0x01,
+    ESPCONN_NODELAY = 0x02,
+    ESPCONN_COPY = 0x04,
+    ESPCONN_KEEPALIVE = 0x08,
+    ESPCONN_END
+};
+
+enum espconn_level {
+    ESPCONN_KEEPIDLE,
+    ESPCONN_KEEPINTVL,
+    ESPCONN_KEEPCNT
+};
+
+enum {
+    ESPCONN_IDLE = 0,
+    ESPCONN_CLIENT,
+    ESPCONN_SERVER,
+    ESPCONN_BOTH,
+    ESPCONN_MAX
+};
+# 195 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+void espconn_init(void);
+# 214 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_connect(struct espconn *espconn);
+# 229 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_disconnect(struct espconn *espconn);
+# 247 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_delete(struct espconn *espconn);
+# 261 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_accept(struct espconn *espconn);
+# 277 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_create(struct espconn *espconn);
+# 286 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+uint8 espconn_tcp_get_max_con(void);
+# 298 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_tcp_set_max_con(uint8 num);
+# 310 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_tcp_get_max_con_allow(struct espconn *espconn);
+# 323 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_tcp_set_max_con_allow(struct espconn *espconn, uint8 num);
+# 345 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_regist_time(struct espconn *espconn, uint32 interval, uint8 type_flag);
+# 359 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_get_connection_info(struct espconn *pespconn, remot_info **pcon_info, uint8 typeflags);
+# 373 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_regist_sentcb(struct espconn *espconn, espconn_sent_callback sent_cb);
+# 398 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_regist_write_finish(struct espconn *espconn, espconn_connect_callback write_finish_fn);
+# 419 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_send(struct espconn *espconn, uint8 *psent, uint16 length);
+# 442 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_sent(struct espconn *espconn, uint8 *psent, uint16 length);
+# 457 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint16 espconn_sendto(struct espconn *espconn, uint8 *psent, uint16 length);
+# 470 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_regist_connectcb(struct espconn *espconn, espconn_connect_callback connect_cb);
+# 483 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_regist_recvcb(struct espconn *espconn, espconn_recv_callback recv_cb);
+# 501 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_regist_reconcb(struct espconn *espconn, espconn_reconnect_callback recon_cb);
+# 515 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_regist_disconcb(struct espconn *espconn, espconn_connect_callback discon_cb);
+# 524 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+uint32 espconn_port(void);
+# 546 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_set_opt(struct espconn *espconn, uint8 opt);
+# 559 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_clear_opt(struct espconn *espconn, uint8 opt);
+# 580 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_set_keepalive(struct espconn *espconn, uint8 level, void *optarg);
+# 594 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_get_keepalive(struct espconn *espconn, uint8 level, void *optarg);
+# 606 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+typedef void (*dns_found_callback)(const char *name, ip_addr_t *ipaddr, void *callback_arg);
+# 624 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+err_t espconn_gethostbyname(struct espconn *pespconn, const char *hostname, ip_addr_t *addr, dns_found_callback found);
+# 638 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_igmp_join(ip_addr_t *host_ip, ip_addr_t *multicast_ip);
+# 652 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_igmp_leave(ip_addr_t *host_ip, ip_addr_t *multicast_ip);
+# 667 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_recv_hold(struct espconn *pespconn);
+# 681 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+sint8 espconn_recv_unhold(struct espconn *pespconn);
+# 694 "C:/Workspaces/ESP8266/SDK/ESP8266_RTOS_SDK/include/espressif/espconn.h"
+void espconn_dns_setserver(char numdns, ip_addr_t *dnsserver);
+# 8 "src/wifi_communications.h" 2
+# 1 "src/websocket.h" 1
+# 9 "src/wifi_communications.h" 2
+
+
+
+
+
+
+
+enum WEBSOCKET_CMD{
+ WEBSOCKET_START,
+ WEBSOCKET_NORMAL,
+ WEBSOCKET_TLS,
+ WEBSOCKET_END
+};
+
+struct ESP_WebInfo{
+ enum WEBSOCKET_CMD WebOption;
+ char *WebHostIp;
+ char WebPort[8];
+ char *WebHostName;
+ char *WebUrl;
+ char *WebProtocols;
+ char *WebOrigin;
+};
+
+
+
+extern void __attribute__((section(".irom0.text"))) initwifi(void);
+extern void __attribute__((section(".irom0.text"))) wifi_event_hand_function(System_Event_t *event);
+# 50 "src/websocket.h" 2
+
+
 
 nopoll_bool debug;
 nopoll_bool show_critical_only;
@@ -5460,6 +5658,9 @@ static void __attribute__((section(".irom0.text"))) websocket_task(void *pvParam
 void __attribute__((section(".irom0.text"))) websocket_start(void *optarg);
 
 sint8 __attribute__((section(".irom0.text"))) websocket_stop(void);
+
+
+extern int __attribute__((section(".irom0.text"))) esp_demo(char option, _Bool addr_flag);
 # 2 "src/websocket.c" 2
 
 nopoll_bool debug = ((int)0);
@@ -5545,13 +5746,17 @@ nopoll_bool test_02 (void) {
   return ((int)0);
  }
 
+
  nopoll_ctx_unref (ctx);
 
 
  ctx = create_ctx ();
 
 
- conn = nopoll_conn_new (ctx, "iot.espressif.cn", "9000", ((void *)0), ((void *)0), ((void *)0), ((void *)0));
+ conn = nopoll_conn_new (ctx, "iot.espressif.cn", "9000", (signed char *)"",(signed char *)"", (signed char *)"", (signed char *)"null");
+
+ printf("RIGHT HERE^\n\r");
+
  if (! nopoll_conn_is_ok (conn)) {
   printf ("ERROR: Expected to find proper client connection status, but found error.. (conn=%p, conn->session=%d, NOPOLL_INVALID_SOCKET=%d, errno=%d, strerr=%s)..\n",
    conn, (int) nopoll_conn_socket (conn), (int) -1, errno, esp_ERR_strerror(errno));
@@ -6003,7 +6208,7 @@ nopoll_bool test_08 (void) {
 static int websocket_main (char *argv)
 {
  int iterator = *argv;
-
+ printf("Test #%d Selected\n\r", iterator);
  switch (iterator) {
 
   case 2:
@@ -6076,15 +6281,18 @@ static void websocket_task(void *pvParameters)
  struct station_config sta_config;
  bzero(&sta_config, sizeof(struct station_config));
 
- sprintf(sta_config.ssid, "B-LINK_845R");
- sprintf(sta_config.password, "000");
+ sprintf(sta_config.ssid, "Cameron");
+ sprintf(sta_config.password, "allan111");
  wifi_station_set_config(&sta_config);
  do { static const char flash_str[] __attribute__((section(".irom.text"))) __attribute__((aligned(4))) = "%s\n"; printf(flash_str, __func__); } while(0);
  wifi_get_ip_info(STATION_IF, &ip_config);
+ wifi_set_phy_mode (PHY_MODE_11B);
+
  while(ip_config.ip.addr == 0){
   vTaskDelay(1000 / ( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
   wifi_get_ip_info(STATION_IF, &ip_config);
  }
+
  websocket_main((char*)pvParameters);
 
  while (1) {
@@ -6093,9 +6301,10 @@ static void websocket_task(void *pvParameters)
    printf("websocket_task exit signal\n");
    break;
   }
-  vTaskDelay(200 / ( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
+  vTaskDelay(500 / ( ( portTickType ) 1000 / ( ( portTickType ) 100 ) ));
   printf("websocket_task\n");
  }
+
  vQueueDelete(Web_QueueStop);
  Web_QueueStop = ((void *)0);
  vTaskDelete(((void *)0));
@@ -6126,4 +6335,51 @@ sint8 websocket_stop(void)
   return -1;
  else
   return ( ( ( long ) 1 ) );
+}
+
+extern int esp_demo(char option, _Bool addr_flag)
+{
+ struct ESP_WebInfo *pwebinfo = ((void *)0);
+ pwebinfo = (struct ESP_WebInfo*)zalloc(sizeof(struct ESP_WebInfo));
+ if (pwebinfo == ((void *)0))
+  goto demo_error;
+
+ if (addr_flag){
+  pwebinfo->WebHostName = zalloc(64);
+  if (pwebinfo->WebHostName == ((void *)0))
+   goto demo_error;
+
+  sprintf(pwebinfo->WebHostName, "iot.espressif.cn");
+ } else {
+  pwebinfo->WebHostIp = zalloc(64);
+  if (pwebinfo->WebHostIp == ((void *)0))
+   goto demo_error;
+
+  sprintf(pwebinfo->WebHostIp, "iot.espressif.cn");
+ }
+
+ pwebinfo->WebUrl = zalloc(256);
+ if (pwebinfo->WebUrl == ((void *)0))
+  goto demo_error;
+
+ sprintf(pwebinfo->WebUrl, "/ws");
+ if (option == WEBSOCKET_NORMAL){
+  sprintf(pwebinfo->WebPort, "9000");
+  pwebinfo->WebOption = WEBSOCKET_NORMAL;
+ } else if(option == WEBSOCKET_TLS){
+  sprintf(pwebinfo->WebPort, "9443");
+  pwebinfo->WebOption = WEBSOCKET_TLS;
+ } else
+  goto demo_error;
+
+ websocket_start(pwebinfo);
+ return 0;
+demo_error:
+ if (pwebinfo != ((void *)0)){
+  free(pwebinfo->WebUrl);
+  free(pwebinfo->WebHostIp);
+  free(pwebinfo->WebHostName);
+  free(pwebinfo);
+ }
+ return -1;
 }
