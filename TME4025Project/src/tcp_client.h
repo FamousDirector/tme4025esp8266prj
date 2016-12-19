@@ -6,13 +6,9 @@
 #include "esp_common.h"
 #include "espconn.h"
 
-#include "wifi_communications.h"
-
-
-
 //TCP CLIENT Config
 
-const uint8 tcp_server_ip[4]={192,168,2,182};
+const uint8 tcp_server_ip[4];
 #define TCP_SERVER_REMOTE_PORT (80)
 #define TCP_CLIENT_GREETING "Hello!This is a tcp client test\n"
 

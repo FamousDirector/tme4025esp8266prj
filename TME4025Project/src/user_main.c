@@ -71,7 +71,7 @@ void user_init(void)
         //Configure Interrupts
         button_init();
         //Configure WIFI
-        conn_AP_Init();
+        connecttowifi();
         //Configure Relay
         initrelaycontrol();
 

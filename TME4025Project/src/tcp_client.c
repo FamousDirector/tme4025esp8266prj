@@ -1,9 +1,10 @@
 #include "tcp_client.h"
 
+
+const uint8 tcp_server_ip[4]={192,168,2,182};
 /*--------------------------------------------------------------
                              Tcp Client
 -------------------------------------------------------------*/
-
 
 void TcpClientConnect(void*arg)
 {
@@ -141,10 +142,4 @@ void StaConectApConfig(char*ssid,char*password)
 	free(sta);
 	sta=NULL;
 	
-}
-
-void WifiConfig(void* arg)
-{
-	StaConectApConfig(AP_SSID,AP_PASSWORD);
-    vTaskDelete(NULL);
 }

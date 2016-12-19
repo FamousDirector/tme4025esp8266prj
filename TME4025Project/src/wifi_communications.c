@@ -35,17 +35,14 @@ void wifi_handle_event_cb(System_Event_t *evt)
  }
 } 
 
-void conn_AP_Init(void)
+void connecttowifi(void)
 {
-	wifi_set_opmode(STATIONAP_MODE);
-	struct station_config config;
-	memset(&config,0,sizeof(config));  //set value of config from address of &config to width of size to be value '0'
+	StaConectApConfig(AP_SSID,AP_PASSWORD);
+    vTaskDelete(NULL);
+}
+
+void sendmessage(void) //TODO add return for failure, add a message to send
+{
 	
-	sprintf(config.ssid, AP_SSID);
-	sprintf(config.password, AP_PASSWORD);
-	
-	wifi_station_set_config(&config);         
-	
-	wifi_set_event_handler_cb(wifi_handle_event_cb);
-	wifi_station_connect();
+	return;
 }

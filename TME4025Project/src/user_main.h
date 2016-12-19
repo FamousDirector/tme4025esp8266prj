@@ -8,6 +8,7 @@
 #include "button_interrupt.h"
 #include "relay_control.h"
 #include "wifi_communications.h"
+#include "tcp_client.h"
 
  #define ICACHE_RAM_ATTR __attribute__((section(".iram0.text"))) //as per http://www.esp8266.com/viewtopic.php?f=6&t=3266
 
