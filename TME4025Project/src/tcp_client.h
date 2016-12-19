@@ -6,6 +6,9 @@
 #include "esp_common.h"
 #include "espconn.h"
 
+#include "wifi_communications.h"
+
+
 
 //TCP CLIENT Config
 

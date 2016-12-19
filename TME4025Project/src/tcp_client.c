@@ -145,6 +145,6 @@ void StaConectApConfig(char*ssid,char*password)
 
 void WifiConfig(void* arg)
 {
-	StaConectApConfig(DEMO_AP_SSID,DEMO_AP_PASSWORD);
+	StaConectApConfig(AP_SSID,AP_PASSWORD);
     vTaskDelete(NULL);
 }

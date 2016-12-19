@@ -1,0 +1,7 @@
+libuser.a
+*.i
+*.o
+*.bin
+*.s
+*.map
+*.out
