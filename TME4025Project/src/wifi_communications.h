@@ -15,6 +15,6 @@
 
 void wifi_handle_event_cb(System_Event_t *evt);
 void connecttowifi(void);
-void sendmessage_task(void *pvParameters);
+void sendmessage(char * message);
 
 #endif

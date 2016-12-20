@@ -4,7 +4,13 @@
                              Tcp Client
 -------------------------------------------------------------*/
 
-void TcpClientConnect(void*arg)
+extern void initTCPCient(void)
+{
+	espconn_init();
+	return;
+}
+
+void TcpClientConnectCb(void*arg)
 {
     struct espconn* tcp_server_local=arg;
 #if TCP_CLIENT_KEEP_ALIVE_ENABLE
@@ -26,10 +32,9 @@ void TcpClientConnect(void*arg)
 		                                          tcp_server_local->proto.tcp->remote_ip[3],
 		                                          tcp_server_local->proto.tcp->remote_port
 		                                          );
-	espconn_send(tcp_server_local,TCP_CLIENT_GREETING,strlen(TCP_CLIENT_GREETING));
-}
+	}
 
-void TcpClientDisConnect(void* arg)
+void TcpClientDisConnectCb(void* arg)
 {
     struct espconn* tcp_server_local=arg;
 	DBG_LINES("TCP CLIENT DISCONNECT");
@@ -62,6 +67,7 @@ void TcpRecvCb(void *arg, char *pdata, unsigned short len)
 		                                          tcp_server_local->proto.tcp->remote_port,
 		                                          len);
    espconn_send(tcp_server_local,pdata,len);
+   // TODO USE PDATA TO GET THE DATA OUT
 }
 void TcpReconnectCb(void *arg, sint8 err)
 {
@@ -77,7 +83,7 @@ void TcpReconnectCb(void *arg, sint8 err)
 }
 
 
-void TcpLocalClient()
+void TcpLocalClient(char *message)
 { 
 	uint8 con_status=wifi_station_get_connect_status();
 	while(con_status!=STATION_GOT_IP){
@@ -104,10 +110,10 @@ void TcpLocalClient()
   	tcp_client.proto.tcp->remote_ip[3] = TCP_SERVER_IPADDRESS_3;
 
   	//Register Functions
-	espconn_regist_connectcb(&tcp_client,TcpClientConnect);
+	espconn_regist_connectcb(&tcp_client,TcpClientConnectCb);
 	espconn_regist_recvcb(&tcp_client,TcpRecvCb);
 	espconn_regist_reconcb(&tcp_client,TcpReconnectCb);
-	espconn_regist_disconcb(&tcp_client,TcpClientDisConnect);
+	espconn_regist_disconcb(&tcp_client,TcpClientDisConnectCb);
 	espconn_regist_sentcb(&tcp_client,TcpClienSendCb);
 	DBG_PRINT("tcp client connect server,server ip:%d.%d.%d.%d port:%d\n",tcp_client.proto.tcp->remote_ip[0],
 		                                          tcp_client.proto.tcp->remote_ip[1],
@@ -116,5 +122,9 @@ void TcpLocalClient()
 		                                          tcp_client.proto.tcp->remote_port\
 		                                          );
 	espconn_connect(&tcp_client);
+	vTaskDelay (5000/portTICK_RATE_MS); //TODO look at espconn_regist_write_finish 
+	espconn_send(&tcp_client,message,strlen(message));
+	vTaskDelay (5000/portTICK_RATE_MS); //TODO make sure data is received
+	espconn_disconnect(&tcp_client);
 	vTaskDelete(NULL);
 }

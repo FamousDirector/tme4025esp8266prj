@@ -45,13 +45,15 @@ void connecttowifi(void)
 	
 	//wifi_set_event_handler_cb(wifi_handle_event_cb);
 	wifi_station_connect();
+
+	//Init
+	initTCPCient();
+
 }
 
-void sendmessage_task(void *pvParameters) //add a message to send
+void sendmessage(char * message) //add a message to send
 {
-	//init
-	espconn_init();
-
-    TcpLocalClient();
+	//Parse Message
+    TcpLocalClient(message);
 	return;
 }

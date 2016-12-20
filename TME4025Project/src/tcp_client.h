@@ -19,7 +19,7 @@ uint8 tcp_server_ip[4];
 
 #define TCP_CLIENT_GREETING "Hello!This is a tcp client test from the ESP8266\n"
 
-#define TCP_CLIENT_KEEP_ALIVE_ENABLE 1
+#define TCP_CLIENT_KEEP_ALIVE_ENABLE 0
 
         #define TCP_CLIENT_KEEP_ALIVE_IDLE_S (10)
         #define TCP_CLIENT_RETRY_INTVL_S (5)
@@ -37,11 +37,18 @@ uint8 tcp_server_ip[4];
 	}while(0)
 #define DBG_LINES(v) os_printf("------------------%s---------------\n",v)
 
-void TcpClientConnect(void*arg);
-void TcpClientDisConnect(void* arg);
-void TcpClienSendCb(void* arg);
-void TcpRecvCb(void *arg, char *pdata, unsigned short len);
-void TcpReconnectCb(void *arg, sint8 err);
-void TcpLocalClient(void);
+static char * messagestosend;
+
+extern void initTCPCient(void);
+
+static void TcpClientConnect(void*arg);
+static void TcpClientDisConnect(void* arg);
+static void TcpClienSendCb(void* arg);
+static void TcpRecvCb(void *arg, char *pdata, unsigned short len);
+static void TcpReconnectCb(void *arg, sint8 err);
+extern void TcpLocalClient(char * message);
+ 
+static void setmessagestosend(char * message);
+static char * getmessagestosend(void);
 
 #endif

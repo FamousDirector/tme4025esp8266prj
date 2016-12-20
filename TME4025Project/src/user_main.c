@@ -61,6 +61,16 @@ void TemperatureTestTask (void *pvParameters)
     }
 }
 
+void SendMessageTestTask (void *pvParameters)
+{
+    while(1)
+    {
+        // Delay reading
+        vTaskDelay (2000/portTICK_RATE_MS);
+        sendmessage("Hey I can send messages now!\r\n"); 
+    }
+}
+
 void user_init(void)
    {
         printf("SDK version:%s\n", system_get_sdk_version());
@@ -78,6 +88,6 @@ void user_init(void)
         //Start Test Tasks
         //xTaskCreate(RelayTestTask, (signed char *)"Blink", 256, NULL, 2, NULL);
         //xTaskCreate(TemperatureTestTask, (signed char *)"Read", 256, NULL, 2, NULL);
-        xTaskCreate(sendmessage_task, (signed char *)"Message", 512, NULL, 2, NULL);
-   
-   }
+        xTaskCreate(SendMessageTestTask, (signed char *)"Read", 256, NULL, 2, NULL);
+        
+    }
