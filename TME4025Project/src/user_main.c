@@ -74,9 +74,10 @@ void user_init(void)
         connecttowifi();
         //Configure Relay
         initrelaycontrol();
-
+ 
         //Start Test Tasks
         //xTaskCreate(RelayTestTask, (signed char *)"Blink", 256, NULL, 2, NULL);
         //xTaskCreate(TemperatureTestTask, (signed char *)"Read", 256, NULL, 2, NULL);
+        xTaskCreate(sendmessage_task, (signed char *)"Message", 512, NULL, 2, NULL);
    
    }

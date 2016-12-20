@@ -27,9 +27,6 @@ void wifi_handle_event_cb(System_Event_t *evt)
              IP2STR(&evt->event_info.got_ip.gw));
              printf("\n");
              break;
-         case EVENT_SOFTAPMODE_STADISCONNECTED:
-             printf("EVENT_SOFTAPMODE_STADISCONNECTED");
-             break;
          default:
              break;
  }
@@ -37,12 +34,24 @@ void wifi_handle_event_cb(System_Event_t *evt)
 
 void connecttowifi(void)
 {
-	StaConectApConfig(AP_SSID,AP_PASSWORD);
-    vTaskDelete(NULL);
+	wifi_set_opmode(STATIONAP_MODE);
+	struct station_config config;
+	memset(&config,0,sizeof(config));  //set value of config from address of &config to width of size to be value '0'
+	
+	sprintf(config.ssid, AP_SSID);
+	sprintf(config.password, AP_PASSWORD);
+	
+	wifi_station_set_config(&config);         
+	
+	//wifi_set_event_handler_cb(wifi_handle_event_cb);
+	wifi_station_connect();
 }
 
-void sendmessage(void) //TODO add return for failure, add a message to send
+void sendmessage_task(void *pvParameters) //add a message to send
 {
-	
+	//init
+	espconn_init();
+
+    TcpLocalClient();
 	return;
 }

@@ -8,9 +8,16 @@
 
 //TCP CLIENT Config
 
-const uint8 tcp_server_ip[4];
-#define TCP_SERVER_REMOTE_PORT (80)
-#define TCP_CLIENT_GREETING "Hello!This is a tcp client test\n"
+uint8 tcp_server_ip[4];
+
+#define TCP_SERVER_IPADDRESS_0 192
+#define TCP_SERVER_IPADDRESS_1 168
+#define TCP_SERVER_IPADDRESS_2 2
+#define TCP_SERVER_IPADDRESS_3 182
+
+#define TCP_SERVER_REMOTE_PORT 6969
+
+#define TCP_CLIENT_GREETING "Hello!This is a tcp client test from the ESP8266\n"
 
 #define TCP_CLIENT_KEEP_ALIVE_ENABLE 1
 
@@ -35,8 +42,6 @@ void TcpClientDisConnect(void* arg);
 void TcpClienSendCb(void* arg);
 void TcpRecvCb(void *arg, char *pdata, unsigned short len);
 void TcpReconnectCb(void *arg, sint8 err);
-void TcpLocalClient(void* arg);
-void StaConectApConfig(char*ssid,char*password);
-void WifiConfig(void* arg);
+void TcpLocalClient(void);
 
 #endif

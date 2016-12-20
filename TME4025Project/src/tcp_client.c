@@ -1,7 +1,5 @@
 #include "tcp_client.h"
 
-
-const uint8 tcp_server_ip[4]={192,168,2,182};
 /*--------------------------------------------------------------
                              Tcp Client
 -------------------------------------------------------------*/
@@ -79,9 +77,8 @@ void TcpReconnectCb(void *arg, sint8 err)
 }
 
 
-void TcpLocalClient(void* arg)
-{
-  
+void TcpLocalClient()
+{ 
 	uint8 con_status=wifi_station_get_connect_status();
 	while(con_status!=STATION_GOT_IP){
 		con_status=wifi_station_get_connect_status();
@@ -92,12 +89,21 @@ void TcpLocalClient(void* arg)
 			                        );
 		vTaskDelay(100);
 	}
+
+   	//Set Connection Options
     static struct espconn tcp_client;
-	static esp_tcp tcp;
 	tcp_client.type=ESPCONN_TCP;
-	tcp_client.proto.tcp=&tcp;
-	tcp.remote_port=TCP_SERVER_REMOTE_PORT;
-    memcpy(tcp.remote_ip,tcp_server_ip,sizeof(tcp_server_ip));
+	tcp_client.state = ESPCONN_NONE;
+    tcp_client.proto.tcp = (esp_tcp *)os_zalloc(sizeof(esp_tcp));
+    tcp_client.proto.tcp->local_port = espconn_port();
+    tcp_client.proto.tcp->remote_port = TCP_SERVER_REMOTE_PORT;
+
+    tcp_client.proto.tcp->remote_ip[0] = TCP_SERVER_IPADDRESS_0;
+ 	tcp_client.proto.tcp->remote_ip[1] = TCP_SERVER_IPADDRESS_1;
+  	tcp_client.proto.tcp->remote_ip[2] = TCP_SERVER_IPADDRESS_2;
+  	tcp_client.proto.tcp->remote_ip[3] = TCP_SERVER_IPADDRESS_3;
+
+  	//Register Functions
 	espconn_regist_connectcb(&tcp_client,TcpClientConnect);
 	espconn_regist_recvcb(&tcp_client,TcpRecvCb);
 	espconn_regist_reconcb(&tcp_client,TcpReconnectCb);
@@ -111,35 +117,4 @@ void TcpLocalClient(void* arg)
 		                                          );
 	espconn_connect(&tcp_client);
 	vTaskDelete(NULL);
-}
-
-
-
-void StaConectApConfig(char*ssid,char*password)
-{
-    if(wifi_get_opmode()!=0x01&&wifi_get_opmode()!=0x03){
-        ERR_PRINT("Mode not include sta\n");
-		wifi_set_opmode(0x03);
-		//return;
-	}
-	struct station_config* sta=(struct station_config*)malloc(sizeof(struct station_config));
-	if(sta==NULL){
-        ERR_PRINT("memory not enough,heap_size=%ukByte\n",system_get_free_heap_size()/1023);
-		return;
-	}
-	bzero(sta,sizeof(struct station_config));
-	wifi_station_get_config(sta);
-	sprintf(sta->ssid,"%s",ssid);
-	sprintf(sta->password,"%s",password);
-	wifi_station_set_config(sta);
-	wifi_station_connect();
-	
-	bzero(sta,sizeof(struct station_config));
-	wifi_station_get_config(sta);
-	DBG_LINES("STA_CONNECT_AP");
-	DBG_PRINT("ssid:%s\n",sta->ssid);
-	DBG_PRINT("password:%d\n",sta->password);
-	free(sta);
-	sta=NULL;
-	
 }
