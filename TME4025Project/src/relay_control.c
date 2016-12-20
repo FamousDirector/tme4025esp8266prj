@@ -13,16 +13,21 @@ extern void initrelaycontrol()
 
 extern void setrelaystate(int newstate)
 {
-	printf("Turn Relay %d \r\n", newstate);
-     
+	printf("Turn Relay %d \r\n", newstate); //debug
+    
+    taskENTER_CRITICAL();
 	relaysstate = newstate;
+	taskEXIT_CRITICAL();
 	GPIO_OUTPUT_SET(12, relaysstate);
 	return;
 }
 
 extern int getrelaystate()
 {
-	return relaysstate;
+	taskENTER_CRITICAL();
+	int newstate = relaysstate;
+	taskEXIT_CRITICAL();
+	return newstate;
 }
 
 extern void invertrelaystate(void)
