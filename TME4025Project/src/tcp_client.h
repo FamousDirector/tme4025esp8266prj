@@ -7,9 +7,6 @@
 #include "espconn.h"
 
 //TCP CLIENT Config
-
-uint8 tcp_server_ip[4];
-
 #define TCP_SERVER_IPADDRESS_0 192
 #define TCP_SERVER_IPADDRESS_1 168
 #define TCP_SERVER_IPADDRESS_2 2
@@ -19,7 +16,7 @@ uint8 tcp_server_ip[4];
 
 #define TCP_CLIENT_GREETING "Hello!This is a tcp client test from the ESP8266\n"
 
-#define TCP_CLIENT_KEEP_ALIVE_ENABLE 0
+#define TCP_CLIENT_KEEP_ALIVE_ENABLE 1
 
         #define TCP_CLIENT_KEEP_ALIVE_IDLE_S (10)
         #define TCP_CLIENT_RETRY_INTVL_S (5)
@@ -37,18 +34,27 @@ uint8 tcp_server_ip[4];
 	}while(0)
 #define DBG_LINES(v) os_printf("------------------%s---------------\n",v)
 
-static char * messagestosend;
+//variables
+static char * replymessage;
 
-extern void initTCPCient(void);
+//Init
+static void initTCPCient(void);
 
+//Callbacks
 static void TcpClientConnect(void*arg);
 static void TcpClientDisConnect(void* arg);
 static void TcpClienSendCb(void* arg);
 static void TcpRecvCb(void *arg, char *pdata, unsigned short len);
 static void TcpReconnectCb(void *arg, sint8 err);
-extern void TcpLocalClient(char * message);
- 
-static void setmessagestosend(char * message);
-static char * getmessagestosend(void);
+
+//Reply Handling
+static void setreplymessage(char *message);
+static char * getreplymessage(void);
+
+//External Functions
+extern char * TcpCreateClient(char *message);
+
+
+static
 
 #endif

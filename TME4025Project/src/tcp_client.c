@@ -1,12 +1,17 @@
 #include "tcp_client.h"
 
-/*--------------------------------------------------------------
+/*-----------------------------------------------------------
                              Tcp Client
 -------------------------------------------------------------*/
 
-extern void initTCPCient(void)
+void initTCPCient(void)
 {
 	espconn_init();
+
+	taskENTER_CRITICAL();
+	replymessage = "";
+	taskEXIT_CRITICAL();
+	
 	return;
 }
 
@@ -66,8 +71,9 @@ void TcpRecvCb(void *arg, char *pdata, unsigned short len)
 		                                          tcp_server_local->proto.tcp->remote_ip[3],
 		                                          tcp_server_local->proto.tcp->remote_port,
 		                                          len);
-   espconn_send(tcp_server_local,pdata,len);
-   // TODO USE PDATA TO GET THE DATA OUT
+   //USE PDATA TO GET THE REPLY
+   printf("I got this reply 0:%s\n\r", pdata); //debug
+   setreplymessage(pdata);
 }
 void TcpReconnectCb(void *arg, sint8 err)
 {
@@ -82,9 +88,26 @@ void TcpReconnectCb(void *arg, sint8 err)
 		                                          );
 }
 
+static void setreplymessage(char *message)
+{	
+	taskENTER_CRITICAL();
+	replymessage = message;
+	taskEXIT_CRITICAL();
+}
+static char*getreplymessage(void)
+{
+	taskENTER_CRITICAL();
+	char * message = replymessage;
+	taskEXIT_CRITICAL();
+	return message;
+}
 
-void TcpLocalClient(char *message)
+
+char * TcpCreateClient(char *message)
 { 
+	//Init
+	initTCPCient();
+
 	uint8 con_status=wifi_station_get_connect_status();
 	while(con_status!=STATION_GOT_IP){
 		con_status=wifi_station_get_connect_status();
@@ -124,7 +147,22 @@ void TcpLocalClient(char *message)
 	espconn_connect(&tcp_client);
 	vTaskDelay (5000/portTICK_RATE_MS); //TODO look at espconn_regist_write_finish 
 	espconn_send(&tcp_client,message,strlen(message));
-	vTaskDelay (5000/portTICK_RATE_MS); //TODO make sure data is received
+	
+	while(getreplymessage() == "")
+	{
+		vTaskDelay (250/portTICK_RATE_MS); //TODO look at espconn_regist_write_finish		
+	}
+
+	char * reply = getreplymessage();
+
+	//TODO ensure message is not garbage
+	//TODO do a proper handshake (maybe UID + 'recieved')
+   	//espconn_send(tcp_server_local,handshake,handshake.length); //send back what was recieved
+
+	setreplymessage((char *) ""); //reset message	
 	espconn_disconnect(&tcp_client);
-	vTaskDelete(NULL);
+
+	printf("I got this reply 1:%s\n\r", reply); //debug
+	return reply;
+
 }

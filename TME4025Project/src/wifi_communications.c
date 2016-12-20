@@ -45,15 +45,13 @@ void connecttowifi(void)
 	
 	//wifi_set_event_handler_cb(wifi_handle_event_cb);
 	wifi_station_connect();
-
-	//Init
-	initTCPCient();
-
 }
 
 void sendmessage(char * message) //add a message to send
 {
 	//Parse Message
-    TcpLocalClient(message);
+    char * reply = TcpCreateClient(message);
+
+    printf("I got this reply 2:%s\n\r", reply); //debug
 	return;
 }

@@ -66,8 +66,8 @@ void SendMessageTestTask (void *pvParameters)
     while(1)
     {
         // Delay reading
-        vTaskDelay (2000/portTICK_RATE_MS);
-        sendmessage("Hey I can send messages now!\r\n"); 
+        vTaskDelay (10000/portTICK_RATE_MS);
+        sendmessage("Message: Reply to Me!\r\n"); 
     }
 }
 
