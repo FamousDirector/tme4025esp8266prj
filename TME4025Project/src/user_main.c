@@ -34,45 +34,6 @@ uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void)
     return rf_cal_sec;
 }
 
-void RelayTestTask (void *pvParameters)
-{
-    while(1)
-    {
-        // Delay and turn on
-        vTaskDelay (1000/portTICK_RATE_MS);
-        setrelaystate(0);
-     
-        // Delay and LED off
-        vTaskDelay (1000/portTICK_RATE_MS);
-        setrelaystate(1);
-    }
-}
-
-void TemperatureTestTask (void *pvParameters)
-{
-    uint16 value = 0;
-
-    while(1)
-    {
-        // Delay reading
-        vTaskDelay (2000/portTICK_RATE_MS);
-        value = gettemperature();
-        printf("Temperature is %d \n\r",value); 
-    }
-}
-
-void SendMessageTestTask (void *pvParameters)
-{
-    while(1)
-    {
-        // Delay reading
-        vTaskDelay (10000/portTICK_RATE_MS);
-        char * reply = sendmessage("Message: Reply to Me!\r\n"); 
-
-        printf("I got this reply:%s\n\r", reply); //debug
-    }
-}
-
 void user_init(void)
    {
         printf("SDK version:%s\n", system_get_sdk_version());
@@ -88,9 +49,7 @@ void user_init(void)
         //Configure Mux
         initmuxcontrol();
  
-        //Start Test Tasks
-        //xTaskCreate(RelayTestTask, (signed char *)"Blink", 256, NULL, 2, NULL);
-        //xTaskCreate(TemperatureTestTask, (signed char *)"Read", 256, NULL, 2, NULL);
-        xTaskCreate(SendMessageTestTask, (signed char *)"Read", 256, NULL, 2, NULL);
+        //Start Tasks
+        StartTasks();
         
     }

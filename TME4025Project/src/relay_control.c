@@ -17,7 +17,7 @@ extern void initrelaycontrol()
 
 extern void setrelaystate(int newstate)
 {
-	printf("Turn Relay %d \r\n", newstate); //debug
+	//printf("Turn Relay %d \r\n", newstate); //debug
     
     taskENTER_CRITICAL();
 	relaysstate = newstate;

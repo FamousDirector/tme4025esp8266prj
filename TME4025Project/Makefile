@@ -55,7 +55,7 @@ SDK_LDDIR = $(SDKBASE)/ld
 LIBS = -lmain -lgcc -lfreertos -lnet80211 -lphy -lwpa -lcrypto -llwip -lpp -lminic -lhal -lm -lssl -lc -lespconn libdriver.a libuser.a
 #-lminic -lm -lgcc -lhal -lphy -lpp -lnet80211 -lwpa -lmain -lfreertos -llwip -lcrypto
 
-OBJ = user_main.o relay_control.o button_interrupt.o temperature_sensor.o wifi_communications.o tcp_client.o power_sensor.o mux_control.o other_commands.o
+OBJ = user_main.o relay_control.o button_interrupt.o temperature_sensor.o wifi_communications.o tcp_client.o power_sensor.o mux_control.o tasks.o other_commands.o
 
 SRCDIR = ./src/
 
