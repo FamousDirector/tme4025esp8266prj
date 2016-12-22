@@ -6,6 +6,8 @@
 #include <freertos/task.h>
 #include "gpio.h"
 
+#define RELAY_PIN 12
+
 static int relaysstate = 0;
 
 extern void initrelaycontrol();

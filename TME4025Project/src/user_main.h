@@ -5,7 +5,9 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include "gpio.h"
+
 #include "button_interrupt.h"
+#include "mux_control.h"
 #include "relay_control.h"
 #include "wifi_communications.h"
 #include "tcp_client.h"

@@ -6,6 +6,8 @@
 #include <freertos/task.h>
 #include "gpio.h"
 
+#include "mux_control.h"
+
 #define CONVERSIONFACTOR 1
 
 extern int gettemperature(void);

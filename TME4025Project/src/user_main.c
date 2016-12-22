@@ -85,6 +85,8 @@ void user_init(void)
         connecttowifi();
         //Configure Relay
         initrelaycontrol();
+        //Configure Mux
+        initmuxcontrol();
  
         //Start Test Tasks
         //xTaskCreate(RelayTestTask, (signed char *)"Blink", 256, NULL, 2, NULL);

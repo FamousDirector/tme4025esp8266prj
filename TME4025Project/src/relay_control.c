@@ -4,9 +4,13 @@
 extern void initrelaycontrol()
 {
 	printf("Init Relay\r\n");
-     
-	//set relay pin to 12
-	PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDI_U, FUNC_GPIO12);
+    GPIO_ConfigTypeDef relay_cfg;
+    relay_cfg.GPIO_Pin  = BIT(RELAY_PIN);
+    relay_cfg.GPIO_IntrType = GPIO_PIN_INTR_DISABLE;
+    relay_cfg.GPIO_Mode = GPIO_Mode_Output;
+    relay_cfg.GPIO_Pullup = GPIO_PullUp_EN;
+    gpio_config(&relay_cfg);
+
 	relaysstate = 0;
 	return;
 }
@@ -18,7 +22,7 @@ extern void setrelaystate(int newstate)
     taskENTER_CRITICAL();
 	relaysstate = newstate;
 	taskEXIT_CRITICAL();
-	GPIO_OUTPUT_SET(12, relaysstate);
+	GPIO_OUTPUT_SET(RELAY_PIN, relaysstate);
 	return;
 }
 

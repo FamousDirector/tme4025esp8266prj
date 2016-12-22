@@ -2,9 +2,19 @@
 
 extern int gettemperature(void)
 {
-	int rawvalue = system_adc_read();
+	//Set Mux
+	setmuxcontrol(MUXTEMPERATURE);
 
-	//TODO get an average
+	int sum = 0;
+	int iterations = 100;
+	int i ;
+	for (i= 0;i<=iterations;i++)
+	{
+		sum = sum + system_adc_read();
+		vTaskDelay (10/portTICK_RATE_MS);
+	}
 
-	return rawvalue*CONVERSIONFACTOR;
+	int rawvalue = sum/iterations*CONVERSIONFACTOR; 
+
+	return rawvalue;
 }
