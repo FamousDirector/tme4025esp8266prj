@@ -44,7 +44,6 @@ static void sendstatus_task (void *pvParameters)
         sprintf(power, (char *) POWER_TAG, getpower());
         strcat(status,power);
 
-
         char reply[128] = ""; 
         sprintf(reply, (char *) sendmessage(status));
 

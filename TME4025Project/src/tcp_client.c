@@ -63,7 +63,8 @@ void TcpClienSendCb(void* arg)
 
 void TcpRecvCb(void *arg, char *pdata, unsigned short len)
 {
-   struct espconn* tcp_server_local=arg;    
+   struct espconn* tcp_server_local=arg;  
+   DBG_LINES("TCP CLIENT RECIEVED");  
    DBG_PRINT("Recv tcp client ip:%d.%d.%d.%d port:%d len:%d\n",tcp_server_local->proto.tcp->remote_ip[0],
 		                                          tcp_server_local->proto.tcp->remote_ip[1],
 		                                          tcp_server_local->proto.tcp->remote_ip[2],
@@ -72,8 +73,10 @@ void TcpRecvCb(void *arg, char *pdata, unsigned short len)
 		                                          len);
    //USE PDATA TO GET THE REPLY
    // printf("I got raw:%s\n\r", pdata); //debug
+   taskENTER_CRITICAL();
    setreadfinishflag(1);
    setreplymessage((char *)pdata);
+   taskEXIT_CRITICAL();
 }
 void TcpReconnectCb(void *arg, sint8 err)
 {
@@ -106,24 +109,24 @@ int getsendfinishflag()
 void setreadfinishflag(int value)
 {
 	taskENTER_CRITICAL();
-	sendflag = value;
+	readflag = value;
 	taskEXIT_CRITICAL();
 }
 
 int getreadfinishflag()
 {
 	taskENTER_CRITICAL();
-	int value = sendflag;
+	int value = readflag;
 	taskEXIT_CRITICAL();
-	return sendflag;
+	return value;
 }
 
 static void setreplymessage(const char *message)
 {	
-	// printf("Set: %s\n\r", message); //debug
 	taskENTER_CRITICAL();
 	sprintf((char *) &replymessage,message);
 	taskEXIT_CRITICAL();
+	// printf("Set: %s\n\r", message); //debug
 }
 static char * getreplymessage(void) //TODO doesnt return correctly first time
 {
@@ -131,7 +134,7 @@ static char * getreplymessage(void) //TODO doesnt return correctly first time
 	taskENTER_CRITICAL();
 	sprintf(message, (char *) &replymessage);
 	taskEXIT_CRITICAL();
-	// printf("Here! %s\n\r", message);//debug
+	// printf("Get: %s\n\r", message);//debug
 	return message;
 }
 
@@ -142,7 +145,7 @@ void resetreplymessage(void)
 }
 
 
-char * TcpCreateClient(char *inputmessage)
+char * TcpCreateClient(char *inputmessage) //TODO handle getting disconnected
 { 
 	//Init
 	initTCPCient();
@@ -188,18 +191,17 @@ char * TcpCreateClient(char *inputmessage)
 	//Send Message
 	char * message = (char *) concat(inputmessage, (char *) END_OF_MESSAGE_TAG); //add end of message operator
 	espconn_send(&tcp_client,message,strlen(message));
-	free(message);
 
-	while(!getsendfinishflag())
+	while(getsendfinishflag() == 0)
 	{
-		vTaskDelay (250/portTICK_RATE_MS); 
+		vTaskDelay (10/portTICK_RATE_MS); 
 	}
 	setsendfinishflag(0); //reset flag
-	
-	while(!getreadfinishflag()) //wait until message is recieved
+
+	while(getreadfinishflag() == 0) //wait until message is recieved
 	{
 		//TODO check for being disconnected
-		vTaskDelay (250/portTICK_RATE_MS); 		
+		vTaskDelay (10/portTICK_RATE_MS); 		
 	}
 	setreadfinishflag(0); //reset flag
 
