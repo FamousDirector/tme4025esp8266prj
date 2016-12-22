@@ -47,11 +47,9 @@ void connecttowifi(void)
 	wifi_station_connect();
 }
 
-void sendmessage(char * message) //add a message to send
+char * sendmessage(char * message) //add a message to send
 {
 	//Parse Message
     char * reply = TcpCreateClient(message);
-
-    printf("I got this reply 2:%s\n\r", reply); //debug
 	return;
 }

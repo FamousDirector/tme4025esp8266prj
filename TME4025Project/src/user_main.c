@@ -67,7 +67,9 @@ void SendMessageTestTask (void *pvParameters)
     {
         // Delay reading
         vTaskDelay (10000/portTICK_RATE_MS);
-        sendmessage("Message: Reply to Me!\r\n"); 
+        char * reply = sendmessage("Message: Reply to Me!\r\n"); 
+
+        printf("I got this reply:%s\n\r", reply); //debug
     }
 }
 
@@ -75,7 +77,6 @@ void user_init(void)
    {
         printf("SDK version:%s\n", system_get_sdk_version());
         printf("HI JAMES THis is V4");
-
         
         /*Init*/
         //Configure Interrupts

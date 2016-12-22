@@ -6,17 +6,20 @@
 #include "esp_common.h"
 #include "espconn.h"
 
+#include "other_commands.h"
+
 //TCP CLIENT Config
 #define TCP_SERVER_IPADDRESS_0 192
 #define TCP_SERVER_IPADDRESS_1 168
 #define TCP_SERVER_IPADDRESS_2 2
 #define TCP_SERVER_IPADDRESS_3 182
-
-#define TCP_SERVER_REMOTE_PORT 6969
-
-#define TCP_CLIENT_GREETING "Hello!This is a tcp client test from the ESP8266\n"
+#define TCP_SERVER_REMOTE_PORT 8266
 
 #define TCP_CLIENT_KEEP_ALIVE_ENABLE 1
+
+#define END_OF_MESSAGE_TAG "<EOM>"
+#define EMPTY_MESSAGE_TAG "<EMPTY>"
+#define MAX_MESSAGE_SIZE 128
 
         #define TCP_CLIENT_KEEP_ALIVE_IDLE_S (10)
         #define TCP_CLIENT_RETRY_INTVL_S (5)
@@ -35,7 +38,7 @@
 #define DBG_LINES(v) os_printf("------------------%s---------------\n",v)
 
 //variables
-static char * replymessage;
+static char replymessage[MAX_MESSAGE_SIZE];
 
 //Init
 static void initTCPCient(void);
@@ -48,13 +51,11 @@ static void TcpRecvCb(void *arg, char *pdata, unsigned short len);
 static void TcpReconnectCb(void *arg, sint8 err);
 
 //Reply Handling
-static void setreplymessage(char *message);
+static void setreplymessage(const char *inputmessage);
 static char * getreplymessage(void);
+static void resetreplymessage(void);
 
 //External Functions
 extern char * TcpCreateClient(char *message);
-
-
-static
 
 #endif

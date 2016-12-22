@@ -15,6 +15,6 @@
 
 void wifi_handle_event_cb(System_Event_t *evt);
 void connecttowifi(void);
-void sendmessage(char * message);
+char * sendmessage(char * message); //returns the reply message
 
 #endif
