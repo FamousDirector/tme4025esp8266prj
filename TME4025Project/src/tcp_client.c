@@ -8,7 +8,8 @@ void initTCPCient(void)
 {
 	espconn_init();
 	resetreplymessage(); 
-
+	setsendfinishflag(0);
+	setreadfinishflag(0);
 	return;
 }
 
@@ -57,6 +58,7 @@ void TcpClienSendCb(void* arg)
 		                                          tcp_server_local->proto.tcp->remote_ip[3],
 		                                          tcp_server_local->proto.tcp->remote_port
 		                                          );
+	setsendfinishflag(1);
 }
 
 void TcpRecvCb(void *arg, char *pdata, unsigned short len)
@@ -70,6 +72,7 @@ void TcpRecvCb(void *arg, char *pdata, unsigned short len)
 		                                          len);
    //USE PDATA TO GET THE REPLY
    // printf("I got raw:%s\n\r", pdata); //debug
+   setreadfinishflag(1);
    setreplymessage((char *)pdata);
 }
 void TcpReconnectCb(void *arg, sint8 err)
@@ -83,6 +86,36 @@ void TcpReconnectCb(void *arg, sint8 err)
 		                                          tcp_server_local->proto.tcp->remote_ip[3],
 		                                          tcp_server_local->proto.tcp->remote_port\
 		                                          );
+}
+
+void setsendfinishflag(int value)
+{
+	taskENTER_CRITICAL();
+	sendflag = value;
+	taskEXIT_CRITICAL();
+}
+
+int getsendfinishflag()
+{
+	taskENTER_CRITICAL();
+	int value = sendflag;
+	taskEXIT_CRITICAL();
+	return sendflag;
+}
+
+void setreadfinishflag(int value)
+{
+	taskENTER_CRITICAL();
+	sendflag = value;
+	taskEXIT_CRITICAL();
+}
+
+int getreadfinishflag()
+{
+	taskENTER_CRITICAL();
+	int value = sendflag;
+	taskEXIT_CRITICAL();
+	return sendflag;
 }
 
 static void setreplymessage(const char *message)
@@ -144,24 +177,31 @@ char * TcpCreateClient(char *inputmessage)
 	espconn_regist_reconcb(&tcp_client,TcpReconnectCb);
 	espconn_regist_disconcb(&tcp_client,TcpClientDisConnectCb);
 	espconn_regist_sentcb(&tcp_client,TcpClienSendCb);
-	DBG_PRINT("tcp client connect server,server ip:%d.%d.%d.%d port:%d\n",tcp_client.proto.tcp->remote_ip[0],
-		                                          tcp_client.proto.tcp->remote_ip[1],
-		                                          tcp_client.proto.tcp->remote_ip[2],
-		                                          tcp_client.proto.tcp->remote_ip[3],
-		                                          tcp_client.proto.tcp->remote_port\
-		                                          );
+
+	espconn_regist_time(&tcp_client,60,0); //set timeout
+
 	espconn_connect(&tcp_client);
-	vTaskDelay (1000/portTICK_RATE_MS); //TODO look at espconn_regist_write_finish 
+
+	vTaskDelay (250/portTICK_RATE_MS); //wait to connect
+	//TODO improve wait
 	
 	//Send Message
 	char * message = (char *) concat(inputmessage, (char *) END_OF_MESSAGE_TAG); //add end of message operator
 	espconn_send(&tcp_client,message,strlen(message));
+	free(message);
+
+	while(!getsendfinishflag())
+	{
+		vTaskDelay (250/portTICK_RATE_MS); 
+	}
+	setsendfinishflag(0); //reset flag
 	
-	while(!strcmp(getreplymessage(),(char *) EMPTY_MESSAGE_TAG)) //wait until message is recieved
+	while(!getreadfinishflag()) //wait until message is recieved
 	{
 		//TODO check for being disconnected
 		vTaskDelay (250/portTICK_RATE_MS); 		
 	}
+	setreadfinishflag(0); //reset flag
 
 	char * reply = (char *) getreplymessage();
 
@@ -171,6 +211,8 @@ char * TcpCreateClient(char *inputmessage)
 
 	resetreplymessage(); //reset message	
 	espconn_disconnect(&tcp_client);
+
+	taskYIELD(); //get off the CPU
 
 	return reply;
 

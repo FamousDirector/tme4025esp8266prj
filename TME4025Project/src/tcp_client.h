@@ -19,11 +19,11 @@
 
 #define END_OF_MESSAGE_TAG "<EOM>"
 #define EMPTY_MESSAGE_TAG "<EMPTY>"
-#define MAX_MESSAGE_SIZE 128
+#define MAX_MESSAGE_SIZE 64
 
-        #define TCP_CLIENT_KEEP_ALIVE_IDLE_S (10)
-        #define TCP_CLIENT_RETRY_INTVL_S (5)
-        #define TCP_CLIENT_RETRYC_NT     (3)
+#define TCP_CLIENT_KEEP_ALIVE_IDLE_S (10)
+#define TCP_CLIENT_RETRY_INTVL_S (5)
+#define TCP_CLIENT_RETRYC_NT     (3)
 
 #define DBG_PRINT(fmt,...)	do{\
 	    os_printf("[Dbg]");\
@@ -39,23 +39,33 @@
 
 //variables
 static char replymessage[MAX_MESSAGE_SIZE];
+static int sendflag;
+static int readflag;
 
 //Init
-static void initTCPCient(void);
+static ICACHE_FLASH_ATTR void initTCPCient(void);
 
 //Callbacks
-static void TcpClientConnect(void*arg);
-static void TcpClientDisConnect(void* arg);
-static void TcpClienSendCb(void* arg);
-static void TcpRecvCb(void *arg, char *pdata, unsigned short len);
-static void TcpReconnectCb(void *arg, sint8 err);
+static ICACHE_FLASH_ATTR void TcpClientConnect(void*arg);
+static ICACHE_FLASH_ATTR void TcpClientDisConnect(void* arg);
+static ICACHE_FLASH_ATTR void TcpClienSendCb(void* arg);
+static ICACHE_FLASH_ATTR void TcpRecvCb(void *arg, char *pdata, unsigned short len);
+static ICACHE_FLASH_ATTR void TcpReconnectCb(void *arg, sint8 err);
+static ICACHE_FLASH_ATTR void TcpWriteFinishCb(void*arg);
+
+static ICACHE_FLASH_ATTR void setsendfinishflag(int value);
+static ICACHE_FLASH_ATTR int getsendfinishflag();
+
+static ICACHE_FLASH_ATTR void setreadfinishflag(int value);
+static ICACHE_FLASH_ATTR int getreadfinishflag();
+
 
 //Reply Handling
-static void setreplymessage(const char *inputmessage);
-static char * getreplymessage(void);
-static void resetreplymessage(void);
+static ICACHE_FLASH_ATTR void setreplymessage(const char *inputmessage);
+static ICACHE_FLASH_ATTR char * getreplymessage(void);
+static ICACHE_FLASH_ATTR void resetreplymessage(void);
 
 //External Functions
-extern char * TcpCreateClient(char *message);
+extern ICACHE_FLASH_ATTR char * TcpCreateClient(char *message);
 
 #endif

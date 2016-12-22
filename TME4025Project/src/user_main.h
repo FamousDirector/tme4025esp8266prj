@@ -13,7 +13,9 @@
 #include "tasks.h"
 #include "tcp_client.h"
 
- #define ICACHE_RAM_ATTR __attribute__((section(".iram0.text"))) //as per http://www.esp8266.com/viewtopic.php?f=6&t=3266
+#define UID "JAMESESP8266"
+
+#define ICACHE_RAM_ATTR __attribute__((section(".iram0.text"))) //as per http://www.esp8266.com/viewtopic.php?f=6&t=3266
 
 //added as per: http://bbs.espressif.com/viewtopic.php?t=2492
 uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void);

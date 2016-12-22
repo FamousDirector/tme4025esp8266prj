@@ -6,6 +6,7 @@
 #include <freertos/task.h>
 #include "gpio.h"
 
+#include <user_main.h>
 #include "button_interrupt.h"
 #include "mux_control.h"
 #include "relay_control.h"
@@ -16,17 +17,20 @@
 
 #define TEMPERATURE_LOW_VALUE 10 //CELSIUS
 
-#define SEND_STATUS_INTERVAL 10 //seconds
+#define SEND_STATUS_INTERVAL 5 //seconds
 #define CHECK_TEMPERATURE_INTERVAL 3 //seconds
 
 //Message Tags
 #define TEMPERATURE_TAG "<Temperature=%d>"
+#define POWER_TAG "<Power=%d>"
+#define RELAY_TAG "<Relay=%d>"
+#define UID_TAG "<UID=%s>"
 
 //Tasks
-static void checktemperature_task (void *pvParameters);
-static void sendstatus_task (void *pvParameters);
+static ICACHE_FLASH_ATTR void checktemperature_task (void *pvParameters);
+static ICACHE_FLASH_ATTR void sendstatus_task (void *pvParameters);
 
 //Start Tasks
-extern void StartTasks(void);
+extern ICACHE_FLASH_ATTR void StartTasks(void);
 
 #endif
