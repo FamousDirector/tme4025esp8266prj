@@ -69,7 +69,7 @@ void TcpRecvCb(void *arg, char *pdata, unsigned short len)
 		                                          tcp_server_local->proto.tcp->remote_port,
 		                                          len);
    //USE PDATA TO GET THE REPLY
-   //printf("I got raw:%s\n\r", pdata); //debug
+   // printf("I got raw:%s\n\r", pdata); //debug
    setreplymessage((char *)pdata);
 }
 void TcpReconnectCb(void *arg, sint8 err)
@@ -87,6 +87,7 @@ void TcpReconnectCb(void *arg, sint8 err)
 
 static void setreplymessage(const char *message)
 {	
+	// printf("Set: %s\n\r", message); //debug
 	taskENTER_CRITICAL();
 	sprintf((char *) &replymessage,message);
 	taskEXIT_CRITICAL();
@@ -97,7 +98,7 @@ static char * getreplymessage(void) //TODO doesnt return correctly first time
 	taskENTER_CRITICAL();
 	sprintf(message, (char *) &replymessage);
 	taskEXIT_CRITICAL();
-	//printf("Here! %s\n\r", message);
+	// printf("Here! %s\n\r", message);//debug
 	return message;
 }
 
