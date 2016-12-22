@@ -205,10 +205,6 @@ char * TcpCreateClient(char *inputmessage)
 
 	char * reply = (char *) getreplymessage();
 
-	//TODO ensure message is not garbage
-	//TODO do a proper handshake (maybe UID + 'recieved')
-   	//espconn_send(tcp_server_local,handshake,strlen(length)); //send back what was recieved
-
 	resetreplymessage(); //reset message	
 	espconn_disconnect(&tcp_client);
 

@@ -51,6 +51,10 @@ static void sendstatus_task (void *pvParameters)
         //TODO parse 'reply'
         //TODO use rely info to set variables
         printf("I got this reply:%s\n\r", reply); //debug
+
+
+        //TODO ensure message is not garbage
+        //TODO do a proper handshake (maybe UID + 'recieved')
         
     }
 }
