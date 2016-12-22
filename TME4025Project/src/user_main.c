@@ -80,7 +80,7 @@ void user_init(void)
         
         /*Init*/
         //Configure Interrupts
-        button_init();
+        initrelaybutton();
         //Configure WIFI
         connecttowifi();
         //Configure Relay

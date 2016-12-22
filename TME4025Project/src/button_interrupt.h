@@ -6,7 +6,9 @@
 #include <freertos/task.h>
 #include "gpio.h"
 
-static void intr_handler();
-extern void button_init(void);
+#define RELAY_BUTTON 14
+
+static void intr_handler(void);
+extern void initrelaybutton(void);
 
 #endif
