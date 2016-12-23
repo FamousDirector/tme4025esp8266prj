@@ -45,7 +45,7 @@ static int readflag;
 static int connectedflag;
 
 //Init
-static ICACHE_FLASH_ATTR void initTCPCient(void);
+extern ICACHE_FLASH_ATTR void initTCPCient(void);
 
 //Callbacks
 static ICACHE_FLASH_ATTR void TcpClientConnect(void*arg);

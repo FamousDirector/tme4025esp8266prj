@@ -37,7 +37,6 @@ uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void)
 void user_init(void)
    {
         printf("SDK version:%s\n", system_get_sdk_version());
-        printf("HI JAMES THis is V4");
         
         /*Init*/
         //Configure Interrupts
@@ -48,6 +47,8 @@ void user_init(void)
         initrelaycontrol();
         //Configure Mux
         initmuxcontrol();
+        //Setup WatchDog
+        system_soft_wdt_restart(); //TODO - ensure it works
  
         //Start Tasks
         StartTasks();

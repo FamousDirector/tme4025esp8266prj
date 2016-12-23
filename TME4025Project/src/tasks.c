@@ -65,5 +65,6 @@ static void sendstatus_task (void *pvParameters)
 extern void StartTasks(void)
 {
     xTaskCreate(sendstatus_task, (signed char *)"Status", 512, NULL, 2, NULL);
+
     xTaskCreate(checktemperature_task, (signed char *)"TempCheck", 128, NULL, 2, NULL);                   
 }

@@ -183,9 +183,6 @@ void resetreplymessage(void)
 
 char * TcpCreateClient(char *inputmessage) //TODO handle getting disconnected
 { 
-	//Init
-	initTCPCient();
-
 	uint8 con_status=wifi_station_get_connect_status();
 	while(con_status!=STATION_GOT_IP){
 		con_status=wifi_station_get_connect_status();
