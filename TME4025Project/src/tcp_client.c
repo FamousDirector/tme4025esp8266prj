@@ -92,10 +92,23 @@ void TcpReconnectCb(void *arg, sint8 err)
 		                                          tcp_server_local->proto.tcp->remote_ip[3],
 		                                          tcp_server_local->proto.tcp->remote_port\
 		                                          );
-	while(!getconnectedflag())
+	if(err == ESPCONN_ARG) //illegal argument
 	{
-		espconn_connect(tcp_server_local);
-		vTaskDelay (500/portTICK_RATE_MS); 
+		//just move on soemthing weird happened
+		setconnectedflag(0);
+	}
+	else if(err == ESPCONN_CONN)  //just a unconnected carry on
+	{
+		while(!getconnectedflag())
+		{
+			espconn_connect(tcp_server_local);
+			vTaskDelay (500/portTICK_RATE_MS); 
+		}
+	}
+	else
+	{
+		//just move on soemthing REALLY weird happened
+		setconnectedflag(0);
 	}
 }
 
