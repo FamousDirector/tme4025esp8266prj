@@ -47,13 +47,18 @@ static void sendstatus_task (void *pvParameters)
         char reply[128] = ""; 
         sprintf(reply, (char *) sendmessage(status));
 
-        //TODO parse 'reply'
-        //TODO use rely info to set variables
-        printf("I got this reply:%s\n\r", reply); //debug
-
-
-        //TODO ensure message is not garbage
-        //TODO do a proper handshake (maybe UID + 'recieved')
+        if(strcmp(reply,(char *) EMPTY_MESSAGE_TAG ) != 0) //make sure not an empty string
+        {            
+            printf("I got this reply:%s\n\r", reply); //debug
+            //TODO parse 'reply'
+            //TODO check for garbage
+            //TODO use rely info to set variables
+            //TODO do a proper handshake (maybe UID + 'recieved')
+        }
+        else //if empty reply
+        {
+            //do nothing
+        }   
         
     }
 }

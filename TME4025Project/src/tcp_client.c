@@ -10,6 +10,7 @@ void initTCPCient(void)
 	resetreplymessage(); 
 	setsendfinishflag(0);
 	setreadfinishflag(0);
+	setconnectedflag(0);
 	return;
 }
 
@@ -35,6 +36,7 @@ void TcpClientConnectCb(void*arg)
 		                                          tcp_server_local->proto.tcp->remote_ip[3],
 		                                          tcp_server_local->proto.tcp->remote_port
 		                                          );
+	setconnectedflag(1);
 	}
 
 void TcpClientDisConnectCb(void* arg)
@@ -47,6 +49,7 @@ void TcpClientDisConnectCb(void* arg)
 		                                          tcp_server_local->proto.tcp->remote_ip[3],
 		                                          tcp_server_local->proto.tcp->remote_port
 		                                          );
+	setconnectedflag(0);
 }
 void TcpClienSendCb(void* arg)
 {
@@ -89,6 +92,11 @@ void TcpReconnectCb(void *arg, sint8 err)
 		                                          tcp_server_local->proto.tcp->remote_ip[3],
 		                                          tcp_server_local->proto.tcp->remote_port\
 		                                          );
+	while(!getconnectedflag())
+	{
+		espconn_connect(tcp_server_local);
+		vTaskDelay (500/portTICK_RATE_MS); 
+	}
 }
 
 void setsendfinishflag(int value)
@@ -117,6 +125,21 @@ int getreadfinishflag()
 {
 	taskENTER_CRITICAL();
 	int value = readflag;
+	taskEXIT_CRITICAL();
+	return value;
+}
+
+void setconnectedflag(int value)
+{
+	taskENTER_CRITICAL();
+	connectedflag = value;
+	taskEXIT_CRITICAL();
+}
+
+int getconnectedflag()
+{
+	taskENTER_CRITICAL();
+	int value = connectedflag;
 	taskEXIT_CRITICAL();
 	return value;
 }
@@ -185,20 +208,23 @@ char * TcpCreateClient(char *inputmessage) //TODO handle getting disconnected
 
 	espconn_connect(&tcp_client);
 
-	vTaskDelay (250/portTICK_RATE_MS); //wait to connect
-	//TODO improve wait
+	while(!getconnectedflag())
+	{
+		vTaskDelay (10/portTICK_RATE_MS); 
+	}
+	setsendfinishflag(0); //reset flag
 	
 	//Send Message
 	char * message = (char *) concat(inputmessage, (char *) END_OF_MESSAGE_TAG); //add end of message operator
 	espconn_send(&tcp_client,message,strlen(message));
 
-	while(getsendfinishflag() == 0)
+	while(getsendfinishflag() == 0 && getconnectedflag())
 	{
 		vTaskDelay (10/portTICK_RATE_MS); 
 	}
 	setsendfinishflag(0); //reset flag
 
-	while(getreadfinishflag() == 0) //wait until message is recieved
+	while(getreadfinishflag() == 0 && getconnectedflag()) //wait until message is recieved
 	{
 		//TODO check for being disconnected
 		vTaskDelay (10/portTICK_RATE_MS); 		
@@ -207,8 +233,12 @@ char * TcpCreateClient(char *inputmessage) //TODO handle getting disconnected
 
 	char * reply = (char *) getreplymessage();
 
-	resetreplymessage(); //reset message	
-	espconn_disconnect(&tcp_client);
+	resetreplymessage(); //reset message
+
+	if(getconnectedflag())
+	{
+		espconn_disconnect(&tcp_client);
+	}	
 
 	taskYIELD(); //get off the CPU
 

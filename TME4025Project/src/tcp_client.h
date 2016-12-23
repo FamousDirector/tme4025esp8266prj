@@ -13,9 +13,10 @@
 #define TCP_SERVER_IPADDRESS_1 168
 #define TCP_SERVER_IPADDRESS_2 2
 #define TCP_SERVER_IPADDRESS_3 182
+
 #define TCP_SERVER_REMOTE_PORT 8266
 
-#define TCP_CLIENT_KEEP_ALIVE_ENABLE 1
+#define TCP_CLIENT_KEEP_ALIVE_ENABLE 0
 
 #define END_OF_MESSAGE_TAG "<EOM>\0"
 #define EMPTY_MESSAGE_TAG "<EMPTY>\0"
@@ -41,6 +42,7 @@
 static char replymessage[MAX_MESSAGE_SIZE];
 static int sendflag;
 static int readflag;
+static int connectedflag;
 
 //Init
 static ICACHE_FLASH_ATTR void initTCPCient(void);
@@ -58,6 +60,10 @@ static ICACHE_FLASH_ATTR int getsendfinishflag();
 
 static ICACHE_FLASH_ATTR void setreadfinishflag(int value);
 static ICACHE_FLASH_ATTR int getreadfinishflag();
+
+static ICACHE_FLASH_ATTR void setconnectedflag(int value);
+static ICACHE_FLASH_ATTR int getconnectedflag();
+
 
 
 //Reply Handling
