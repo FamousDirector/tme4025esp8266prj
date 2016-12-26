@@ -34,16 +34,23 @@ void wifi_handle_event_cb(System_Event_t *evt)
 
 void connecttowifi(void)
 {
-	wifi_set_opmode(STATIONAP_MODE);
+	wifi_set_opmode(STATION_MODE); 
 	struct station_config config;
 	memset(&config,0,sizeof(config));  //set value of config from address of &config to width of size to be value '0'
 	
+    //TODO: look at WPS - https://github.com/esp8266/Arduino/issues/1958
+    //look for button press (start a task?)
+    //would wait and check to look for the WPS being enabled on the router
+    //WPS will connect this device to the network
+    //get the SSID and password from wifi_station_get_config 
+    //store it to the flash with wifi_station_set_config
+
 	sprintf(config.ssid, AP_SSID);
 	sprintf(config.password, AP_PASSWORD);
 	
 	wifi_station_set_config(&config);         
 	
-	//wifi_set_event_handler_cb(wifi_handle_event_cb);
+	wifi_set_event_handler_cb(wifi_handle_event_cb);
 	wifi_station_connect();
 
     initTCPCient();

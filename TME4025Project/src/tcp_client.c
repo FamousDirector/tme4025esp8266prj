@@ -222,12 +222,12 @@ char * TcpCreateClient(char *inputmessage) //TODO handle getting disconnected
 
 	int waitcount = 0;
 
-	while(!getconnectedflag() && NUMBER_OF_TRIES > waitcount)
+	while(!getconnectedflag())
 	{
 		vTaskDelay (10/portTICK_RATE_MS); 
 		waitcount++;
 	}
-	setsendfinishflag(0); //reset flag
+	setconnectflag(0); //reset flag
 	
 	//Send Message
 	char * message = (char *) concat(inputmessage, (char *) END_OF_MESSAGE_TAG); //add end of message operator
