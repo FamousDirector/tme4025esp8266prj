@@ -218,9 +218,14 @@ char * TcpCreateClient(char *inputmessage) //TODO handle getting disconnected
 
 	espconn_connect(&tcp_client);
 
-	while(!getconnectedflag())
+	//TODO - try xTaskNotify() to signal the task
+
+	int waitcount = 0;
+
+	while(!getconnectedflag() && NUMBER_OF_TRIES > waitcount)
 	{
 		vTaskDelay (10/portTICK_RATE_MS); 
+		waitcount++;
 	}
 	setsendfinishflag(0); //reset flag
 	
