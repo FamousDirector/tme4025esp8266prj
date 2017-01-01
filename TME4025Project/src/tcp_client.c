@@ -227,7 +227,7 @@ char * TcpCreateClient(char *inputmessage) //TODO handle getting disconnected
 		vTaskDelay (10/portTICK_RATE_MS); 
 		waitcount++;
 	}
-	setconnectflag(0); //reset flag
+	setconnectedflag(0); //reset flag
 	
 	//Send Message
 	char * message = (char *) concat(inputmessage, (char *) END_OF_MESSAGE_TAG); //add end of message operator
