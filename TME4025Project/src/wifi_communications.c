@@ -14,6 +14,7 @@ void wifi_handle_event_cb(System_Event_t *evt)
              printf("disconnect from ssid %s, reason %d\n",
              evt->event_info.disconnected.ssid,
              evt->event_info.disconnected.reason);
+             setwificonnectedflag(0);
              break;
          case EVENT_STAMODE_AUTHMODE_CHANGE:
              printf("mode: %d -> %d\n",
@@ -26,11 +27,27 @@ void wifi_handle_event_cb(System_Event_t *evt)
              IP2STR(&evt->event_info.got_ip.mask),
              IP2STR(&evt->event_info.got_ip.gw));
              printf("\n");
+             setwificonnectedflag(1);
              break;
          default:
              break;
- }
+    }
 } 
+
+void setwificonnectedflag(int value)
+{
+    taskENTER_CRITICAL();
+    wificonnectedflag = value;
+    taskEXIT_CRITICAL();
+}
+
+int getwificonnectedflag()
+{
+    taskENTER_CRITICAL();
+    int value = wificonnectedflag;
+    taskEXIT_CRITICAL();
+    return value;
+}
 
 void connecttowifi(void)
 {

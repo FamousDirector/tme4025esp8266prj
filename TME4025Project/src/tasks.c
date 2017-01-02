@@ -58,13 +58,23 @@ static void sendstatus_task (void *pvParameters)
         else //if empty reply
         {
             //do nothing
-        }   
-        
+        }           
+    }
+}
+
+static void setupsystemtime_task (void *pvParameters)
+{      
+    long debugtime = 0;
+    while(1)
+    {
+        debugtime = gettime();
+        printf("Time %s\n\r", (char *) sntp_get_real_time(debugtime));
+        vTaskDelay (5*1000/portTICK_RATE_MS);
     }
 }
 extern void StartTasks(void)
 {
     xTaskCreate(sendstatus_task, (signed char *)"Status", 512, NULL, 2, NULL);
-
-    xTaskCreate(checktemperature_task, (signed char *)"TempCheck", 128, NULL, 2, NULL);                   
+    xTaskCreate(checktemperature_task, (signed char *)"TempCheck", 128, NULL, 2, NULL);
+    xTaskCreate(setupsystemtime_task, (signed char *)"SetupSysTime", 256, NULL, 2, NULL);  
 }

@@ -47,12 +47,9 @@ void user_init(void)
         initrelaycontrol();
         //Configure Mux
         initmuxcontrol();
-        //Configure SNTP for System Time
-        initsystemtime();
         //Setup WatchDog
         system_soft_wdt_restart(); //TODO - ensure it works
  
         //Start Tasks
-        StartTasks();
-        
+        StartTasks();        
     }

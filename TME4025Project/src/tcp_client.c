@@ -124,7 +124,7 @@ int getsendfinishflag()
 	taskENTER_CRITICAL();
 	int value = sendflag;
 	taskEXIT_CRITICAL();
-	return sendflag;
+	return value;
 }
 
 void setreadfinishflag(int value)

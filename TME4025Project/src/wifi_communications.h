@@ -10,10 +10,17 @@
 
 #include "tcp_client.h"
 
+//todo temporary
 #define AP_SSID "Cameron"
 #define AP_PASSWORD "allan111"
 
-void wifi_handle_event_cb(System_Event_t *evt);
+static int wificonnectedflag;
+
+static void setwificonnectedflag(int value);
+
+extern int getwificonnectedflag();
+
+static void wifi_handle_event_cb(System_Event_t *evt);
 void connecttowifi(void);
 char * sendmessage(char * message); //returns the reply message
 

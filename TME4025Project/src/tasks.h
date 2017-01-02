@@ -13,6 +13,7 @@
 #include "power_sensor.h"
 #include "temperature_sensor.h"
 #include "wifi_communications.h"
+#include "system_time.h"
 #include "tcp_client.h"
 
 #define TEMPERATURE_LOW_VALUE 10 //CELSIUS
@@ -29,6 +30,7 @@
 //Tasks
 static ICACHE_FLASH_ATTR void checktemperature_task (void *pvParameters);
 static ICACHE_FLASH_ATTR void sendstatus_task (void *pvParameters);
+static ICACHE_FLASH_ATTR void setupsystemtime_task (void *pvParameters);
 
 //Start Tasks
 extern ICACHE_FLASH_ATTR void StartTasks(void);

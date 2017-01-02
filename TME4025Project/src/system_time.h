@@ -9,6 +9,18 @@
 #include "freertos/queue.h"
 #include "lwip/apps/sntp.h"
 
-extern void initsystemtime();
+#include "wifi_communications.h"
+
+#define SNTP_SERVER "time-c.nist.gov"
+
+static int sntpflag;
+
+static void initsystemtime();
+static void setsntpflag(int value);
+static int getsntpflag();
+
+extern long gettime();
+
+extern void printtime(); //debug
 
 #endif
