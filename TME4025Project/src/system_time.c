@@ -27,6 +27,7 @@ uint32 gettime()
     {
         sntp_stop();
         initsystemtime();
+        vTaskDelay (250/portTICK_RATE_MS);
         mtime = gettime();
     }
 

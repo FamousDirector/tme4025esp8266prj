@@ -20,6 +20,6 @@
 //added as per: http://bbs.espressif.com/viewtopic.php?t=2492
 uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void);
 
-void ICACHE_FLASH_ATTR user_init(void);
+void user_init(void);
 
 #endif

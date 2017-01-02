@@ -16,13 +16,11 @@
 
 #define TCP_SERVER_REMOTE_PORT 8266
 
-#define TCP_CLIENT_KEEP_ALIVE_ENABLE 1
+#define END_OF_MESSAGE_TAG "<EOM>"
+#define EMPTY_MESSAGE_TAG "<EMPTY>"
+#define MAX_MESSAGE_SIZE 256
 
-#define NUMBER_OF_TRIES 1000
-
-#define END_OF_MESSAGE_TAG "<EOM>\0"
-#define EMPTY_MESSAGE_TAG "<EMPTY>\0"
-#define MAX_MESSAGE_SIZE 64
+#define TCP_CLIENT_KEEP_ALIVE_ENABLE 0
 
 #define TCP_CLIENT_KEEP_ALIVE_IDLE_S (10)
 #define TCP_CLIENT_RETRY_INTVL_S (5)
@@ -55,8 +53,8 @@ static ICACHE_FLASH_ATTR void TcpClientDisConnect(void* arg);
 static ICACHE_FLASH_ATTR void TcpClienSendCb(void* arg);
 static ICACHE_FLASH_ATTR void TcpRecvCb(void *arg, char *pdata, unsigned short len);
 static ICACHE_FLASH_ATTR void TcpReconnectCb(void *arg, sint8 err);
-static ICACHE_FLASH_ATTR void TcpWriteFinishCb(void*arg);
 
+//get&sets
 static ICACHE_FLASH_ATTR void setsendfinishflag(int value);
 static ICACHE_FLASH_ATTR int getsendfinishflag();
 
@@ -65,8 +63,6 @@ static ICACHE_FLASH_ATTR int getreadfinishflag();
 
 static ICACHE_FLASH_ATTR void setconnectedflag(int value);
 static ICACHE_FLASH_ATTR int getconnectedflag();
-
-
 
 //Reply Handling
 static ICACHE_FLASH_ATTR void setreplymessage(const char *inputmessage);

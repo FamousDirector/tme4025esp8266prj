@@ -17,9 +17,7 @@
 static int wificonnectedflag;
 
 static ICACHE_FLASH_ATTR void setwificonnectedflag(int value);
-
 extern ICACHE_FLASH_ATTR int getwificonnectedflag();
-
 static ICACHE_FLASH_ATTR void wifi_handle_event_cb(System_Event_t *evt);
 extern ICACHE_FLASH_ATTR void connecttowifi(void);
 extern ICACHE_FLASH_ATTR char * sendmessage(char * message); //returns the reply message

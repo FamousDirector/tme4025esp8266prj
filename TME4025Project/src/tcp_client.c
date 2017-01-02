@@ -97,7 +97,7 @@ void TcpReconnectCb(void *arg, sint8 err)
 		//just move on soemthing weird happened
 		setconnectedflag(0);
 	}
-	else if(err == ESPCONN_CONN)  //just a unconnected carry on
+	else if(err == ESPCONN_CONN)  //just a unconnected, carry on
 	{
 		while(!getconnectedflag())
 		{
@@ -107,7 +107,7 @@ void TcpReconnectCb(void *arg, sint8 err)
 	}
 	else
 	{
-		//just move on soemthing REALLY weird happened
+		//just move on something REALLY weird happened
 		setconnectedflag(0);
 	}
 }
@@ -214,23 +214,22 @@ char * TcpCreateClient(char *inputmessage) //TODO handle getting disconnected
 	espconn_regist_disconcb(&tcp_client,TcpClientDisConnectCb);
 	espconn_regist_sentcb(&tcp_client,TcpClienSendCb);
 
+	espconn_set_opt(&tcp_client,BIT(1));//disable nagle algorithm during TCP data transmission
+	espconn_set_opt(&tcp_client,BIT(0));//free memory after TCP disconnection happen need not wait 2 minutes
+
 	espconn_regist_time(&tcp_client,60,0); //set timeout
 
 	espconn_connect(&tcp_client);
 
 	//TODO - try xTaskNotify() to signal the task
 
-	int waitcount = 0;
-
-	while(!getconnectedflag())
+	while(getconnectedflag() == 0)
 	{
 		vTaskDelay (10/portTICK_RATE_MS); 
-		waitcount++;
 	}
-	setconnectedflag(0); //reset flag
-	
 	//Send Message
 	char * message = (char *) concat(inputmessage, (char *) END_OF_MESSAGE_TAG); //add end of message operator
+
 	espconn_send(&tcp_client,message,strlen(message));
 
 	while(getsendfinishflag() == 0 && getconnectedflag())
