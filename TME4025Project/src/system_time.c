@@ -2,8 +2,6 @@
 
 void initsystemtime()
 {
-    setsntpflag(0);
-
     while (getwificonnectedflag() == 0)
     {
         vTaskDelay (250/portTICK_RATE_MS); //TODO wait for AP to be connected 
@@ -17,38 +15,20 @@ void initsystemtime()
     {
         vTaskDelay (100/portTICK_RATE_MS); //TODO wait for AP to be connected 
     }
-    setsntpflag(1);
-}
-void setsntpflag(int value)
-{
-    taskENTER_CRITICAL();
-    sntpflag = value;
-    taskEXIT_CRITICAL();
 }
 
-int getsntpflag()
+uint32 gettime()
 {
-    taskENTER_CRITICAL();
-    int value = sntpflag;
-    taskEXIT_CRITICAL();
-    return value;
-}
-
-long gettime()
-{
-    long mtime;
-
-    initsystemtime();
-
-    while (getsntpflag() == 0)
-    {
-        vTaskDelay (100/portTICK_RATE_MS); //TODO wait for AP to be connected 
-    }
+    uint32 mtime;
 
     mtime = sntp_get_current_timestamp();
 
-    sntp_stop();
-    setsntpflag(0);
+    if (mtime == 0) //make sure sntp is getting good data
+    {
+        sntp_stop();
+        initsystemtime();
+        mtime = gettime();
+    }
 
     return mtime;
 }

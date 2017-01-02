@@ -15,12 +15,9 @@
 
 static int sntpflag;
 
-static void initsystemtime();
-static void setsntpflag(int value);
-static int getsntpflag();
+static ICACHE_FLASH_ATTR void initsystemtime();
 
-extern long gettime();
-
-extern void printtime(); //debug
+extern ICACHE_FLASH_ATTR uint32 gettime(); // Get the current timestamp as an unsigned 32 bit value representing the number of seconds since January 1st 1970 UTC.
+extern ICACHE_FLASH_ATTR void printtime(); //debug
 
 #endif
