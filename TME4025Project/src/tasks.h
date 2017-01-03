@@ -28,12 +28,18 @@
 #define RELAY_TAG "<Relay=%d>"
 #define UID_TAG "<UID=%s>"
 
+#define OPEN_MESSAGE_CHAR '<'
+#define MESSAGE_DIVIDER_CHAR '='
+#define CLOSE_MESSAGE_CHAR '>'
+
 //Tasks
 static ICACHE_FLASH_ATTR void checktemperature_task (void *pvParameters);
-static ICACHE_FLASH_ATTR void sendstatus_task (void *pvParameters);
-static ICACHE_FLASH_ATTR void setupsystemtime_task (void *pvParameters);
+static void sendstatus_task (void *pvParameters);
+
+//Task Function
+static ICACHE_FLASH_ATTR void parsemessage (char message[256]);
 
 //Start Tasks
-extern ICACHE_FLASH_ATTR void StartTasks(void);
+extern void StartTasks(void);
 
 #endif

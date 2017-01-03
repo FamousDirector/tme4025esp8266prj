@@ -223,9 +223,12 @@ char * TcpCreateClient(char *inputmessage) //TODO handle getting disconnected
 
 	//TODO - try xTaskNotify() to signal the task
 
-	while(getconnectedflag() == 0)
+	int count = 0;
+
+	while(getconnectedflag() == 0 && count<RETRYCOUNT)
 	{
 		vTaskDelay (10/portTICK_RATE_MS); 
+		count ++;
 	}
 	//Send Message
 	char * message = (char *) concat(inputmessage, (char *) END_OF_MESSAGE_TAG); //add end of message operator

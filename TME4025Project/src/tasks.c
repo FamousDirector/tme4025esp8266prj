@@ -44,16 +44,13 @@ static void sendstatus_task (void *pvParameters)
         sprintf(power, (char *) POWER_TAG, getpower());
         strcat(status,power);
 
-        char reply[128] = ""; 
+        //Send Message
+        char reply[256] = ""; 
         sprintf(reply, (char *) sendmessage(status));
 
         if(strcmp(reply,(char *) EMPTY_MESSAGE_TAG ) != 0) //make sure not an empty string
         {            
-            printf("I got this reply:%s\n\r", reply); //debug
-            //TODO parse 'reply'
-            //TODO check for garbage
-            //TODO use rely info to set variables
-            //TODO do a proper handshake (maybe UID + 'recieved')
+            parsemessage(reply);
         }
         else //if empty reply
         {
@@ -62,19 +59,58 @@ static void sendstatus_task (void *pvParameters)
     }
 }
 
-static void setupsystemtime_task (void *pvParameters)
-{      
-    long debugtime = 0;
-    while(1)
-    {
-        debugtime = gettime();
-        printf("Time %s\n\r", (char *) sntp_get_real_time(debugtime));
-        vTaskDelay (5*1000/portTICK_RATE_MS);
-    }
+static ICACHE_FLASH_ATTR void parsemessage (char message[256])
+{
+    char dataidentifier[16] = ""; //identifies data
+    char datavaluestring[65] = ""; //value of data
+
+    int i;
+    int j;
+    int k;
+
+    int messagelength = strlen(message);
+
+    //parse message
+    for(i=0; i<=messagelength; i++) {
+            if(message[i] == OPEN_MESSAGE_CHAR ) //start of message found
+            {                
+                for(j=i+1; j<=messagelength; j++) 
+                {
+                    if (message[j] == MESSAGE_DIVIDER_CHAR ) //found end of divider
+                    {
+                        break;
+                    } 
+                }
+                memcpy( dataidentifier, &message[i+1], j-i-1 );  
+                dataidentifier[j-i-1] = '\0'; //end string
+
+                for(k=j+1; k<=messagelength; k++) 
+                {
+                    if (message[k] == CLOSE_MESSAGE_CHAR ) //found end of message
+                    {
+                        break;
+                    } 
+                }
+                 memcpy( datavaluestring, &message[j+1], k-j-1 );
+                datavaluestring[k-j-1] = '\0'; //end string
+
+
+                //DEBUG              
+                printf("Identifier: %s\n", dataidentifier);
+                printf("Value: %s\n", datavaluestring);
+            }            
+        }
+
+    //use reply info to set variables
+    //get current time
+    uint32 currenttime = gettime();
+    printf("Now: %s\n\r", (char *) sntp_get_real_time(currenttime)); //debug
+
+    //TODO do a proper handshake (maybe UID + 'recieved')
 }
+
 extern void StartTasks(void)
 {
     xTaskCreate(sendstatus_task, (signed char *)"Status", 512, NULL, 2, NULL);
-    xTaskCreate(checktemperature_task, (signed char *)"TempCheck", 128, NULL, 2, NULL);
-    xTaskCreate(setupsystemtime_task, (signed char *)"SetupSysTime", 256, NULL, 2, NULL);  
+    xTaskCreate(checktemperature_task, (signed char *)"TempCheck", 128, NULL, 2, NULL); 
 }

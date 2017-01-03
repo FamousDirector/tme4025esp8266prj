@@ -13,7 +13,7 @@ void initsystemtime()
 
     while (sntp_get_current_timestamp() == 0)
     {
-        vTaskDelay (100/portTICK_RATE_MS); //TODO wait for AP to be connected 
+        vTaskDelay (1000/portTICK_RATE_MS); //TODO wait for sntp to be set up 
     }
 }
 

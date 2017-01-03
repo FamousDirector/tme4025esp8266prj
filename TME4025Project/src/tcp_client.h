@@ -20,11 +20,13 @@
 #define EMPTY_MESSAGE_TAG "<EMPTY>"
 #define MAX_MESSAGE_SIZE 256
 
-#define TCP_CLIENT_KEEP_ALIVE_ENABLE 0
+#define TCP_CLIENT_KEEP_ALIVE_ENABLE 1
 
 #define TCP_CLIENT_KEEP_ALIVE_IDLE_S (10)
 #define TCP_CLIENT_RETRY_INTVL_S (5)
 #define TCP_CLIENT_RETRYC_NT     (3)
+
+#define RETRYCOUNT 20000
 
 #define DBG_PRINT(fmt,...)	do{\
 	    os_printf("[Dbg]");\
