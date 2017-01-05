@@ -181,7 +181,7 @@ void resetreplymessage(void)
 }
 
 
-char * TcpCreateClient(char *inputmessage) //TODO handle getting disconnected
+char * TcpCreateClient(char *inputmessage) 
 { 
 	uint8 con_status=wifi_station_get_connect_status();
 	while(con_status!=STATION_GOT_IP){
@@ -230,6 +230,7 @@ char * TcpCreateClient(char *inputmessage) //TODO handle getting disconnected
 		vTaskDelay (10/portTICK_RATE_MS); 
 		count ++;
 	}
+	
 	//Send Message
 	char * message = (char *) concat(inputmessage, (char *) END_OF_MESSAGE_TAG); //add end of message operator
 

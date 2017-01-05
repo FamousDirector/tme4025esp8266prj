@@ -3,7 +3,7 @@
 extern void intr_handler() 
 {    
     u32 gpio_status = GPIO_REG_READ(GPIO_STATUS_ADDRESS);
-    gpio_pin_intr_state_set(GPIO_ID_PIN(RELAY_BUTTON) , GPIO_PIN_INTR_DISABLE);
+    gpio_pin_intr_state_set(GPIO_ID_PIN(RELAY_BUTTON) , GPIO_PIN_INTR_DISABLE); //disable interrupt
     GPIO_REG_WRITE(GPIO_STATUS_W1TC_ADDRESS, gpio_status & BIT(RELAY_BUTTON) );
 
     portENTER_CRITICAL();
@@ -13,12 +13,12 @@ extern void intr_handler()
     while(i< 5/portTICK_RATE_MS){i++;}  
 
     //Task to do
-    printf("Button press!\r\n");
+    printf("Button press!\r\n"); //debug
     invertrelaystate();
   
     portEXIT_CRITICAL();
 
-    gpio_pin_intr_state_set(GPIO_ID_PIN(RELAY_BUTTON) ,GPIO_PIN_INTR_NEGEDGE);
+    gpio_pin_intr_state_set(GPIO_ID_PIN(RELAY_BUTTON) ,GPIO_PIN_INTR_NEGEDGE); //enable interrupt
 }
 
 extern void initrelaybutton(void)

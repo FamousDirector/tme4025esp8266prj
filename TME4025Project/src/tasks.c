@@ -46,7 +46,7 @@ static void sendstatus_task (void *pvParameters)
 
         //Send Message
         char reply[256] = ""; 
-        sprintf(reply, (char *) sendmessage(status));
+        sprintf(reply, (char *) sendmessage(status)); //sends and recieves a message
 
         if(strcmp(reply,(char *) EMPTY_MESSAGE_TAG ) != 0) //make sure not an empty string
         {            
@@ -63,7 +63,8 @@ static ICACHE_FLASH_ATTR void parsemessage (char message[256])
 {
     char dataidentifier[16] = ""; //identifies data
     char datavaluestring[65] = ""; //value of data
-
+    
+    //for fors
     int i;
     int j;
     int k;
