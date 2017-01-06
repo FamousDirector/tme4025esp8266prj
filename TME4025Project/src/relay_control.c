@@ -1,7 +1,6 @@
 #include "relay_control.h"
-#include "button_interrupt.h"
 
-extern void initrelaycontrol()
+extern void initrelaycontrol(void)
 {
 	printf("Init Relay\r\n");
     GPIO_ConfigTypeDef relay_cfg;
@@ -26,7 +25,7 @@ extern void setrelaystate(int newstate)
 	return;
 }
 
-extern int getrelaystate()
+extern int getrelaystate(void)
 {
 	taskENTER_CRITICAL();
 	int newstate = relaysstate;

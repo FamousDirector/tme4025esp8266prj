@@ -99,11 +99,7 @@ void TcpReconnectCb(void *arg, sint8 err)
 	}
 	else if(err == ESPCONN_CONN)  //just a unconnected, carry on
 	{
-		while(!getconnectedflag())
-		{
-			espconn_connect(tcp_server_local);
-			vTaskDelay (500/portTICK_RATE_MS); 
-		}
+		setconnectedflag(0); //just move on
 	}
 	else
 	{

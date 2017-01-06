@@ -19,7 +19,7 @@
 
 #define TEMPERATURE_LOW_VALUE 10 //CELSIUS
 
-#define SEND_STATUS_INTERVAL 5 //seconds
+#define SEND_STATUS_INTERVAL 15 //seconds
 #define CHECK_TEMPERATURE_INTERVAL 3 //seconds
 
 //Message Tags

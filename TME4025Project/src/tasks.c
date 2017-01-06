@@ -10,7 +10,7 @@ static void checktemperature_task (void *pvParameters)
         //Temperature Check
         if(TEMPERATURE_LOW_VALUE>gettemperature())
         {
-            setrelaystate(1);
+            setrelaystate(RELAY_ON);
         }
     } //end while
 }
@@ -73,40 +73,44 @@ static ICACHE_FLASH_ATTR void parsemessage (char message[256])
 
     //parse message
     for(i=0; i<=messagelength; i++) {
-            if(message[i] == OPEN_MESSAGE_CHAR ) //start of message found
-            {                
-                for(j=i+1; j<=messagelength; j++) 
+        if(message[i] == OPEN_MESSAGE_CHAR ) //start of message found
+        {                
+            for(j=i+1; j<=messagelength; j++) 
+            {
+                if (message[j] == MESSAGE_DIVIDER_CHAR ) //found end of divider
                 {
-                    if (message[j] == MESSAGE_DIVIDER_CHAR ) //found end of divider
-                    {
-                        break;
-                    } 
-                }
-                memcpy( dataidentifier, &message[i+1], j-i-1 );  
-                dataidentifier[j-i-1] = '\0'; //end string
+                    break;
+                } 
+            }
+            memcpy( dataidentifier, &message[i+1], j-i-1 );  
+            dataidentifier[j-i-1] = '\0'; //end string
 
-                for(k=j+1; k<=messagelength; k++) 
+            for(k=j+1; k<=messagelength; k++) 
+            {
+                if (message[k] == CLOSE_MESSAGE_CHAR ) //found end of message
                 {
-                    if (message[k] == CLOSE_MESSAGE_CHAR ) //found end of message
-                    {
-                        break;
-                    } 
-                }
-                 memcpy( datavaluestring, &message[j+1], k-j-1 );
-                datavaluestring[k-j-1] = '\0'; //end string
+                    break;
+                } 
+            }
+             memcpy( datavaluestring, &message[j+1], k-j-1 );
+            datavaluestring[k-j-1] = '\0'; //end string
 
+            //DEBUG              
+            // printf("Identifier: %s\n", dataidentifier);
+            // printf("Value: %s\n", datavaluestring);
 
-                //DEBUG              
-                printf("Identifier: %s\n", dataidentifier);
-                printf("Value: %s\n", datavaluestring);
-            }            
-        }
-
-    //use reply info to set variables
-    //get current time
-    uint32 currenttime = gettime();
-    printf("Now: %s\n\r", (char *) sntp_get_real_time(currenttime)); //debug
-
+            //Handle Messages (cant use switch case statement)
+            if (strcmp(dataidentifier, "TimeOn") == 0) 
+            {
+                SetOnTime((char *)datavaluestring);
+            }
+            else if (strcmp(dataidentifier, "TimeOff") == 0) 
+            {
+                SetOffTime((char *)datavaluestring);
+            }
+            
+        }            
+    }
     //TODO do a proper handshake (maybe UID + 'recieved')
 }
 

@@ -10,3 +10,12 @@ extern char * concat(const char *s1, const char *s2)
     memcpy(result+len1, s2, len2+1);//+1 to copy the null-terminator
     return result;
 }
+
+extern uint32_t chartouint32(char *s)
+{
+    // printf("Value: %s\n", s); //debug
+	uint32_t value;
+    sscanf(s, "%d", &value);
+
+	return value;
+}
