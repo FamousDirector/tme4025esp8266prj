@@ -23,7 +23,12 @@
 
 static int sntpflag;
 
-static ICACHE_FLASH_ATTR void initsystemtime(void);
+static uint32_t lastontimer;
+static uint32_t lastofftimer;
+
+extern ICACHE_FLASH_ATTR void initsystemtimers(void);
+
+static ICACHE_FLASH_ATTR void initsntp(void);
 
 static ICACHE_FLASH_ATTR uint32_t gettime(void); // Get the current timestamp as an unsigned 32 bit value representing the number of seconds since January 1st 1970 UTC.
 static ICACHE_FLASH_ATTR void printtime(void); //debug
@@ -35,6 +40,13 @@ static ICACHE_FLASH_ATTR void ontimercallback();
 static ICACHE_FLASH_ATTR void offtimercallback();
 
 static ICACHE_FLASH_ATTR int checktimersset(uint32_t value, int state);
+
+static void setlasttimeronsettime(uint32_t timer);
+static uint32_t getlasttimeronsettime(void);
+
+static void setlasttimeroffsettime(uint32_t timer);
+static uint32_t getlasttimeroffsettime(void);
+
 
 
 

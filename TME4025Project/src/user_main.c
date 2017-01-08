@@ -51,5 +51,6 @@ void user_init(void)
         system_soft_wdt_restart(); //TODO - ensure it works
  
         //Start Tasks
-        StartTasks();        
+        StartTasks();  
+   
     }

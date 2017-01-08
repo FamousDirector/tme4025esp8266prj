@@ -1,7 +1,16 @@
 #include "system_time.h"
 
-void initsystemtime()
+void initsystemtimers(void)
 {
+    //INIT Vars
+    setlasttimeronsettime(0);
+    setlasttimeroffsettime(0);
+
+}
+
+void initsntp()
+{
+    //Ensure connected to WIFI
     while (getwificonnectedflag() == 0)
     {
         vTaskDelay (250/portTICK_RATE_MS); //TODO wait for AP to be connected 
@@ -26,7 +35,7 @@ uint32_t gettime()
     if (mtime == 0) //make sure sntp is getting good data
     {
         sntp_stop();
-        initsystemtime();
+        initsntp();
         vTaskDelay (250/portTICK_RATE_MS);
         mtime = gettime();
     }
@@ -48,7 +57,7 @@ void SetOnTime(char * value)
         {
             uint32_t timeinticks = (inputtime - gettime())*1000/portTICK_RATE_MS;
             xTimerStart(xTimerCreate("OnTimer",timeinticks,pdFALSE, (void *) 0, ontimercallback),0);
-            printf("Setting timer for turning on relay\n\r"); //debug 
+            printf("Setting timer for turning on relay: %u\n\r",timeinticks); //debug 
         }
         else //time has been missed
         {
@@ -66,7 +75,7 @@ void SetOffTime(char * value)
         {
             uint32_t timeinticks = (inputtime - gettime())*1000/portTICK_RATE_MS;
             xTimerStart(xTimerCreate("OffTimer",timeinticks,pdFALSE, (void *) 0, offtimercallback),0);
-            printf("Setting timer for turning off relay\n\r"); //debug     
+            printf("Setting timer for turning on relay: %u\n\r",timeinticks); //debug     
         }
         else //time has been missed
         {
@@ -86,7 +95,55 @@ void offtimercallback()
 
 int checktimersset(uint32_t value, int state)
 {
-    //TODO
-    return 1;
+    if(state == RELAY_ON)
+    {
+        if(value>getlasttimeronsettime())
+        {
+            setlasttimeronsettime(value);
+            return 1;
+        }
+    }
+    else if(state == RELAY_OFF)
+    {
+        if(value>getlasttimeroffsettime())
+        {
+            setlasttimeroffsettime(value);
+            return 1;
+        }        
+    }
+    
+    //if no conditions are met
+    return 0;    
 }
+
+void setlasttimeronsettime(uint32_t timer)
+{
+    taskENTER_CRITICAL();
+    lastontimer = timer;
+    taskEXIT_CRITICAL();
+    return;
+}
+uint32_t getlasttimeronsettime(void)
+{
+    taskENTER_CRITICAL();
+    uint32_t timer = lastontimer;
+    taskEXIT_CRITICAL();
+    return timer;
+}
+
+static void setlasttimeroffsettime(uint32_t timer)
+{
+    taskENTER_CRITICAL();
+    lastofftimer = timer;
+    taskEXIT_CRITICAL();
+    return;
+}
+static uint32_t getlasttimeroffsettime(void)
+{
+    taskENTER_CRITICAL();
+    uint32_t timer = lastofftimer;
+    taskEXIT_CRITICAL();
+    return timer;
+}
+
 
