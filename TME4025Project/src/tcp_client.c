@@ -95,15 +95,18 @@ void TcpReconnectCb(void *arg, sint8 err)
 	if(err == ESPCONN_ARG) //illegal argument
 	{
 		//just move on soemthing weird happened
+		espconn_disconnect(tcp_server_local);
 		setconnectedflag(0);
 	}
 	else if(err == ESPCONN_CONN)  //just a unconnected, carry on
 	{
+		espconn_disconnect(tcp_server_local);
 		setconnectedflag(0); //just move on
 	}
 	else
 	{
 		//just move on something REALLY weird happened
+		espconn_disconnect(tcp_server_local);
 		setconnectedflag(0);
 	}
 }
