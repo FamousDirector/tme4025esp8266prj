@@ -108,6 +108,17 @@ static ICACHE_FLASH_ATTR void parsemessage (char message[256])
             {
                 SetOffTime((char *)datavaluestring);
             }
+            else if (strcmp(dataidentifier, "RelayState") == 0) 
+            {
+                if (strcmp(datavaluestring, "ON") == 0) 
+                {
+                    setrelaystate(RELAY_ON);
+                }
+                else if (strcmp(datavaluestring, "OFF") == 0) 
+                {
+                    setrelaystate(RELAY_OFF);                    
+                }
+            }
             
         }            
     }
@@ -116,6 +127,6 @@ static ICACHE_FLASH_ATTR void parsemessage (char message[256])
 
 extern void StartTasks(void)
 {
-    xTaskCreate(sendstatus_task, (signed char *)"Status", 512, NULL, 2, NULL);
+    xTaskCreate(sendstatus_task, (signed char *)"Status", 1024, NULL, 2, NULL);
     xTaskCreate(checktemperature_task, (signed char *)"TempCheck", 128, NULL, 2, NULL); 
 }
