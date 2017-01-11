@@ -26,7 +26,7 @@
 #define TCP_CLIENT_RETRY_INTVL_S (5)
 #define TCP_CLIENT_RETRYC_NT     (3)
 
-#define RETRYCOUNT 20000
+#define RETRYCOUNT 2000
 
 #define DBG_PRINT(fmt,...)	do{\
 	    os_printf("[Dbg]");\
