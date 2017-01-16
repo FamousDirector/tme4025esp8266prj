@@ -19,8 +19,8 @@
 
 #define TEMPERATURE_LOW_VALUE 10 //CELSIUS
 
-#define SEND_STATUS_INTERVAL 15 //seconds
-#define CHECK_TEMPERATURE_INTERVAL 3 //seconds
+#define SEND_STATUS_INTERVAL 300 //seconds
+#define CHECK_TEMPERATURE_INTERVAL 10 //seconds
 
 //Message Tags
 #define TEMPERATURE_TAG "<Temperature=%d>"
@@ -35,6 +35,7 @@
 //Tasks
 static ICACHE_FLASH_ATTR void checktemperature_task (void *pvParameters);
 static void sendstatus_task (void *pvParameters);
+static void tempandpowerreaddebug_task (void *pvParameters);
 
 //Task Function
 static ICACHE_FLASH_ATTR void parsemessage (char message[256]);
