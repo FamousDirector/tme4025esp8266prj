@@ -1,5 +1,7 @@
 #include "system_time.h"
 
+//TODO: Idea... only implement new schedule after the old one has been completed. Band-aid fix for no timer control
+
 void initsystemtimers(void)
 {
     //INIT Vars

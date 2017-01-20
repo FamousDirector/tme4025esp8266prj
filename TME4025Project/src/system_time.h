@@ -41,11 +41,11 @@ static ICACHE_FLASH_ATTR void offtimercallback();
 
 static ICACHE_FLASH_ATTR int checktimersset(uint32_t value, int state);
 
-static void setlasttimeronsettime(uint32_t timer);
-static uint32_t getlasttimeronsettime(void);
+static ICACHE_FLASH_ATTR void setlasttimeronsettime(uint32_t timer);
+static ICACHE_FLASH_ATTR uint32_t getlasttimeronsettime(void);
 
-static void setlasttimeroffsettime(uint32_t timer);
-static uint32_t getlasttimeroffsettime(void);
+static ICACHE_FLASH_ATTR void setlasttimeroffsettime(uint32_t timer);
+static ICACHE_FLASH_ATTR uint32_t getlasttimeroffsettime(void);
 
 
 
