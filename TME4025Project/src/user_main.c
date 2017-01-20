@@ -41,12 +41,15 @@ void user_init(void)
         /*Init*/
         //Configure Interrupts
         initrelaybutton();
-        //Configure WIFI
-        connecttowifi();
         //Configure Relay
         initrelaycontrol();
         //Configure Mux
         initmuxcontrol();
+        //Configure WPS
+        initwpsbutton();
+        //Configure WIFI
+        connecttowifi();
+
         //Setup WatchDog
         system_soft_wdt_restart(); //TODO - ensure it works
  
