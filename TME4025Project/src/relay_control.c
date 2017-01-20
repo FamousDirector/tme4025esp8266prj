@@ -39,3 +39,14 @@ extern void invertrelaystate(void)
     setrelaystate(!state);
     return;
 }
+
+
+extern void initrelaybutton(void)
+{
+    GPIO_ConfigTypeDef relay_button_cfg;
+    relay_button_cfg.GPIO_Pin  = BIT(RELAY_BUTTON);
+    relay_button_cfg.GPIO_IntrType = GPIO_PIN_INTR_NEGEDGE;
+    relay_button_cfg.GPIO_Mode = GPIO_Mode_Input;
+    relay_button_cfg.GPIO_Pullup = GPIO_PullUp_EN;
+    gpio_config(&relay_button_cfg);
+}

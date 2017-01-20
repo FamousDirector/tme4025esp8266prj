@@ -40,13 +40,11 @@ void user_init(void)
         
         /*Init*/
         //Configure Interrupts
-        initrelaybutton();
+        initinterrupts();
         //Configure Relay
         initrelaycontrol();
         //Configure Mux
         initmuxcontrol();
-        //Configure WPS
-        initwpsbutton();
         //Configure WIFI
         connecttowifi();
 

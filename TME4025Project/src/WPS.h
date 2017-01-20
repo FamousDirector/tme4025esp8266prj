@@ -6,9 +6,10 @@
 #include <freertos/task.h>
 #include "gpio.h"
 
-#define WPS_BUTTON 15
+#define WPS_BUTTON 4
 
-static ICACHE_FLASH_ATTR void wps_intr_handler(void);
 extern ICACHE_FLASH_ATTR void initwpsbutton(void);
+
+extern ICACHE_FLASH_ATTR void beginWPS(void);
 
 #endif

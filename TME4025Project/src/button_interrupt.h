@@ -6,9 +6,11 @@
 #include <freertos/task.h>
 #include "gpio.h"
 
-#define RELAY_BUTTON 14
+#include "WPS.h"
+#include "relay_control.h"
 
-static void intr_handler(void);
-extern void initrelaybutton(void);
+static void ICACHE_FLASH_ATTR intr_handler(void);
+
+extern void ICACHE_FLASH_ATTR initinterrupts(void);
 
 #endif
