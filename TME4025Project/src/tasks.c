@@ -21,8 +21,8 @@ static void tempandpowerreaddebug_task (void *pvParameters)
     {
         //Interval 
         vTaskDelay (2*1000/portTICK_RATE_MS);
-        printf("Temperature Read Out: %d\n", gettemperature());
-        printf("Power Read Out: %d\n", getpower()); 
+        os_printf("Temperature Read Out: %d\n", gettemperature());
+        os_printf("Power Read Out: %d\n", getpower()); 
     } //end while
 }
 
@@ -139,8 +139,8 @@ static ICACHE_FLASH_ATTR void parsemessage (char message[256])
 
 extern void StartTasks(void)
 {
-    xTaskCreate(sendstatus_task, (signed char *)"Status", 1024, NULL, 2, NULL);
-    xTaskCreate(checktemperature_task, (signed char *)"TempCheck", 128, NULL, 2, NULL); 
-    xTaskCreate(tempandpowerreaddebug_task, (signed char *)"ValueDebug", 128, NULL, 2, NULL); //debug
+    xTaskCreate(sendstatus_task, (signed char *)"Status", 1024, NULL, 4, NULL);
+    xTaskCreate(checktemperature_task, (signed char *)"TempCheck", 128, NULL, 3, NULL); 
+    xTaskCreate(tempandpowerreaddebug_task, (signed char *)"ValueDebug", 128, NULL, 1, NULL); //debug
 
 }
