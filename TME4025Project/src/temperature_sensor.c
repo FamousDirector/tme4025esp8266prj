@@ -10,7 +10,9 @@ extern int gettemperature(void)
 	int i ;
 	for (i= 0;i<=iterations;i++)
 	{
+		taskENTER_CRITICAL();
 		sum = sum + system_adc_read();
+		taskEXIT_CRITICAL();
 		vTaskDelay (10/portTICK_RATE_MS);
 	}
 
