@@ -2,7 +2,7 @@
 
 extern void initrelaycontrol(void)
 {
-	printf("Init Relay\r\n");
+	os_printf("Init Relay\r\n");
     GPIO_ConfigTypeDef relay_cfg;
     relay_cfg.GPIO_Pin  = BIT(RELAY_PIN);
     relay_cfg.GPIO_IntrType = GPIO_PIN_INTR_DISABLE;
@@ -16,7 +16,7 @@ extern void initrelaycontrol(void)
 
 extern void setrelaystate(int newstate)
 {
-	//printf("Turn Relay %d \r\n", newstate); //debug
+	//os_printf("Turn Relay %d \r\n", newstate); //debug
     
     taskENTER_CRITICAL();
 	relaysstate = newstate;

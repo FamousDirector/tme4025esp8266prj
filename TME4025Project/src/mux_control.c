@@ -2,7 +2,7 @@
 
 extern void initmuxcontrol()
 {
-	printf("Init Mux\r\n");
+	os_printf("Init Mux\r\n");
     GPIO_ConfigTypeDef mux_cfg;
     mux_cfg.GPIO_Pin  = BIT(MUX_PIN);
     mux_cfg.GPIO_IntrType = GPIO_PIN_INTR_DISABLE;
@@ -13,5 +13,5 @@ extern void initmuxcontrol()
 extern void setmuxcontrol(int option)
 {	
 	GPIO_OUTPUT_SET(MUX_PIN, option);
-	// printf("Mux set: %d\r\n", option); //debug
+	// os_printf("Mux set: %d\r\n", option); //debug
 }

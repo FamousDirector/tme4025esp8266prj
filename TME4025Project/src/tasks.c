@@ -108,8 +108,8 @@ static ICACHE_FLASH_ATTR void parsemessage (char message[256])
             datavaluestring[k-j-1] = '\0'; //end string
 
             //DEBUG              
-            // printf("Identifier: %s\n", dataidentifier);
-            // printf("Value: %s\n", datavaluestring);
+            // os_printf("Identifier: %s\n", dataidentifier);
+            // os_printf("Value: %s\n", datavaluestring);
 
             //Handle Messages (cant use switch case statement)
             if (strcmp(dataidentifier, "TimeOn") == 0) 

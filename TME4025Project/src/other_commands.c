@@ -13,7 +13,7 @@ extern char * concat(const char *s1, const char *s2)
 
 extern uint32_t chartouint32(char *s)
 {
-    // printf("Value: %s\n", s); //debug
+    // os_printf("Value: %s\n", s); //debug
 	uint32_t value;
     sscanf(s, "%d", &value);
 

@@ -17,22 +17,22 @@ extern void intr_handler(void)
     int i = 0;
     while(i< 100/portTICK_RATE_MS){i++;}  
 
-    printf("Interrupt!\r\n"); //debug
+    os_printf("Interrupt!\r\n"); //debug
 
     //Task to do
     if ((gpio_status & (1<<RELAY_BUTTON)) != 0)
     {
-        printf("Relay button press!\r\n"); //debug
+        os_printf("Relay button press!\r\n"); //debug
         invertrelaystate();
     }
     if ((gpio_status & (1<<WPS_BUTTON)) != 0) 
     {
-        printf("WPS button press!\r\n"); //debug
+        os_printf("WPS button press!\r\n"); //debug
         beginWPS();
     }
 
 
-    printf("Interrupt over!\r\n"); //debug
+    os_printf("Interrupt over!\r\n"); //debug
 
     //Re-enable Interrupts
     //Relay Button

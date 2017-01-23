@@ -36,7 +36,7 @@ uint32 ICACHE_FLASH_ATTR user_rf_cal_sector_set(void)
 
 void user_init(void)
    {
-        printf("SDK version:%s\n", system_get_sdk_version());
+        os_printf("SDK version:%s\n", system_get_sdk_version());
         
         /*Init*/
         //Configure Interrupts

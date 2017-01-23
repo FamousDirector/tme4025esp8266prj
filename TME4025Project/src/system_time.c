@@ -47,7 +47,7 @@ uint32_t gettime()
 
 void printtime()
 {    
-    printf("Time %s\n\r", (char *) sntp_get_real_time(sntp_get_current_timestamp()));
+    os_printf("Time %s\n\r", (char *) sntp_get_real_time(sntp_get_current_timestamp()));
 }
 
 void SetOnTime(char * value)
@@ -59,12 +59,12 @@ void SetOnTime(char * value)
         {
             uint32_t timeinticks = (inputtime - gettime())*1000/portTICK_RATE_MS;
             xTimerStart(xTimerCreate("OnTimer",timeinticks,pdFALSE, (void *) 0, ontimercallback),0);
-            printf("Setting timer for turning on relay: %u\n\r",timeinticks); //debug 
+            os_printf("Setting timer for turning on relay: %u\n\r",timeinticks); //debug 
         }
         else //time has been missed
         {
             setrelaystate(RELAY_ON);
-            printf("Time has been missed, turning on relay\n\r"); //debug        
+            os_printf("Time has been missed, turning on relay\n\r"); //debug        
         }
     }
 }
@@ -77,12 +77,12 @@ void SetOffTime(char * value)
         {
             uint32_t timeinticks = (inputtime - gettime())*1000/portTICK_RATE_MS;
             xTimerStart(xTimerCreate("OffTimer",timeinticks,pdFALSE, (void *) 0, offtimercallback),0);
-            printf("Setting timer for turning on relay: %u\n\r",timeinticks); //debug     
+            os_printf("Setting timer for turning on relay: %u\n\r",timeinticks); //debug     
         }
         else //time has been missed
         {
             setrelaystate(RELAY_OFF);
-            printf("Time has been missed, turning off relay\n\r"); //debug
+            os_printf("Time has been missed, turning off relay\n\r"); //debug
         }
     }
 }

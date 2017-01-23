@@ -75,7 +75,7 @@ void TcpRecvCb(void *arg, char *pdata, unsigned short len)
 		                                          tcp_server_local->proto.tcp->remote_port,
 		                                          len);
    //USE PDATA TO GET THE REPLY
-   // printf("I got raw:%s\n\r", pdata); //debug
+   // os_printf("I got raw:%s\n\r", pdata); //debug
    taskENTER_CRITICAL();
    setreadfinishflag(1);
    setreplymessage((char *)pdata);
@@ -161,7 +161,7 @@ static void setreplymessage(const char *message)
 	taskENTER_CRITICAL();
 	sprintf((char *) &replymessage,message);
 	taskEXIT_CRITICAL();
-	// printf("Set: %s\n\r", message); //debug
+	// os_printf("Set: %s\n\r", message); //debug
 }
 static char * getreplymessage(void) //TODO doesnt return correctly first time
 {
@@ -169,7 +169,7 @@ static char * getreplymessage(void) //TODO doesnt return correctly first time
 	taskENTER_CRITICAL();
 	sprintf(message, (char *) &replymessage);
 	taskEXIT_CRITICAL();
-	// printf("Get: %s\n\r", message);//debug
+	// os_printf("Get: %s\n\r", message);//debug
 	return message;
 }
 
