@@ -33,45 +33,51 @@ static void sendstatus_task (void *pvParameters)
         //Interval
         vTaskDelay (SEND_STATUS_INTERVAL*1000/portTICK_RATE_MS);
 
-        //Send Status
-        char status[128] = "";
-
-        //Get UID
-        char uid[24] = "";
-        sprintf(uid, (char *) UID_TAG, UID);
-        strcat(status,uid);
-
-        //Get Relay State
-        char state[24] = "";
-        sprintf(state, (char *) RELAY_TAG, getrelaystate());
-        strcat(status,state);
-
-        //Get Tank Temperature
-        char temp[24] = "";
-        sprintf(temp, (char *) TEMPERATURE_TAG, gettemperature());
-        strcat(status,temp);
-
-        //Get Power Usage
-        char power[24] = "";
-        sprintf(power, (char *) POWER_TAG, getpower());
-        strcat(status,power);
-
-        //Send Message
-        char reply[256] = ""; 
-        sprintf(reply, (char *) sendmessage(status)); //sends and recieves a message
-
-        if(strcmp(reply,(char *) EMPTY_MESSAGE_TAG ) != 0) //make sure not an empty string
-        {            
-            parsemessage(reply);
-        }
-        else //if empty reply
-        {
-            //do nothing
-        }           
+        sendstatus();           
     }
 }
 
-static ICACHE_FLASH_ATTR void parsemessage (char message[256])
+void sendstatus (void)
+{
+    //Send Status
+    char status[128] = "";
+
+    //Get UID
+    char uid[24] = "";
+    sprintf(uid, (char *) UID_TAG, UID);
+    strcat(status,uid);
+
+    //Get Relay State
+    char state[24] = "";
+    sprintf(state, (char *) RELAY_TAG, getrelaystate());
+    strcat(status,state);
+
+    //Get Tank Temperature
+    char temp[24] = "";
+    sprintf(temp, (char *) TEMPERATURE_TAG, gettemperature());
+    strcat(status,temp);
+
+    //Get Power Usage
+    char power[24] = "";
+    sprintf(power, (char *) POWER_TAG, getpower());
+    strcat(status,power);
+
+    //Send Message
+    char reply[256] = ""; 
+    sprintf(reply, (char *) sendmessage(status)); //sends and recieves a message
+
+    if(strcmp(reply,(char *) EMPTY_MESSAGE_TAG ) != 0) //make sure not an empty string
+    {            
+        parsemessage(reply);
+    }
+    else //if empty reply
+    {
+        //do nothing
+    }        
+}
+
+
+static void parsemessage (char message[256])
 {
     char dataidentifier[16] = ""; //identifies data
     char datavaluestring[65] = ""; //value of data
