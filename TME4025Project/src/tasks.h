@@ -34,13 +34,15 @@
 
 //Tasks
 static ICACHE_FLASH_ATTR void checktemperature_task (void *pvParameters);
-static void sendstatus_task (void *pvParameters);
-static void tempandpowerreaddebug_task (void *pvParameters);
+static ICACHE_FLASH_ATTR void sendstatus_task (void *pvParameters);
+static ICACHE_FLASH_ATTR void tempandpowerreaddebug_task (void *pvParameters);
 
 //Task Function
 static ICACHE_FLASH_ATTR void parsemessage (char message[256]);
+static ICACHE_FLASH_ATTR void sendstatus (void);
+
 
 //Start Tasks
-extern void StartTasks(void);
+extern ICACHE_FLASH_ATTR void StartTasks(void);
 
 #endif
