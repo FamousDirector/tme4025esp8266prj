@@ -242,8 +242,7 @@ char * TcpCreateClient(char *inputmessage)
 	setsendfinishflag(0); //reset flag
 
 	while(getreadfinishflag() == 0 && getconnectedflag()) //wait until message is recieved
-	{
-		//TODO check for being disconnected
+	{		
 		vTaskDelay (10/portTICK_RATE_MS); 		
 	}
 	setreadfinishflag(0); //reset flag
@@ -258,6 +257,15 @@ char * TcpCreateClient(char *inputmessage)
 	}	
 
 	taskYIELD(); //get off the CPU
+
+	vTaskDelay (100/portTICK_RATE_MS); 
+
+	while(getconnectedflag()) //wait to be disconnected
+	{		
+		vTaskDelay (10/portTICK_RATE_MS);
+	}
+
+	espconn_delete(&tcp_client); //delete connection
 
 	return reply;
 
