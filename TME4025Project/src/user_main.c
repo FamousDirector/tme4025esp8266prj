@@ -48,9 +48,6 @@ void user_init(void)
         //Configure WIFI
         connecttowifi();
 
-        //Setup WatchDog
-        system_soft_wdt_restart(); //TODO - ensure it works
- 
         //Start Tasks
         StartTasks();  
    
