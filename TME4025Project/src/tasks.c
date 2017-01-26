@@ -12,6 +12,7 @@ static void checktemperature_task (void *pvParameters)
         {
             setrelaystate(RELAY_ON);
         }
+        taskYIELD();
     } //end while
 }
 static void tempandpowerreaddebug_task (void *pvParameters)
@@ -23,6 +24,7 @@ static void tempandpowerreaddebug_task (void *pvParameters)
         vTaskDelay (2*1000/portTICK_RATE_MS);
         os_printf("Temperature Read Out: %d\n", gettemperature());
         os_printf("Power Read Out: %d\n", getpower()); 
+        taskYIELD();
     } //end while
 }
 
@@ -33,7 +35,8 @@ static void sendstatus_task (void *pvParameters)
         //Interval
         vTaskDelay (SEND_STATUS_INTERVAL*1000/portTICK_RATE_MS);
 
-        sendstatus();           
+        sendstatus();
+        taskYIELD();           
     }
 }
 
@@ -147,6 +150,6 @@ extern void StartTasks(void)
 {
     xTaskCreate(sendstatus_task, (signed char *)"Status", 1024, NULL, 4, NULL);
     xTaskCreate(checktemperature_task, (signed char *)"TempCheck", 128, NULL, 3, NULL); 
-    xTaskCreate(tempandpowerreaddebug_task, (signed char *)"ValueDebug", 128, NULL, 1, NULL); //debug
+    //xTaskCreate(tempandpowerreaddebug_task, (signed char *)"ValueDebug", 128, NULL, 1, NULL); //debug
 
 }
