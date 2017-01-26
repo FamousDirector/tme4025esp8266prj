@@ -92,23 +92,7 @@ void TcpReconnectCb(void *arg, sint8 err)
 		                                          tcp_server_local->proto.tcp->remote_ip[3],
 		                                          tcp_server_local->proto.tcp->remote_port\
 		                                          );
-	if(err == ESPCONN_ARG) //illegal argument
-	{
-		//just move on soemthing weird happened
-		espconn_disconnect(tcp_server_local);
-		setconnectedflag(0);
-	}
-	else if(err == ESPCONN_CONN)  //just a unconnected, carry on
-	{
-		espconn_disconnect(tcp_server_local);
-		setconnectedflag(0); //just move on
-	}
-	else
-	{
-		//just move on something REALLY weird happened
-		espconn_disconnect(tcp_server_local);
-		setconnectedflag(0);
-	}
+	setconnectedflag(0);
 }
 
 void setsendfinishflag(int value)
@@ -216,7 +200,7 @@ char * TcpCreateClient(char *inputmessage)
 	espconn_set_opt(&tcp_client,BIT(1));//disable nagle algorithm during TCP data transmission
 	espconn_set_opt(&tcp_client,BIT(0));//free memory after TCP disconnection happen need not wait 2 minutes
 
-	espconn_regist_time(&tcp_client,60,0); //set timeout
+	espconn_regist_time(&tcp_client,5,0); //set timeout
 
 	espconn_connect(&tcp_client);
 
