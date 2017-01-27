@@ -50,6 +50,7 @@ void TcpClientDisConnectCb(void* arg)
 		                                          tcp_server_local->proto.tcp->remote_port
 		                                          );
 	setconnectedflag(0);
+	espconn_delete(tcp_server_local); //delete connection
 }
 void TcpClienSendCb(void* arg)
 {
@@ -92,6 +93,7 @@ void TcpReconnectCb(void *arg, sint8 err)
 		                                          tcp_server_local->proto.tcp->remote_ip[3],
 		                                          tcp_server_local->proto.tcp->remote_port\
 		                                          );
+	espconn_delete(tcp_server_local); //delete connection
 	setconnectedflag(0);
 }
 
@@ -248,8 +250,6 @@ char * TcpCreateClient(char *inputmessage)
 	{		
 		vTaskDelay (10/portTICK_RATE_MS);
 	}
-
-	espconn_delete(&tcp_client); //delete connection
 
 	return reply;
 
