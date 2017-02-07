@@ -9,10 +9,12 @@
 #include "other_commands.h"
 
 //TCP CLIENT Config
-#define TCP_SERVER_IPADDRESS_0 192
-#define TCP_SERVER_IPADDRESS_1 168
-#define TCP_SERVER_IPADDRESS_2 2
-#define TCP_SERVER_IPADDRESS_3 11
+#define TCP_SERVER_IPADDRESS_0 52
+#define TCP_SERVER_IPADDRESS_1 8
+#define TCP_SERVER_IPADDRESS_2 196
+#define TCP_SERVER_IPADDRESS_3 215
+
+#define TCP_SERVER_HOSTNAME "TODO"
 
 #define TCP_SERVER_REMOTE_PORT 8266
 
@@ -46,6 +48,9 @@ static int sendflag;
 static int readflag;
 static int connectedflag;
 
+//TCP Connection
+static struct espconn tcp_client;
+
 //Init
 extern ICACHE_FLASH_ATTR void initTCPCient(void);
 
@@ -55,6 +60,7 @@ static ICACHE_FLASH_ATTR void TcpClientDisConnect(void* arg);
 static ICACHE_FLASH_ATTR void TcpClienSendCb(void* arg);
 static ICACHE_FLASH_ATTR void TcpRecvCb(void *arg, char *pdata, unsigned short len);
 static ICACHE_FLASH_ATTR void TcpReconnectCb(void *arg, sint8 err);
+static ICACHE_FLASH_ATTR void GetHostByNameCb(const char *name, ip_addr_t *ipaddr, void *callback_arg);
 
 //get&sets
 static ICACHE_FLASH_ATTR void setsendfinishflag(int value);
