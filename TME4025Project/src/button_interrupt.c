@@ -15,7 +15,7 @@ extern void intr_handler(void)
     
     //debounce (needs work)
     int i = 0;
-    while(i< 100/portTICK_RATE_MS){i++;}  
+    while(i< DEBOUCE_DELAY/portTICK_RATE_MS){i++;}  
 
     os_printf("Interrupt!\r\n"); //debug
 

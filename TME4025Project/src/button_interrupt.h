@@ -9,6 +9,8 @@
 #include "WPS.h"
 #include "relay_control.h"
 
+#define DEBOUCE_DELAY 500
+
 static void ICACHE_FLASH_ATTR intr_handler(void);
 
 extern void ICACHE_FLASH_ATTR initinterrupts(void);
