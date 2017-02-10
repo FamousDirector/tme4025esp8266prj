@@ -37,6 +37,8 @@ void TcpClientConnectCb(void*arg)
 		                                          tcp_server_local->proto.tcp->remote_port
 		                                          );
 	setconnectedflag(1);
+	//Dispose
+	free(tcp_server_local);
 	}
 
 void TcpClientDisConnectCb(void* arg)
@@ -51,6 +53,8 @@ void TcpClientDisConnectCb(void* arg)
 		                                          );
 	setconnectedflag(0);
 	espconn_delete(tcp_server_local); //delete connection
+	//Dispose
+	free(tcp_server_local);	
 }
 void TcpClienSendCb(void* arg)
 {
@@ -63,6 +67,8 @@ void TcpClienSendCb(void* arg)
 		                                          tcp_server_local->proto.tcp->remote_port
 		                                          );
 	setsendfinishflag(1);
+	//Dispose
+	free(tcp_server_local);	
 }
 
 void TcpRecvCb(void *arg, char *pdata, unsigned short len)
@@ -81,6 +87,8 @@ void TcpRecvCb(void *arg, char *pdata, unsigned short len)
    setreadfinishflag(1);
    setreplymessage((char *)pdata);
    taskEXIT_CRITICAL();
+   free(tcp_server_local);
+
 }
 void TcpReconnectCb(void *arg, sint8 err)
 {
@@ -94,24 +102,20 @@ void TcpReconnectCb(void *arg, sint8 err)
 		                                          tcp_server_local->proto.tcp->remote_port\
 		                                          );
 	setconnectedflag(0);
+	//Dispose
+	free(tcp_server_local);	
 }
 
 void GetHostByNameCb(const char *name, ip_addr_t *ipaddr, void *callback_arg)
 {    
+	struct espconn* tcp_server_local=callback_arg; //use this to set the IP later
 	uint32 addr = (uint32)ipaddr;
-	unsigned int bytes[4];
-	bytes[0] = (addr >> 24) & 0xFF;
-	bytes[1] = (addr >> 16) & 0xFF;
-	bytes[2] = (addr >> 8) & 0xFF;
-	bytes[3] = addr & 0xFF;
+	
 
-	DBG_LINES("GET HOST BY NAME");
-	DBG_PRINT("Name:%s\n",name);
-	DBG_PRINT("IP0: %d\n",bytes[0]);
-	DBG_PRINT("IP1: %d\n",bytes[1]);
-	DBG_PRINT("IP2: %d\n",bytes[2]);
-	DBG_PRINT("IP3: %d\n",bytes[3]);
+	DBG_PRINT("Server: 0x%x\n",dns_getserver());
 
+	//Dispose
+	free(ipaddr);
 
 }
 
@@ -204,14 +208,25 @@ char * TcpCreateClient(char *inputmessage)
     tcp_client.proto.tcp->local_port = espconn_port();
     tcp_client.proto.tcp->remote_port = TCP_SERVER_REMOTE_PORT;
 
-	//ip_addr_t addr; //TODO: use a domain name to resolve a IP address
+	uint32 ipaddr; //TODO: use a domain name to resolve a IP address
 
-    //espconn_gethostbyname(&tcp_client, (const char *) TCP_SERVER_HOSTNAME, &addr, GetHostByNameCb); //TODO
+    netconn_gethostbyname((const char *) TCP_SERVER_HOSTNAME, &ipaddr); //TODO
 
-    tcp_client.proto.tcp->remote_ip[0] = TCP_SERVER_IPADDRESS_0;
- 	tcp_client.proto.tcp->remote_ip[1] = TCP_SERVER_IPADDRESS_1;
-  	tcp_client.proto.tcp->remote_ip[2] = TCP_SERVER_IPADDRESS_2;
-  	tcp_client.proto.tcp->remote_ip[3] = TCP_SERVER_IPADDRESS_3;
+    unsigned int bytes[4];
+	bytes[0] = (ipaddr >> 24) & 0xFF;
+	bytes[1] = (ipaddr >> 16) & 0xFF;
+	bytes[2] = (ipaddr >> 8) & 0xFF;
+	bytes[3] = ipaddr & 0xFF;
+
+	DBG_PRINT("IP0: %d\n",bytes[3]);
+	DBG_PRINT("IP1: %d\n",bytes[2]);
+	DBG_PRINT("IP2: %d\n",bytes[1]);
+	DBG_PRINT("IP3: %d\n",bytes[0]);
+
+    tcp_client.proto.tcp->remote_ip[0] = bytes[3];
+ 	tcp_client.proto.tcp->remote_ip[1] = bytes[2];
+  	tcp_client.proto.tcp->remote_ip[2] = bytes[1];
+  	tcp_client.proto.tcp->remote_ip[3] = bytes[0];
 
   	//Register Functions
 	espconn_regist_connectcb(&tcp_client,TcpClientConnectCb);
