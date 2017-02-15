@@ -39,14 +39,15 @@ void user_init(void)
         os_printf("SDK version:%s\n", system_get_sdk_version());
         
         /*Init*/
-        //Configure Interrupts
-        initinterrupts();
         //Configure Relay
         initrelaycontrol();
         //Configure Mux
         initmuxcontrol();
         //Configure WIFI
-        connecttowifi();
+        initwifi();
+        debugwifisetup();
+        //Configure Interrupts
+        initinterrupts();
 
         //Start Tasks
         StartTasks();  

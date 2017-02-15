@@ -199,6 +199,7 @@ char * TcpCreateClient(char *inputmessage)
 			                        "ap_not_find":con_status==STATION_CONNECT_FAIL?"Connect fail":"Get ip"\
 			                        );
 		vTaskDelay(100);
+		taskYIELD();
 	}
 
    	//Set Connection Options    

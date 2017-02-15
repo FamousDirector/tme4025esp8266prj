@@ -27,7 +27,10 @@ void wifi_handle_event_cb(System_Event_t *evt)
              IP2STR(&evt->event_info.got_ip.mask),
              IP2STR(&evt->event_info.got_ip.gw));
              printf("\n");
+             //Upon Successful connect
              setwificonnectedflag(1);
+             storewificonfig();
+             initTCPCient();
              break;
          default:
              break;
@@ -49,28 +52,30 @@ int getwificonnectedflag()
     return value;
 }
 
-void connecttowifi(void)
+void initwifi(void)
 {
-	wifi_set_opmode(STATION_MODE); 
-	struct station_config config;
-	memset(&config,0,sizeof(config));  //set value of config from address of &config to width of size to be value '0'
-	
-    //TODO: look at WPS - https://github.com/esp8266/Arduino/issues/1958
-    //look for button press (start a task?)
-    //would wait and check to look for the WPS being enabled on the router
-    //WPS will connect this device to the network
-    //get the SSID and password from wifi_station_get_config 
-    //store it to the flash with wifi_station_set_config
+    wifi_set_opmode(STATION_MODE); 
+}
 
-	sprintf(config.ssid, AP_SSID);
-	sprintf(config.password, AP_PASSWORD);
-	
-	wifi_station_set_config(&config);         
-	
+void storewificonfig(void)
+{
+    struct station_config config;
+    memset(&config,0,sizeof(config));  //set value of config from address of &config to width of size to be value '0'
+
+    //Check to see if there is a stored config
+    wifi_station_get_config(&config);
+
+    //sprintf(config.ssid, AP_SSID); //debug
+    //sprintf(config.password, AP_PASSWORD); //debug
+    
+    wifi_station_set_config(&config);         
+    wifi_station_set_reconnect_policy(true);
+}
+
+void connecttowifi(void)
+{	
 	wifi_set_event_handler_cb(wifi_handle_event_cb);
-	wifi_station_connect();
-
-    initTCPCient();
+	wifi_station_connect();    
 }
 
 char * sendmessage(char * message) //add a message to send
@@ -78,4 +83,67 @@ char * sendmessage(char * message) //add a message to send
 	//Parse Message
     char * reply = TcpCreateClient(message);
 	return;
+}
+
+void debugwifisetup(void)
+{
+  struct station_config config;
+  memset(&config,0,sizeof(config));  //set value of config from address of &config to width of size to be value '0'
+
+  sprintf(config.ssid, AP_SSID);
+  sprintf(config.password, AP_PASSWORD);
+  
+  wifi_station_set_config(&config);         
+  
+  wifi_set_event_handler_cb(wifi_handle_event_cb);
+  wifi_station_connect();
+    
+  initTCPCient();
+}
+
+void scan_done(void *arg, STATUS status)
+{
+  uint8 ssid[33];
+  char temp[128];
+
+  if (status == OK)
+  {
+    struct bss_info *bss_link = (struct bss_info *)arg;
+    bss_link = bss_link->next.stqe_next;//ignore the first one , it's invalid.
+
+    while (bss_link != NULL)
+    {
+      memset(ssid, 0, 33);
+      if (strlen(bss_link->ssid) <= 32)
+      {
+        memcpy(ssid, bss_link->ssid, strlen(bss_link->ssid));
+      }
+      else
+      {
+        memcpy(ssid, bss_link->ssid, 32);
+      }
+      printf("(%d,\"%s\",%d,\""MACSTR"\",%d)\r\n",
+                 bss_link->authmode, ssid, bss_link->rssi,
+                 MAC2STR(bss_link->bssid),bss_link->channel);
+      bss_link = bss_link->next.stqe_next;
+    }
+  }
+  else
+  {
+     printf("scan fail !!!\r\n");
+  }
+
+}
+
+void user_scan(void)
+{
+    // wifi scan has to after system init done
+
+   if(wifi_get_opmode() == SOFTAP_MODE)
+   {
+     printf("ap mode can't scan !!!\r\n");
+     return;
+   }
+   wifi_station_scan(NULL,scan_done);
+
 }

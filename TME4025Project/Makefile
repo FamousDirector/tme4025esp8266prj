@@ -52,8 +52,8 @@ SDK_LIBDIR = -L$(SDKBASE)/lib
 SDK_LDDIR = $(SDKBASE)/ld
 # linking libgccirom.a instead of libgcc.a causes reset when working with flash memory (ie spi_flash_erase_sector)
 # linking libcirom.a causes conflicts with come std c routines (like strstr, strchr…)
-LIBS = -lmain -lgcc -lfreertos -lnet80211 -lphy -lwpa -lcrypto -llwip -lpp -lminic -lhal -lm -lssl -lc -lespconn -lwps libdriver.a libuser.a
-#-lminic -lm -lgcc -lhal -lphy -lpp -lnet80211 -lwpa -lmain -lfreertos -llwip -lcrypto
+LIBS = -lmain -lgcc -lfreertos -lnet80211 -lphy -lwpa -lcrypto -llwip -lpp -lminic -lhal -lm -lssl -lc -lespconn -lcrypto -lwps -lsmartconfig libdriver.a libuser.a
+#-lminic -lm -lgcc -lhal -lphy -lpp -lnet80211 -lwpa -lmain -lfreertos -llwip 
 
 OBJ = user_main.o relay_control.o button_interrupt.o temperature_sensor.o wifi_communications.o tcp_client.o power_sensor.o mux_control.o system_time.o tasks.o other_commands.o WPS.o
 

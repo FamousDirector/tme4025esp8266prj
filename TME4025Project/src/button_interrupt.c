@@ -28,7 +28,7 @@ extern void intr_handler(void)
     if ((gpio_status & (1<<WPS_BUTTON)) != 0) 
     {
         os_printf("WPS button press!\r\n"); //debug
-        beginWPS();
+        //beginWPS();
     }
 
 

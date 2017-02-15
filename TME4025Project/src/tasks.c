@@ -15,28 +15,43 @@ static void checktemperature_task (void *pvParameters)
         taskYIELD();
     } //end while
 }
-static void tempandpowerreaddebug_task (void *pvParameters)
+static void debug_task (void *pvParameters)
 {
     //for debugging values
     while(1)
     {
         //Interval 
-        vTaskDelay (2*1000/portTICK_RATE_MS);
+        vTaskDelay (5*1000/portTICK_RATE_MS);
         os_printf("Temperature Read Out: %d\n", gettemperature());
-        os_printf("Power Read Out: %d\n", getpower()); 
+        os_printf("Power Read Out: %d\n", getpower());
+        system_print_meminfo(); 
         taskYIELD();
     } //end while
 }
 
+static void scan_task(void *pvParameters)
+{
+    while (1) {
+        user_scan();
+        vTaskDelay (5*1000/portTICK_RATE_MS);
+    }
+}
+
 static void sendstatus_task (void *pvParameters)
 {
+    //debug
+    vTaskDelay (SEND_STATUS_INTERVAL*1000/portTICK_RATE_MS);
+    beginWPS(); //debug
+
     while(1)
     {
         //Interval
-        vTaskDelay (SEND_STATUS_INTERVAL*1000/portTICK_RATE_MS);
-
-        sendstatus();
-        taskYIELD();           
+        if(wifi_station_get_connect_status() == STATION_GOT_IP)
+        {            
+            sendstatus();
+        }
+        taskYIELD();        
+        vTaskDelay (SEND_STATUS_INTERVAL*1000/portTICK_RATE_MS);           
     }
 }
 
@@ -149,7 +164,7 @@ static void parsemessage (char message[256])
 extern void StartTasks(void)
 {
     xTaskCreate(sendstatus_task, (signed char *)"Status", 1024, NULL, 4, NULL);
-    xTaskCreate(checktemperature_task, (signed char *)"TempCheck", 128, NULL, 3, NULL); 
-    //xTaskCreate(tempandpowerreaddebug_task, (signed char *)"ValueDebug", 128, NULL, 1, NULL); //debug
-
+    xTaskCreate(checktemperature_task, (signed char *)"TempCheck", 128, NULL, 4, NULL); 
+    xTaskCreate(debug_task, (signed char *)"ValueDebug", 128, NULL, 1, NULL); //debug
+    //xTaskCreate(scan_task, "scantsk", 256, NULL, 1, NULL); //debug
 }
