@@ -22,8 +22,8 @@ static void debug_task (void *pvParameters)
     {
         //Interval 
         vTaskDelay (5*1000/portTICK_RATE_MS);
-        os_printf("Temperature Read Out: %d\n", gettemperature());
-        os_printf("Power Read Out: %d\n", getpower());
+        //os_printf("Temperature Read Out: %d\n", gettemperature());
+        //os_printf("Power Read Out: %d\n", getpower());
         system_print_meminfo(); 
         taskYIELD();
     } //end while
@@ -39,10 +39,6 @@ static void scan_task(void *pvParameters)
 
 static void sendstatus_task (void *pvParameters)
 {
-    //debug
-    vTaskDelay (SEND_STATUS_INTERVAL*1000/portTICK_RATE_MS);
-    beginWPS(); //debug
-
     while(1)
     {
         //Interval
