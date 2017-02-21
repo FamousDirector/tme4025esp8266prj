@@ -236,8 +236,8 @@ char * TcpCreateClient(char *inputmessage)
 	espconn_regist_disconcb(&tcp_client,TcpClientDisConnectCb);
 	espconn_regist_sentcb(&tcp_client,TcpClienSendCb);
 
+	//espconn_set_opt(&tcp_client,BIT(0));//free memory after TCP disconnection happen need not wait 2 minutes - does this cause the problem?
 	espconn_set_opt(&tcp_client,BIT(1));//disable nagle algorithm during TCP data transmission
-	espconn_set_opt(&tcp_client,BIT(0));//free memory after TCP disconnection happen need not wait 2 minutes
 
 	espconn_regist_time(&tcp_client,5,0); //set timeout
 
