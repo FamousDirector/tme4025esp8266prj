@@ -12,16 +12,21 @@
 #define RELAY_OFF 0
 
 #define RELAY_PIN 12
+#define RELAY_INDICATOR 15
 #define RELAY_BUTTON 14
 
 static int relaysstate = 0;
 
-extern void initrelaycontrol(void);
+extern void invertrelaystate(void);
 extern void setrelaystate(int newstate);
 extern int getrelaystate(void);
-extern void invertrelaystate(void);
 
-extern void initrelaybutton(void);
+extern void initrelay(void);
+
+static void initrelaycontrol(void);
+static void initrelaybutton(void);
+static void initrelayindicator(void);
+
 
 
 #endif
