@@ -12,7 +12,7 @@
 #include "wifi_communications.h"
 #include "tasks.h"
 #include "tcp_client.h"
-#include "WPS.h"
+#include "wifisetup.h"
 
 #define UID "ABC123"
 

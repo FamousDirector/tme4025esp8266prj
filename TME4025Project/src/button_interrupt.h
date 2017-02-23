@@ -6,7 +6,7 @@
 #include <freertos/task.h>
 #include "gpio.h"
 
-#include "WPS.h"
+#include "wifisetup.h"
 #include "relay_control.h"
 
 #define DEBOUCE_DELAY 500
