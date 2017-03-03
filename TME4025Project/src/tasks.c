@@ -24,7 +24,7 @@ static void debug_task (void *pvParameters)
         vTaskDelay (5*1000/portTICK_RATE_MS);
         //os_printf("Temperature Read Out: %d\n", gettemperature());
         //os_printf("Power Read Out: %d\n", getpower());
-        system_print_meminfo(); 
+        //system_print_meminfo(); 
         taskYIELD();
     } //end while
 }
